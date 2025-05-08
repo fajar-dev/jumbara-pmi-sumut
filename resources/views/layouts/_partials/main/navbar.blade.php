@@ -36,12 +36,12 @@
               <span class="menu-arrow d-lg-none"></span>
             </span>
           </a>
-          <a href="{{ route('report') }}" class="menu-item @if($title == 'Report') here show menu-here-bg  @endif me-0 me-lg-2">
+          {{-- <a href="{{ route('report') }}" class="menu-item @if($title == 'Report') here show menu-here-bg  @endif me-0 me-lg-2">
             <span class="menu-link">
               <span class="menu-title">Report</span>
               <span class="menu-arrow d-lg-none"></span>
             </span>
-          </a>
+          </a> --}}
         </div>
       </div>
       <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">

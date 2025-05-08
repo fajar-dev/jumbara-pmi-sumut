@@ -66,7 +66,7 @@ class NewsController extends Controller
     public function newsAdd(){
         $data = [
             'title' => 'News',
-            'subTitle' => 'Add News',
+            'subTitle' => 'Add',
             'page_id' => null,
             'category' => NewsCategory::all()
         ];
@@ -98,7 +98,7 @@ class NewsController extends Controller
     public function newsEdit($id){
         $data = [
             'title' => 'News',
-            'subTitle' => 'Edit News',
+            'subTitle' => 'Edit',
             'page_id' => null,
             'news' => News::findOrFail($id),
             'category' => NewsCategory::all()

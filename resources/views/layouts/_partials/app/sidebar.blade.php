@@ -56,7 +56,15 @@
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
-                <span class="menu-title">Participants Type</span>
+                <span class="menu-title">Participant Type</span>
+              </a>
+            </div>
+            <div class="menu-item">
+              <a class="menu-link @if($subTitle == 'List') active bg-danger @endif" href="{{ route('admin.news') }}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Activity Type</span>
               </a>
             </div>
           </div>
@@ -97,11 +105,11 @@
           </div>
         </div>
         <div class="menu-item">
-          <a class="menu-link @if($title == 'Report') active bg-danger @endif menu-accordion"" href="{{ route('admin.report') }}">
+          <a class="menu-link @if($title == 'Announcement') active bg-danger @endif menu-accordion"" href="{{ route('admin.announcement') }}">
             <span class="menu-icon">
               <i class="ki-outline ki-tablet-book fs-2"></i>
             </span>
-            <span class="menu-title">Report</span>
+            <span class="menu-title">Announcement</span>
           </a>
         </div>
         <div class="menu-item">

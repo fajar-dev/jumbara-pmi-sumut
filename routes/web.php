@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
@@ -17,10 +18,10 @@ Route::prefix('/news')->group(function () {
     Route::get('/{slug}', [NewsController::class, 'show'])->name('news.show');
 });
 
-Route::prefix('/report')->group(function () {
-    Route::get('/', [ReportController::class, 'index'])->name('report');
-    Route::get('/{slug}', [ReportController::class, 'show'])->name('report.show');
-});
+// Route::prefix('/report')->group(function () {
+//     Route::get('/', [ReportController::class, 'index'])->name('report');
+//     Route::get('/{slug}', [ReportController::class, 'show'])->name('report.show');
+// });
 
 Route::prefix('/survey')->group(function () {
     Route::get('/', [SurveyController::class, 'index'])->name('survey');
@@ -56,13 +57,13 @@ Route::prefix('/app')->group(function () {
         });
     });
     
-    Route::prefix('/report')->group(function () {
-        Route::get('/', [ReportController::class, 'report'])->name('admin.report');
-        Route::get('/add', [ReportController::class, 'reportAdd'])->name('admin.report.add');
-        Route::post('/add', [ReportController::class, 'reportStore'])->name('admin.report.store');
-        Route::get('/{id}/edit', [ReportController::class, 'reportEdit'])->name('admin.report.edit');
-        Route::post('/{id}/edit', [ReportController::class, 'reportUpdate'])->name('admin.report.update');
-        Route::get('/{id}/destroy', [ReportController::class, 'reportDestroy'])->name('admin.report.destroy');
+    Route::prefix('/announcement')->group(function () {
+        Route::get('/', [AnnouncementController::class, 'announcement'])->name('admin.announcement');
+        Route::get('/add', [AnnouncementController::class, 'announcementAdd'])->name('admin.announcement.add');
+        Route::post('/add', [AnnouncementController::class, 'announcementStore'])->name('admin.announcement.store');
+        Route::get('/{id}/edit', [AnnouncementController::class, 'announcementEdit'])->name('admin.announcement.edit');
+        Route::post('/{id}/edit', [AnnouncementController::class, 'announcementUpdate'])->name('admin.announcement.update');
+        Route::get('/{id}/destroy', [AnnouncementController::class, 'announcementDestroy'])->name('admin.announcement.destroy');
     });
     
     Route::prefix('/survey')->group(function () {

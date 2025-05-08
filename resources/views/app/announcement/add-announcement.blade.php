@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="{{ route('admin.report.store') }}" enctype="multipart/form-data" method="post" id="form" class="row g-5 g-xl-8 justify-content-center">
+<form action="{{ route('admin.announcement.store') }}" enctype="multipart/form-data" method="post" id="form" class="row g-5 g-xl-8 justify-content-center">
   @csrf
   <div class="col-xl-9 mb-8">
     <div class="row">
@@ -9,7 +9,7 @@
         <div class="card-body pt-0">
           <div class="mb-3 mt-9">
             <label for="exampleFormControlInput1" class="col-form-label required fw-bold fs-6">Title</label>
-            <input type="text" name="title" class="form-control form-control-solid @error('title') is-invalid @enderror" value="{{ old('title') }}" placeholder="Report title" required/>
+            <input type="text" name="title" class="form-control form-control-solid @error('title') is-invalid @enderror" value="{{ old('title') }}" placeholder="Announcement title" required/>
             @error('title')
               <div class="invalid-feedback">
                 {{ $message }}
@@ -17,8 +17,8 @@
             @enderror
           </div>
           <div class="mb-3">
-            <label for="exampleFormControlInput1" class="col-form-label required fw-bold fs-6">File</label>
-            <input type="file" name="file" class="form-control form-control-solid @error('file') is-invalid @enderror" required/>
+            <label for="exampleFormControlInput1" class="col-form-label fw-bold fs-6">File</label>
+            <input type="file" name="file" class="form-control form-control-solid @error('file') is-invalid @enderror"/>
             @error('file')
               <div class="invalid-feedback">
                 {{ $message }}
@@ -37,7 +37,7 @@
             @enderror
           </div>
           <div class="d-flex justify-content-end">
-            <a href="{{ route('admin.report') }}" class="btn btn-light-danger me-3">Cancel</a>
+            <a href="{{ route('admin.announcement') }}" class="btn btn-light-danger me-3">Cancel</a>
             <button type="submit" id="submit" class="btn btn-danger">
               <span class="indicator-label">Submit</span>
               <span class="indicator-progress" style="display: none;">Loading... 

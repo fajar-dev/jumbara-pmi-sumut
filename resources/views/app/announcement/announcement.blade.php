@@ -7,15 +7,15 @@
         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
           <div class="card-title">
             <h3 class="card-title align-items-start flex-column">
-              <span class="card-label fw-bold fs-3 mb-1">Report</span>
-              <span class="text-muted fw-semibold fs-7">Report List</span>
+              <span class="card-label fw-bold fs-3 mb-1">Announcement</span>
+              <span class="text-muted fw-semibold fs-7">Announcement List</span>
             </h3>
           </div>
           <div class="card-toolbar">
             <form method="GET" class="card-title">
               <input type="hidden" name="page" value="{{ request('page', 1) }}">
               <div class="input-group d-flex align-items-center position-relative my-1">
-                <input type="text"  class="form-control form-control-solid  ps-5 rounded-0" name="q" value="{{ request('q') }}" placeholder="Search" />
+                <input type="text"  class="form-control form-control-solid rounded-start-3 ps-5 rounded-0" name="q" value="{{ request('q') }}" placeholder="Search" />
                 <button class="btn btn-danger btn-icon" type="submit" id="button-addon2">
                   <span class="svg-icon svg-icon-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -26,7 +26,7 @@
               </div>
               <!--end::Search-->
             </form>
-            <a href="{{ route('admin.report.add') }}" class="btn btn-danger d-flex align-items-center"><i class="ki-duotone ki-plus fs-2"></i>
+            <a href="{{ route('admin.announcement.add') }}" class="btn btn-danger d-flex align-items-center"><i class="ki-duotone ki-plus fs-2"></i>
               Add
             </a>
           </div>
@@ -43,19 +43,19 @@
                 </tr>
               </thead>
               <tbody>
-                @if ($report->total() == 0)
+                @if ($announcement->total() == 0)
                   <tr class="max-w-10px">
                     <td colspan="6" class="text-center">
                       No data available in table
                     </td>
                   </tr>
                 @else
-                  @foreach ($report as $item)     
+                  @foreach ($announcement as $item)     
                     <tr>
                       <td>
                         <div class="d-flex align-items-center">
                           <div class="ms-5">
-                            <a href="{{{ route('report.show', $item->slug) }}}" target="_blank" class="text-gray-800 text-hover-danger fs-5 fw-bold mb-1">{{ $item->title }}</a>
+                            <span class="text-gray-800 text-hover-danger fs-5 fw-bold mb-1">{{ $item->title }}</spanclass=>
                             <div class="text-muted fs-7 fw-bold">{{ $item->slug }}</div>                    
                           </div>
                         </div>
@@ -63,7 +63,11 @@
                       <td>
                         <div class="text-start">
                           <div class="fs-6 fw-bold">
-                            <a href="{{ Storage::url($item->file_path) }}">Show File</a>
+                            @if ($item->file_path)
+                              <a href="{{ Storage::url($item->file_path) }}">Show File</a>
+                            @else
+                                -
+                            @endif
                             </div>
                         </div>
                       </td>
@@ -86,10 +90,10 @@
                         </a>
                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                           <div class="menu-item px-3">
-                            <a href="{{ route('admin.report.edit', $item->id) }}" class="menu-link px-3">Edit</a>
+                            <a href="{{ route('admin.announcement.edit', $item->id) }}" class="menu-link text-hover-danger bg-hover-light px-3">Edit</a>
                           </div>
                           <div class="menu-item px-3">
-                            <a id="{{ route('admin.report.destroy', $item->id) }}" class="menu-link px-3 btn-del">Delete</a>
+                            <a id="{{ route('admin.announcement.destroy', $item->id) }}" class="menu-link px-3 text-hover-danger bg-hover-light btn-del">Delete</a>
                           </div>
                         </div>
                       </td>
@@ -101,54 +105,54 @@
           </div>
           <div class="d-flex flex-stack flex-wrap my-3">
             <div class="fs-6 fw-semibold text-gray-700">
-                Showing {{ $report->firstItem() }} to {{ $report->lastItem() }} of {{ $report->total() }}  records
+                Showing {{ $announcement->firstItem() }} to {{ $announcement->lastItem() }} of {{ $announcement->total() }}  records
             </div>
             <ul class="pagination">
-                @if ($report->onFirstPage())
-                    <li class="page-item previous">
-                        <a href="#" class="page-link"><i class="previous"></i></a>
-                    </li>
-                @else
-                    <li class="page-item previous">
-                        <a href="{{ $report->previousPageUrl() }}" class="page-link bg-light"><i class="previous"></i></a>
-                    </li>
-                @endif
-        
-                @php
-                    // Menghitung halaman pertama dan terakhir yang akan ditampilkan
-                    $start = max($report->currentPage() - 2, 1);
-                    $end = min($start + 4, $report->lastPage());
-                @endphp
-        
-                @if ($start > 1)
-                    <!-- Menampilkan tanda elipsis jika halaman pertama tidak termasuk dalam tampilan -->
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                @endif
-        
-                @foreach ($report->getUrlRange($start, $end) as $page => $url)
-                    <li class="page-item{{ ($page == $report->currentPage()) ? ' active' : '' }}">
-                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                    </li>
-                @endforeach
-        
-                @if ($end < $report->lastPage())
-                    <!-- Menampilkan tanda elipsis jika halaman terakhir tidak termasuk dalam tampilan -->
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                @endif
-        
-                @if ($report->hasMorePages())
-                    <li class="page-item next">
-                        <a href="{{ $report->nextPageUrl() }}" class="page-link bg-light"><i class="next"></i></a>
-                    </li>
-                @else
-                    <li class="page-item next">
-                        <a href="#" class="page-link"><i class="next"></i></a>
-                    </li>
-                @endif
+              @if ($announcement->onFirstPage())
+                  <li class="page-item previous">
+                      <a href="#" class="page-link disabled"><i class="previous"></i></a>
+                  </li>
+              @else
+                  <li class="page-item previous">
+                      <a href="{{ $announcement->previousPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="previous"></i></a>
+                  </li>
+              @endif
+      
+              @php
+                  // Menghitung halaman pertama dan terakhir yang akan ditampilkan
+                  $start = max($announcement->currentPage() - 2, 1);
+                  $end = min($start + 4, $announcement->lastPage());
+              @endphp
+      
+              @if ($start > 1)
+                  <!-- Menampilkan tanda elipsis jika halaman pertama tidak termasuk dalam tampilan -->
+                  <li class="page-item disabled">
+                      <span class="page-link">...</span>
+                  </li>
+              @endif
+      
+              @foreach ($announcement->getUrlRange($start, $end) as $page => $url)
+                  <li class="page-item{{ ($page == $announcement->currentPage()) ? ' active' : '' }}">
+                      <a class="page-link {{ ($page == $announcement->currentPage()) ? ' bg-danger' : 'text-hover-danger' }}" href="{{ $url }}">{{ $page }}</a>
+                  </li>
+              @endforeach
+      
+              @if ($end < $announcement->lastPage())
+                  <!-- Menampilkan tanda elipsis jika halaman terakhir tidak termasuk dalam tampilan -->
+                  <li class="page-item disabled">
+                      <span class="page-link">...</span>
+                  </li>
+              @endif
+      
+              @if ($announcement->hasMorePages())
+                  <li class="page-item next">
+                      <a href="{{ $announcement->nextPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="next"></i></a>
+                  </li>
+              @else
+                  <li class="page-item next">
+                      <a href="#" class="page-link disabled"><i class="next"></i></a>
+                  </li>
+              @endif
             </ul>
           </div>
         </div>

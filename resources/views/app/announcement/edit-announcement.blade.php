@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="{{ route('admin.report.update', $report->id) }}" enctype="multipart/form-data" id="form" method="post" class="row g-5 g-xl-8 justify-content-center">
+<form action="{{ route('admin.announcement.update', $announcement->id) }}" enctype="multipart/form-data" id="form" method="post" class="row g-5 g-xl-8 justify-content-center">
   @csrf
   <div class="col-xl-9 mb-8">
     <div class="row">
@@ -11,7 +11,7 @@
             <label for="exampleFormControlInput1" class="col-form-label required fw-bold fs-6">Title</label>
             <input type="text" name="title" 
                    class="form-control form-control-solid @error('title') is-invalid @enderror" 
-                   value="{{ old('title') ?? $report->title }}" 
+                   value="{{ old('title') ?? $announcement->title }}" 
                    placeholder="News Title" required/>
               @error('title')
               <div class="invalid-feedback">
@@ -27,12 +27,18 @@
                 {{ $message }}
               </div>
             @enderror
-            <small>File: <a href=" {{ Storage::url($report->file_path) }}">Click Here</a></small>
+            <small>File:
+              @if ($announcement->file_path)
+                <a href=" {{ Storage::url($announcement->file_path) }}">Click Here</a></small>
+              @else
+                  -
+              @endif
+              
           </div>
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="col-form-label required fw-bold fs-6">Content</label>
             <textarea name="content" id="kt_docs_ckeditor_classic" required>
-              {{ old('content') ??  $report->content }}
+              {{ old('content') ??  $announcement->content }}
             </textarea>
             @error('content')
               <div class="invalid-feedback">
@@ -41,7 +47,7 @@
             @enderror
           </div>
           <div class="d-flex justify-content-end">
-            <a href="{{ route('admin.news') }}" class="btn btn-light-danger me-3">Cancel</a>
+            <a href="{{ route('admin.announcement') }}" class="btn btn-light-danger me-3">Cancel</a>
             <button type="submit" id="submit" class="btn btn-danger">
               <span class="indicator-label">Publish</span>
               <span class="indicator-progress" style="display: none;">Loading... 
