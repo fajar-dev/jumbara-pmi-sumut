@@ -50,12 +50,9 @@
               <div class="card-body d-flex justify-content-center">
                 <div class="d-md-flex align-items-center pe-lg-5">
                   <div class="pe-lg-20">
-                    <h1 class="fw-semibold text-gray-800 fs-lg-3hx fs-md-2hx">Selamat Datang <br> Di Website
-                      <span style="background: linear-gradient(to right, #12CE5D 0%, #FFD80C 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;">
-                          <span class="fw-bolder">Tracer Study</span>
-                      </span>
+                    <h1 class="fw-semibold text-gray-800 fs-lg-3hx fs-md-2hx">Jumbara XXI PMR-PMI
                       <br />
-                      <span class="fw-bolder">Universitas  Malikussaleh</span>
+                      <span class="fw-bolder">Provinsi Sumatera Utara</span>
                     </h1>
                     <div class="mb-1 mt-5">
                       <a class="btn btn-lg btn-danger me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal">Isi Survey</a>

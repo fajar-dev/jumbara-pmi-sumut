@@ -10,6 +10,7 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\SettingController;
@@ -62,6 +63,15 @@ Route::prefix('/app')->group(function () {
             Route::post('/add', [MasterDataController::class, 'activityStore'])->name('admin.master-data.activity.store');
             Route::post('/{id}/edit', [MasterDataController::class, 'activityUpdate'])->name('admin.master-data.activity.update');
             Route::get('/{id}/destroy', [MasterDataController::class, 'activityDestroy'])->name('admin.master-data.activity.destroy');
+        });
+    });
+
+    Route::prefix('/event')->group(function () {
+        Route::prefix('/contingent')->group(function () {
+            Route::get('/', [EventController::class, 'contingent'])->name('admin.event.contingent');
+            Route::post('/add', [EventController::class, 'contingentStore'])->name('admin.event.contingent.store');
+            Route::post('/{id}/edit', [EventController::class, 'contingentUpdate'])->name('admin.event.contingent.update');
+            Route::get('/{id}/destroy', [EventController::class, 'contingentDestroy'])->name('admin.event.contingent.destroy');
         });
     });
 

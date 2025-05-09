@@ -27,6 +27,11 @@ class MasterDataSeeder extends Seeder
             ],
             [
                 'id' => 3, 
+                'name' => 'Pendamping',
+                'description' => 'Pendamping',
+            ],
+            [
+                'id' => 3, 
                 'name' => 'Panitia Lokal',
                 'description' => 'Panitia Lokal',
             ]

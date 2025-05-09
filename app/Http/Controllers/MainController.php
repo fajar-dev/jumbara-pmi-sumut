@@ -18,7 +18,6 @@ class MainController extends Controller
             'page_id' => null,
             'news' => News::orderby('created_at', 'desc')->limit(5)->get(),
             'survey' => Survey::where('is_private', false)->where('is_active', true)->whereNotNull('question')->orderby('created_at', 'desc')->limit(4)->get(),
-            'report' => Report::orderby('created_at', 'desc')->limit(4)->get(),
         ];
 
         return view('main.index',  $data);
