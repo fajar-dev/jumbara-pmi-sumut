@@ -34,7 +34,7 @@
             <span class="menu-title">Dashboard</span>
           </a>
         </div>
-        <div data-kt-menu-trigger="click" class="menu-item @if($title == 'News') here show @endif menu-accordion">
+        <div data-kt-menu-trigger="click" class="menu-item @if($title == 'Master Data') here show @endif menu-accordion">
           <span class="menu-link">
             <span class="menu-icon">
               <i class="ki-outline ki-book fs-2"></i>
@@ -44,7 +44,7 @@
           </span>
           <div class="menu-sub menu-sub-accordion">
             <div class="menu-item">
-              <a class="menu-link  @if($subTitle == 'Category') active bg-danger bg-danger @endif" href="{{ route('admin.category') }}">
+              <a class="menu-link  @if($subTitle == 'Member Type') active bg-danger bg-danger @endif" href="{{ route('admin.master-data.member') }}">
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
@@ -52,7 +52,7 @@
               </a>
             </div>
             <div class="menu-item">
-              <a class="menu-link @if($subTitle == 'List') active bg-danger @endif" href="{{ route('admin.news') }}">
+              <a class="menu-link @if($subTitle == 'Participant Type') active bg-danger @endif" href="{{ route('admin.master-data.participant') }}">
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
@@ -60,7 +60,7 @@
               </a>
             </div>
             <div class="menu-item">
-              <a class="menu-link @if($subTitle == 'List') active bg-danger @endif" href="{{ route('admin.news') }}">
+              <a class="menu-link @if($subTitle == 'Activity Type') active bg-danger @endif" href="{{ route('admin.master-data.activity') }}">
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>

@@ -15,7 +15,7 @@
             <form method="GET" class="card-title">
               <input type="hidden" name="page" value="{{ request('page', 1) }}">
               <div class="input-group d-flex align-items-center position-relative my-1">
-                <input type="text"  class="form-control form-control-solid  ps-5 rounded-0" name="q" value="{{ request('q') }}" placeholder="Search" />
+                <input type="text"  class="form-control form-control-solid rounded-start-3 ps-5 rounded-0" name="q" value="{{ request('q') }}" placeholder="Search" />
                 <button class="btn btn-danger btn-icon" type="submit" id="button-addon2">
                   <span class="svg-icon svg-icon-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">

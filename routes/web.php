@@ -11,6 +11,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MasterDataController;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
 Route::prefix('/news')->group(function () {
@@ -42,6 +43,27 @@ Route::prefix('/auth')->group(function () {
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::prefix('/app')->group(function () {
+    Route::prefix('/master-data')->group(function () {
+        Route::prefix('/member-type')->group(function () {
+            Route::get('/', [MasterDataController::class, 'member'])->name('admin.master-data.member');
+            Route::post('/add', [MasterDataController::class, 'memberStore'])->name('admin.master-data.member.store');
+            Route::post('/{id}/edit', [MasterDataController::class, 'memberUpdate'])->name('admin.master-data.member.update');
+            Route::get('/{id}/destroy', [MasterDataController::class, 'memberDestroy'])->name('admin.master-data.member.destroy');
+        });
+        Route::prefix('/participant-type')->group(function () {
+            Route::get('/', [MasterDataController::class, 'participant'])->name('admin.master-data.participant');
+            Route::post('/add', [MasterDataController::class, 'participantStore'])->name('admin.master-data.participant.store');
+            Route::post('/{id}/edit', [MasterDataController::class, 'participantUpdate'])->name('admin.master-data.participant.update');
+            Route::get('/{id}/destroy', [MasterDataController::class, 'participantDestroy'])->name('admin.master-data.participant.destroy');
+        });
+        Route::prefix('/activity-type')->group(function () {
+            Route::get('/', [MasterDataController::class, 'activity'])->name('admin.master-data.activity');
+            Route::post('/add', [MasterDataController::class, 'activityStore'])->name('admin.master-data.activity.store');
+            Route::post('/{id}/edit', [MasterDataController::class, 'activityUpdate'])->name('admin.master-data.activity.update');
+            Route::get('/{id}/destroy', [MasterDataController::class, 'activityDestroy'])->name('admin.master-data.activity.destroy');
+        });
+    });
+
     Route::prefix('/news')->group(function () {
         Route::get('/', [NewsController::class, 'news'])->name('admin.news');
         Route::get('/add', [NewsController::class, 'newsAdd'])->name('admin.news.add');
