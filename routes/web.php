@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\SettingController;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
 Route::prefix('/news')->group(function () {
@@ -111,6 +112,15 @@ Route::prefix('/app')->group(function () {
         Route::post('/add', [UserController::class, 'userStore'])->name('admin.user.store');
         Route::post('/{id}/edit', [UserController::class, 'userUpdate'])->name('admin.user.update');
         Route::get('/{id}/destroy', [UserController::class, 'userDestroy'])->name('admin.user.destroy');
+    });
+
+    Route::prefix('/setting')->group(function () {
+        Route::prefix('/faq')->group(function () {
+            Route::get('/', [SettingController::class, 'faq'])->name('admin.setting.faq');
+            Route::post('/add', [SettingController::class, 'faqStore'])->name('admin.setting.faq.store');
+            Route::post('/{id}/edit', [SettingController::class, 'faqUpdate'])->name('admin.setting.faq.update');
+            Route::get('/{id}/destroy', [SettingController::class, 'faqDestroy'])->name('admin.setting.faq.destroy');
+        });
     });
     
     Route::prefix('/profile')->group(function () {

@@ -128,7 +128,7 @@
             <span class="menu-title">User</span>
           </a>
         </div>
-        <div data-kt-menu-trigger="click" class="menu-item @if($title == 'News') here show @endif menu-accordion">
+        <div data-kt-menu-trigger="click" class="menu-item @if($title == 'Setting') here show @endif menu-accordion">
           <span class="menu-link">
             <span class="menu-icon">
               <i class="ki-outline ki-gear fs-2"></i>
@@ -138,7 +138,7 @@
           </span>
           <div class="menu-sub menu-sub-accordion">
             <div class="menu-item">
-              <a class="menu-link  @if($subTitle == 'Category') active bg-danger bg-danger @endif" href="{{ route('admin.category') }}">
+              <a class="menu-link  @if($subTitle == 'FAQ') active bg-danger bg-danger @endif" href="{{ route('admin.setting.faq') }}">
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
