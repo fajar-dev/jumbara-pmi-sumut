@@ -10,7 +10,7 @@ class EventController extends Controller
 {
     public function contingent(Request $request){
         $search = $request->input('q');
-        $data = Contingent::where('name', 'LIKE', '%' . $search . '%')->orderBy('created_at', 'desc')->paginate(10);
+        $data = Contingent::where('name', 'LIKE', '%' . $search . '%')->with('coordinator')->orderBy('created_at', 'desc')->paginate(10);
         $data->appends(['q' => $search]);
         $data = [
             'title' => 'Event',
@@ -18,6 +18,7 @@ class EventController extends Controller
             'page_id' => null,
             'contingent' => $data
         ];
+        // dd($data);
         return view('app.event.contingent',  $data);
     }
 

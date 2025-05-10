@@ -89,6 +89,7 @@
                   <th class="min-w-100px">Name</th>
                   <th class="min-w-50px">Province ID</th>
                   <th class="min-w-50px">city ID</th>
+                  <th class="min-w-100px">Coordinator</th>
                   <th class="text-end">Action</th>
                 </tr>
               </thead>
@@ -118,6 +119,24 @@
                         <div class="text-start">
                           <div class="fs-6">{{ $item->administrative_area_level_2 }}</div>
                         </div>
+                      </td>
+                      <td class="d-flex align-items-center min-w-100px">
+                        @if ($item->coordinator)
+                          <div class="symbol-group symbol-hover me-3">
+                            <div class="symbol symbol-45px symbol-circle" data-bs-toggle="tooltip" title="{{ $item->coordinator->user->name }}">
+                              <img src="https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name={{ $item->coordinator->user->name}}" alt="">
+                            </div>
+                          </div>
+                          <div class="d-flex flex-column">
+                            <span class="text-gray-800 fw-bold mb-1">{{ $item->coordinator->user->name }}</span>
+                            <span class="text-gray-600 fs-7">{{ $item->coordinator->user->memberId }}</span>
+                          </div>
+                        @else
+                        <div class="text-start">
+                          <div class="fs-6">-</div>
+                        </div>
+                        @endif
+                        
                       </td>
                       <td class="text-end">
                         <a href="#" class="btn btn-danger btn-sm">

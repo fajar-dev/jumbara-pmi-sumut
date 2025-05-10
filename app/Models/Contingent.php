@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\ContingentPermission;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Contingent extends Model
@@ -17,4 +19,9 @@ class Contingent extends Model
         'administrative_area_level_2',
         'name',
     ];
+
+    public function coordinator(): HasOne
+    {
+        return $this->hasOne(ContingentPermission::class);
+    }
 }

@@ -87,7 +87,7 @@
               </a>
             </div>
             <div class="menu-item">
-              <a class="menu-link @if($subTitle == 'Activity') active bg-danger @endif" href="{{ route('admin.master-data.participant') }}">
+              <a class="menu-link @if($subTitle == 'Activity') active bg-danger @endif" href="{{ route('admin.event.activity') }}">
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
