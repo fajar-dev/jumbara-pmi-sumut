@@ -17,7 +17,6 @@ class DashboardController extends Controller
             'page_id' => null,
             'news' => News::count(),
             'message' => Message::count(),
-            'report' => Report::count(),
             'survey' => Survey::where('is_active', true)->count(),
         ];
         return view('app.dashboard',  $data);

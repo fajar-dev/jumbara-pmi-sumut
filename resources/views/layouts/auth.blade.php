@@ -19,20 +19,20 @@
 
         @yield('content')
 
-				 <div class="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover bgi-position-center order-1 order-lg-2 bg-warning-subtle bg-danger">
-					<div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">          
+				<div class="position-relative d-flex flex-lg-row-fluid w-lg-50 order-1 order-lg-2 bgi-size-cover bgi-position-center" style="background-image: url('{{ asset('app/media/auth/bg.jpg') }}');">
+    
+					<!-- Overlay bg-danger transparan -->
+					<div class="position-absolute top-0 start-0 w-100 h-100 bg-danger opacity-50"></div>
+					
+					<div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100 position-relative">
 							<div class="mb-0 mb-lg-12">
 									<img alt="Logo" src="{{ asset('icon/unimal.png') }}" class="h-60px h-lg-500px"/>
 							</div>                
 							<img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" src="{{ asset('assets/img/logo-sman1-lhokseumawe.png') }}" alt=""/>                 
-							<h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-1"> 
-									Tracer Study
-							</h1> 
-							<div class="d-none d-lg-block text-white fs-base text-center">
-								Universitas Malikussaleh
-							</div>
 					</div>
-				</div>
+			</div>
+			
+			
 			</div>
 		</div>
 

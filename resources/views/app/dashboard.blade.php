@@ -52,7 +52,7 @@
       <div class="card card-flush h-xl-100" style="background-color: #F6C000;background-image:url('{{ asset('app/media/svg/shapes/wave-bg-yellow.svg') }}')">
         <div class="card-body">
             <div class="fw-bold text-white text-end py-2">
-                <span class="fs-3hx d-block">{{ $report }}</span>
+                <span class="fs-3hx d-block">0</span>
                 <span>Report</span>
             </div>          
         </div>

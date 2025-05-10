@@ -24,7 +24,7 @@ class AuthController extends Controller
 
     public function loginSubmit(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string',
+            'email' => 'required|exists:users,email',
             'password' => 'required|string',
         ]);
     
@@ -43,7 +43,6 @@ class AuthController extends Controller
         }
     }
     
-
     public function forgot(){
         $data = [
             'title' => 'Forget Password',

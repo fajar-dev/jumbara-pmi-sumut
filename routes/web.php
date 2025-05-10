@@ -73,6 +73,12 @@ Route::prefix('/app')->group(function () {
             Route::post('/{id}/edit', [EventController::class, 'contingentUpdate'])->name('admin.event.contingent.update');
             Route::get('/{id}/destroy', [EventController::class, 'contingentDestroy'])->name('admin.event.contingent.destroy');
         });
+        Route::prefix('/activity')->group(function () {
+            Route::get('/', [EventController::class, 'activity'])->name('admin.event.activity');
+            Route::post('/add', [EventController::class, 'activityStore'])->name('admin.event.activity.store');
+            Route::post('/{id}/edit', [EventController::class, 'activityUpdate'])->name('admin.event.activity.update');
+            Route::get('/{id}/destroy', [EventController::class, 'activityDestroy'])->name('admin.event.activity.destroy');
+        });
     });
 
     Route::prefix('/news')->group(function () {
