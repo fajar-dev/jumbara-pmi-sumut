@@ -155,9 +155,9 @@
                       <td>
                         <div class="text-start">
                           <div class="symbol-group symbol-hover">
-                            @foreach ($item->crew as $crew)
-                              <div class="symbol symbol-circle symbol-50px">
-                                <img src="assets/media/avatars/300-6.jpg" alt=""/>
+                            @foreach ($item->crewAssignment as $crew)
+                              <div class="symbol symbol-circle symbol-50px" data-bs-toggle="tooltip" title="{{ $crew->crew->user->name }}"">
+                                <img src="@if($crew->crew->user->photo_path) @else @endif https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name={{ $crew->crew->user->name }}" alt=""/>
                               </div>
                             @endforeach
                         </div>
