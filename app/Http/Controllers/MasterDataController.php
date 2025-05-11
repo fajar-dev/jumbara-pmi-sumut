@@ -57,12 +57,6 @@ class MasterDataController extends Controller
         return redirect()->route('admin.master-data.member')->with('success', 'Member has been updated successfully');
     }
 
-    public function memberDestroy($id){
-        $member = MemberType::findOrFail($id);
-        $member->delete();
-        return redirect()->route('admin.master-data.member')->with('success', 'Member has been deleted successfully');
-    }
-
     public function participant(Request $request){
         $search = $request->input('q');
         $data = ParticipantType::where('name', 'LIKE', '%' . $search . '%')->orderBy('created_at', 'desc')->paginate(10);
@@ -110,12 +104,6 @@ class MasterDataController extends Controller
         return redirect()->route('admin.master-data.participant')->with('success', 'Participant has been updated successfully');
     }
 
-    public function participantDestroy($id){
-        $participant = ParticipantType::findOrFail($id);
-        $participant->delete();
-        return redirect()->route('admin.master-data.participant')->with('success', 'Participant has been deleted successfully');
-    }
-
     public function activity(Request $request){
         $search = $request->input('q');
         $data = ActivityType::where('name', 'LIKE', '%' . $search . '%')->orderBy('created_at', 'desc')->paginate(10);
@@ -161,11 +149,5 @@ class MasterDataController extends Controller
         $activity->save();
 
         return redirect()->route('admin.master-data.activity')->with('success', 'Activity has been updated successfully');
-    }
-
-    public function activityDestroy($id){
-        $activity = ActivityType::findOrFail($id);
-        $activity->delete();
-        return redirect()->route('admin.master-data.activity')->with('success', 'Activity has been deleted successfully');
     }
 }

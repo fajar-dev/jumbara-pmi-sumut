@@ -51,19 +51,31 @@ Route::prefix('/app')->group(function () {
             Route::get('/', [MasterDataController::class, 'member'])->name('admin.master-data.member');
             Route::post('/add', [MasterDataController::class, 'memberStore'])->name('admin.master-data.member.store');
             Route::post('/{id}/edit', [MasterDataController::class, 'memberUpdate'])->name('admin.master-data.member.update');
-            Route::get('/{id}/destroy', [MasterDataController::class, 'memberDestroy'])->name('admin.master-data.member.destroy');
         });
         Route::prefix('/participant-type')->group(function () {
             Route::get('/', [MasterDataController::class, 'participant'])->name('admin.master-data.participant');
             Route::post('/add', [MasterDataController::class, 'participantStore'])->name('admin.master-data.participant.store');
             Route::post('/{id}/edit', [MasterDataController::class, 'participantUpdate'])->name('admin.master-data.participant.update');
-            Route::get('/{id}/destroy', [MasterDataController::class, 'participantDestroy'])->name('admin.master-data.participant.destroy');
         });
         Route::prefix('/activity-type')->group(function () {
             Route::get('/', [MasterDataController::class, 'activity'])->name('admin.master-data.activity');
             Route::post('/add', [MasterDataController::class, 'activityStore'])->name('admin.master-data.activity.store');
             Route::post('/{id}/edit', [MasterDataController::class, 'activityUpdate'])->name('admin.master-data.activity.update');
-            Route::get('/{id}/destroy', [MasterDataController::class, 'activityDestroy'])->name('admin.master-data.activity.destroy');
+        });
+        Route::prefix('/gender')->group(function () {
+            Route::get('/', [MasterDataController::class, 'gender'])->name('admin.master-data.gender');
+            Route::post('/add', [MasterDataController::class, 'genderStore'])->name('admin.master-data.gender.store');
+            Route::post('/{id}/edit', [MasterDataController::class, 'genderUpdate'])->name('admin.master-data.gender.update');
+        });
+        Route::prefix('/religion')->group(function () {
+            Route::get('/', [MasterDataController::class, 'religion'])->name('admin.master-data.religion');
+            Route::post('/add', [MasterDataController::class, 'religionStore'])->name('admin.master-data.religion.store');
+            Route::post('/{id}/edit', [MasterDataController::class, 'religionUpdate'])->name('admin.master-data.religion.update');
+        });
+        Route::prefix('/blood-type')->group(function () {
+            Route::get('/', [MasterDataController::class, 'blood'])->name('admin.master-data.blood');
+            Route::post('/add', [MasterDataController::class, 'bloodStore'])->name('admin.master-data.blood.store');
+            Route::post('/{id}/edit', [MasterDataController::class, 'bloodUpdate'])->name('admin.master-data.blood.update');
         });
     });
 

@@ -67,6 +67,30 @@
                 <span class="menu-title">Activity Type</span>
               </a>
             </div>
+            <div class="menu-item">
+              <a class="menu-link @if($subTitle == 'Blood Type') active bg-danger @endif" href="{{ route('admin.master-data.blood') }}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Blood Type</span>
+              </a>
+            </div>
+            <div class="menu-item">
+              <a class="menu-link @if($subTitle == 'Gender') active bg-danger @endif" href="{{ route('admin.master-data.gender') }}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Gender</span>
+              </a>
+            </div>
+            <div class="menu-item">
+              <a class="menu-link @if($subTitle == 'Religion') active bg-danger @endif" href="{{ route('admin.master-data.religion') }}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Religion</span>
+              </a>
+            </div>
           </div>
         </div>
         <div data-kt-menu-trigger="click" class="menu-item @if($title == 'Event') here show @endif menu-accordion">

@@ -120,9 +120,6 @@
                           <div class="menu-item px-3">
                             <a data-bs-toggle="modal" data-bs-target="#edit{{$item->id}}"class="menu-link text-hover-danger bg-hover-light px-3">Edit</a>
                           </div>
-                          <div class="menu-item px-3">
-                            <a id="{{ route('admin.master-data.participant.destroy', $item->id) }}" class="menu-link text-hover-danger bg-hover-light px-3 btn-del">Delete</a>
-                          </div>
                         </div>
                       </td>
                     </tr>
