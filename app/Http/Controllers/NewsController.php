@@ -107,6 +107,7 @@ class NewsController extends Controller
     }
 
     public function newsUpdate($id, Request $request){
+
         $validator = Validator::make($request->all(), [
             'thumbnail' => 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg|max:2000',
             'category' => 'required',
@@ -123,6 +124,9 @@ class NewsController extends Controller
         $news->content = $request->input('content');
         if($request->has('thumbnail')){
             $news->thumbnail_path = $request->file('thumbnail')->store('news', 'public');
+        }
+        if(!$news->user_id){
+            $news->user_id = Auth::user()->id;
         }
         $news->save();
 

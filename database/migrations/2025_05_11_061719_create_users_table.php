@@ -17,12 +17,50 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedBigInteger('gender_id');
+            $table->unsignedBigInteger('religion_id');
+            $table->unsignedBigInteger('blood_type_id');
+            $table->string('phone_number')->nullable();
+            $table->string('birth_place')->nullable();
+            $table->date('birth_date')->nullable();
             $table->string('password');
             $table->string('photo_path')->nullable();
-            $table->enum('role', ['admin', 'coordinator', 'crew', 'participant'])->default('participant');
-            $table->json('data')->nullable();
+            $table->unsignedBigInteger('secretariat_id');
+            $table->unsignedBigInteger('member_type_id');
             $table->rememberToken();
+            $table->timestamp('joined_at')->nullable();
+            $table->json('data')->nullable();
             $table->timestamps();
+
+            $table->foreign('gender_id')
+            ->references('id')
+            ->on('genders')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('religion_id')
+            ->references('id')
+            ->on('religions')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('blood_type_id')
+            ->references('id')
+            ->on('blood_types')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('secretariat_id')
+            ->references('id')
+            ->on('secretariats')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('member_type_id')
+            ->references('id')
+            ->on('member_types')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

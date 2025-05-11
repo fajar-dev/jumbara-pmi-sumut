@@ -84,7 +84,7 @@
           </div>        
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="col-form-label required fw-bold fs-6">Author</label>
-            <input type="text" class="form-control form-control-solid" disabled value="{{ Auth::user()->name }}"/>
+            <input type="text" class="form-control form-control-solid" disabled value="{{ $news->user->name ?? Auth::user()->name }}"/>
           </div>
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="col-form-label required fw-bold fs-6">Content</label>

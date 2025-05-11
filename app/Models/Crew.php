@@ -3,25 +3,21 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\Contingent;
+use App\Models\CrewAssignment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ContingentPermission extends Model
+class Crew extends Model
 {
     use HasFactory;
     public $timestamps = true;
-    protected $table = 'contingent_permissions';
+    protected $table = 'crews';
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'user_id',
-        'contingent_id',
-        'slug',
-        'title',
-        'thumbnail_path',
-        'content',
     ];
     
     public function user(): BelongsTo
@@ -29,8 +25,8 @@ class ContingentPermission extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function contingent(): BelongsTo
+    public function CrewAssignment(): HasMany
     {
-        return $this->belongsTo(Contingent::class);
+        return $this->hasMany(CrewAssignment::class);
     }
 }

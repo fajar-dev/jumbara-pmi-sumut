@@ -73,7 +73,7 @@
                       </td>
                       <td>
                         <div class="text-start">
-                          <div class="fs-6">{{ $item->user->name }}</div>
+                          <div class="fs-6">{{ $item->user->name ?? '-' }}</div>
                         </div>
                       </td>
                       <td>

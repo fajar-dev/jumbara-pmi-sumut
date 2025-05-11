@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingController;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
@@ -71,6 +72,7 @@ Route::prefix('/app')->group(function () {
             Route::get('/', [EventController::class, 'contingent'])->name('admin.event.contingent');
             Route::post('/add', [EventController::class, 'contingentStore'])->name('admin.event.contingent.store');
             Route::post('/{id}/edit', [EventController::class, 'contingentUpdate'])->name('admin.event.contingent.update');
+            Route::post('/{id}/coordinator', [EventController::class, 'coordinatorStore'])->name('admin.event.contingent.coordinator.store');
             Route::get('/{id}/destroy', [EventController::class, 'contingentDestroy'])->name('admin.event.contingent.destroy');
         });
         Route::prefix('/activity')->group(function () {
@@ -145,4 +147,7 @@ Route::prefix('/app')->group(function () {
         Route::post('/signin-method', [ProfileController::class, 'signinUpdate'])->name('admin.profile.signin');
         Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('admin.profile.change-password');
     });
+
+    Route::get('/service', [ServiceController::class, 'handle'])->name('service');
+
 })->middleware('auth');

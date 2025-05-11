@@ -76,7 +76,7 @@
                 </div>
               @else
                 @foreach ($news as $index => $item)
-                <div class="col-md-4 mb-10">
+                  <div class="col-md-4 mb-10">
                     <div class="card-xl-stretch me-md-6">
                       <div class="d-block bgi-no-repeat bgi-size-cover bgi-position-center card-rounded position-relative min-h-175px mb-5" style="background-image:url('{{ Storage::url($item->thumbnail_path) }}')">
                       </div>
@@ -88,10 +88,10 @@
                             <div class="d-flex flex-stack flex-wrap">    
                               <div class="d-flex align-items-center pe-2">
                                   <div class="symbol symbol-35px symbol-circle me-3">
-                                      <img alt="" src="{{  $item->user->photo_path ? Storage::url( $item->user->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='. $item->user->name }}">                                          
+                                      <img alt="" src="{{  $item->user->photo_path ? Storage::url( $item->user->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='. $item->user->name ?? '-' }}">                                          
                                   </div>           
                                   <div class="fs-5 fw-bold">
-                                      <a href="/metronic8/demo47/Ppages/user-profile/overview.html" class="text-gray-700 text-hover-danger">{{ $item->user->name }}</a>
+                                      <a href="/metronic8/demo47/Ppages/user-profile/overview.html" class="text-gray-700 text-hover-danger">{{ $item->user->name ?? '-' }}</a>
                                       <span class="text-muted">on {{ \Carbon\Carbon::parse($item->created_at)->format('M d, Y') }}</span>                   
                                   </div>
                               </div>
@@ -99,7 +99,7 @@
                           </div>
                         </div>
                     </div>
-                </div>
+                  </div>
                 @endforeach
               @endif
             </div>

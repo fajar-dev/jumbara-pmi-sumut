@@ -3,9 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Gender;
+use App\Models\Religion;
+use App\Models\BloodType;
+use App\Models\MemberType;
+use App\Models\Secretariat;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -21,10 +27,18 @@ class User extends Authenticatable
         'member_id',
         'name',
         'email',
+        'gender_id',
+        'religion_id',
+        'blood_type_id',
+        'phone_number',
+        'birth_place',
+        'birth_date',
         'password',
         'photo_path',
-        'role',
-        'data'
+        'secretariat_id',
+        'member_type_id',
+        'data',
+        'joined_at',
     ];
 
     /**
@@ -48,5 +62,30 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
+    }
+
+    public function religion(): BelongsTo
+    {
+        return $this->belongsTo(Religion::class);
+    }
+
+    public function bloodType(): BelongsTo
+    {
+        return $this->belongsTo(BloodType::class);
+    }
+
+    public function secretariat(): BelongsTo
+    {
+        return $this->belongsTo(Secretariat::class);
+    }
+    
+    public function memberType(): BelongsTo
+    {
+        return $this->belongsTo(MemberType::class);
     }
 }

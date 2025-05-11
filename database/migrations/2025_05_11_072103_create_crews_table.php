@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contingent_permissions', function (Blueprint $table) {
+        Schema::create('crews', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->unsigned();
-            $table->unsignedBigInteger('contingent_id')->unique();
+            $table->unsignedBigInteger('user_id')->unique();
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -22,13 +21,6 @@ return new class extends Migration
             ->on('users')
             ->onDelete('cascade')
             ->onUpdate('cascade');
-
-            $table->foreign('contingent_id')
-            ->references('id')
-            ->on('contingents')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
-
         });
     }
 
@@ -37,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contingent_permissions');
+        Schema::dropIfExists('crews');
     }
 };

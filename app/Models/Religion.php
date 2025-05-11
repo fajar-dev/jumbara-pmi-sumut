@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class faq extends Model
+class Religion extends Model
 {
     use HasFactory;
     public $timestamps = true;
-    protected $table = 'faqs';
+    protected $table = 'religions';
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'title',
-        'content',
+        'name',
+        'description',
     ];
 }

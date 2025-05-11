@@ -8,7 +8,7 @@
           <div class="card-title">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold fs-3 mb-1">Event</span>
-              <span class="text-muted fw-semibold fs-7">Contingent List</span>
+              <span class="text-muted fw-semibold fs-7">Activity List</span>
             </h3>
           </div>
           <div class="card-toolbar">
@@ -31,10 +31,10 @@
             </button>
             <div class="modal fade" tabindex="-1" id="add">
               <div class="modal-dialog">
-                  <form method="POST" action="{{ route('admin.event.contingent.store') }}" class="modal-content" id="form">
+                  <form method="POST" action="{{ route('admin.event.activity.store') }}" class="modal-content" id="form">
                     @csrf
                       <div class="modal-header">
-                          <h3 class="modal-title">Add New Contingent</h3>
+                          <h3 class="modal-title">Add New Activity</h3>
                           <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
                               <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                           </div>
@@ -50,24 +50,49 @@
                           @enderror
                         </div>
                         <div class="mb-5">
-                          <label for="exampleFormControlInput1" class="required form-label">Province ID</label>
-                          <input type="text" name="provinceId" class="form-control form-control-solid @error('provinceId') is-invalid @enderror"  value="{{ old('provinceId') }}" placeholder="Province ID" required/>
-                          @error('provinceId')
+                          <label for="exampleFormControlInput1" class="required form-label">Description</label>
+                          <textarea name="description" class="form-control form-control-solid @error('description') is-invalid @enderror"  placeholder="Description" rows="3" required>{{ old('description') }}</textarea>
+                          @error('description')
+                            <div class="invalid-feedback">
+                              {{ $message }}
+                            </div>
+                          @enderror
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleFormControlInput1" class="col-form-label required fw-bold fs-6">Type</label>
+                          <select class="form-select form-select-solid @error('type') is-invalid @enderror" 
+                            name="type" data-control="select2" data-placeholder="Choose type">
+                              <option></option>
+                              @foreach ($activityType as $item)
+                                  <option value="{{ $item->id }}" {{ old('type') == $item->id ? 'selected' : '' }}>
+                                      {{ $item->name }}
+                                  </option>
+                              @endforeach
+                          </select>
+                          @error('type')
                             <div class="invalid-feedback">
                               {{ $message }}
                             </div>
                           @enderror
                         </div>
                         <div class="mb-5">
-                          <label for="exampleFormControlInput1" class="required form-label">City ID</label>
-                          <input type="text" name="cityId" class="form-control form-control-solid @error('cityId') is-invalid @enderror"  value="{{ old('cityId') }}" placeholder="City ID" required/>
-                          @error('cityId')
+                          <label for="exampleFormControlInput1" class="required form-label">Start Date</label>
+                          <input type="datetime-local" name="start" class="form-control form-control-solid @error('start') is-invalid @enderror"  value="{{ old('start') }}" placeholder="start" required/>
+                          @error('start')
                             <div class="invalid-feedback">
                               {{ $message }}
                             </div>
                           @enderror
                         </div>
-                        
+                        <div class="mb-5">
+                          <label for="exampleFormControlInput1" class="required form-label">End Date</label>
+                          <input type="datetime-local" name="end" class="form-control form-control-solid @error('end') is-invalid @enderror"  value="{{ old('end') }}" placeholder="end" required/>
+                          @error('end')
+                            <div class="invalid-feedback">
+                              {{ $message }}
+                            </div>
+                          @enderror
+                        </div>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
@@ -87,22 +112,23 @@
             <table class="table table-row-dashed fs-6 gy-5">
               <thead>
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                  <th class="min-w-100px">Name</th>
-                  <th class="min-w-50px">Province ID</th>
-                  <th class="min-w-50px">city ID</th>
-                  <th class="min-w-100px">Coordinator</th>
+                  <th class="min-w-50px">Name</th>
+                  <th class="min-w-100px">Description</th>
+                  <th class="min-w-50px">Category</th>
+                  <th class="min-w-100px">Ongoing date</th>
+                  <th class="min-w-100px">Crew</th>
                   <th class="text-end">Action</th>
                 </tr>
               </thead>
               <tbody>
-                @if ($contingent->total() == 0)
+                @if ($activity->total() == 0)
                   <tr class="max-w-10px">
                     <td colspan="6" class="text-center">
                       No data available in table
                     </td>
                   </tr>
                 @else
-                  @foreach ($contingent as $item)     
+                  @foreach ($activity as $item)     
                     <tr>
                       <td>
                         <div class="text-start">
@@ -113,49 +139,32 @@
                       </td>
                       <td>
                         <div class="text-start">
-                          <div class="fs-6">{{ $item->administrative_area_level_1 }}</div>
+                          <div class="fs-6">{{ $item->description }}</div>
                         </div>
                       </td>
                       <td>
                         <div class="text-start">
-                          <div class="fs-6">{{ $item->administrative_area_level_2 }}</div>
+                          <div class="fs-6">{{ $item->activityType->name }}</div>
                         </div>
                       </td>
-                      <td class="d-flex align-items-center min-w-100px">
-                        @if ($item->coordinator)
-                          <div class="symbol-group symbol-hover me-3">
-                            <div class="symbol symbol-45px symbol-circle" data-bs-toggle="tooltip" title="{{ $item->coordinator->user->name }}">
-                              <img src="https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name={{ $item->coordinator->user->name}}" alt="">
-                            </div>
-                          </div>
-                          <div class="d-flex flex-column">
-                            <span class="text-gray-800 fw-bold mb-1">{{ $item->coordinator->user->name }}</span>
-                            <span class="text-gray-600 fs-8">{{ $item->coordinator->user->member_id }}</span>
-                            <span class="text-gray-600 fs-8">{{ $item->coordinator->user->email }}</span>
-                          </div>
-                          <button data-bs-toggle="modal" data-bs-target="#coordinator{{$item->id}}" class="btn text-danger btn-sm">
-                            <i class="ki-duotone ki-pencil fs-2 text-danger">
-                              <span class="path1"></span>
-                              <span class="path2"></span>
-                            </i>
-                          </button>
-                        @else
+                      <td>
                         <div class="text-start">
-                          <div class="fs-6">
-                            <button data-bs-toggle="modal" data-bs-target="#coordinator{{$item->id}}" class="btn text-danger btn-sm">
-                              <i class="ki-duotone ki-plus fs-2 text-danger">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                              </i>
-                              Add Coordinator
-                            </button>
-                          </div>
+                          <div class="fs-6">{{ $item->start }} - {{ $item->end }}</div>
                         </div>
-                        @endif
-                        
+                      </td>
+                      <td>
+                        <div class="text-start">
+                          <div class="symbol-group symbol-hover">
+                            @foreach ($item->crew as $crew)
+                              <div class="symbol symbol-circle symbol-50px">
+                                <img src="assets/media/avatars/300-6.jpg" alt=""/>
+                              </div>
+                            @endforeach
+                        </div>
+                        </div>
                       </td>
                       <td class="text-end">
-                        <a href="#" class="btn btn-danger btn-sm mb-3 mb-md-0" style="white-space: nowrap;">
+                        <a href="#" class="btn btn-danger btn-sm btn-sm mb-3 mb-md-0" style="white-space: nowrap;">
                           <i class="ki-duotone ki-people">
                             <span class="path1"></span>
                             <span class="path2"></span>
@@ -165,12 +174,12 @@
                           </i>                          
                           Participant
                         </a>
-                        <a href="#" class="btn btn-light-danger btn-sm mb-3 mb-md-0">
-                          <i class="ki-duotone ki-flag">
+                        <a href="#" class="btn btn-light text-danger btn-sm btn-sm mb-3 mb-md-0">
+                          <i class="ki-duotone ki-security-user text-danger">
                             <span class="path1"></span>
                             <span class="path2"></span>
-                          </i>                          
-                          Activity
+                          </i>                        
+                          Crew
                         </a>
                         <a href="#" class="btn btn-sm btn-light btn-active-light-danger btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                           Actions
@@ -200,23 +209,23 @@
           </div>
           <div class="d-flex flex-stack flex-wrap my-3">
             <div class="fs-6 fw-semibold text-gray-700">
-                Showing {{ $contingent->firstItem() }} to {{ $contingent->lastItem() }} of {{ $contingent->total() }}  records
+                Showing {{ $activity->firstItem() }} to {{ $activity->lastItem() }} of {{ $activity->total() }}  records
             </div>
             <ul class="pagination">
-              @if ($contingent->onFirstPage())
+              @if ($activity->onFirstPage())
                   <li class="page-item previous">
                       <a href="#" class="page-link disabled"><i class="previous"></i></a>
                   </li>
               @else
                   <li class="page-item previous">
-                      <a href="{{ $contingent->previousPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="previous"></i></a>
+                      <a href="{{ $activity->previousPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="previous"></i></a>
                   </li>
               @endif
       
               @php
                   // Menghitung halaman pertama dan terakhir yang akan ditampilkan
-                  $start = max($contingent->currentPage() - 2, 1);
-                  $end = min($start + 4, $contingent->lastPage());
+                  $start = max($activity->currentPage() - 2, 1);
+                  $end = min($start + 4, $activity->lastPage());
               @endphp
       
               @if ($start > 1)
@@ -226,22 +235,22 @@
                   </li>
               @endif
       
-              @foreach ($contingent->getUrlRange($start, $end) as $page => $url)
-                  <li class="page-item{{ ($page == $contingent->currentPage()) ? ' active' : '' }}">
-                      <a class="page-link {{ ($page == $contingent->currentPage()) ? ' bg-danger' : 'text-hover-danger' }}" href="{{ $url }}">{{ $page }}</a>
+              @foreach ($activity->getUrlRange($start, $end) as $page => $url)
+                  <li class="page-item{{ ($page == $activity->currentPage()) ? ' active' : '' }}">
+                      <a class="page-link {{ ($page == $activity->currentPage()) ? ' bg-danger' : 'text-hover-danger' }}" href="{{ $url }}">{{ $page }}</a>
                   </li>
               @endforeach
       
-              @if ($end < $contingent->lastPage())
+              @if ($end < $activity->lastPage())
                   <!-- Menampilkan tanda elipsis jika halaman terakhir tidak termasuk dalam tampilan -->
                   <li class="page-item disabled">
                       <span class="page-link">...</span>
                   </li>
               @endif
       
-              @if ($contingent->hasMorePages())
+              @if ($activity->hasMorePages())
                   <li class="page-item next">
-                      <a href="{{ $contingent->nextPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="next"></i></a>
+                      <a href="{{ $activity->nextPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="next"></i></a>
                   </li>
               @else
                   <li class="page-item next">
@@ -255,7 +264,7 @@
     </div>
   </div>
 
-@foreach ($contingent as $item)
+  @foreach ($activity as $item)
 <div class="modal fade" tabindex="-1" id="edit{{$item->id}}">
   <div class="modal-dialog">
     <form method="POST" action="{{ route('admin.event.contingent.update', $item->id) }}" class="modal-content" id="formUpdate{{$item->id}}">
@@ -306,58 +315,6 @@
     </form>
   </div>
 </div>
-
-<div class="modal fade" tabindex="-1" id="coordinator{{$item->id}}" data-bs-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <form method="POST" action="{{ route('admin.event.contingent.coordinator.store', $item->id) }}" class="modal-content" id="formUpdate{{$item->id}}">
-      @csrf
-      <div class="modal-header">
-          <h3 class="modal-title">Coordinator</h3>
-          <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
-              <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-          </div>
-      </div>
-      <div class="modal-body">
-        <div class="mb-5">
-          <label class="form-label">Search Member</label>
-          <div class="row">
-            <div class="col-10">
-              <input type="number" class="form-control form-control-solid" id="memberSearch{{$item->id}}" placeholder="Member ID" required/>
-            </div>
-            <div class="col-1 ms-0 ps-lg-0">
-              <button type="button" class="btn btn-light-danger btn-icon search-btn" data-id="{{$item->id}}">
-                <i class="ki-duotone ki-magnifier search-icon fs-2">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                </i>
-              </button>
-            </div>
-          </div>
-          <div class="mt-2">
-            <div id="coordinator-info{{$item->id}}" class="mt-3 p-2 rounded bg-light border small text-muted" style="min-height: 40px;">
-              <em>Coordinator info will appear here...</em>            
-            </div>
-          </div>
-
-          {{-- Hidden fields --}}
-          <input type="hidden" name="memberId" id="hidden-memberId{{ $item->id }}">
-          <input type="hidden" name="name" id="hidden-memberName{{ $item->id }}">
-          <input type="hidden" name="email" id="hidden-email{{ $item->id }}">
-          <input type="hidden" name="password" id="hidden-password{{ $item->id }}">
-          <input type="hidden" name="json" id="hidden-json{{ $item->id }}">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-light btn-cancel" data-id="{{ $item->id }}" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-danger disabled" id="submit-coor{{$item->id}}">
-            <span class="indicator-label">Save</span>
-            <span class="indicator-progress" style="display: none;">Loading... 
-            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
 @endforeach
 @endsection
 
@@ -380,94 +337,4 @@
     submitButton.setAttribute('disabled', 'disabled');
   });
 </script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-      // Handle Search button click
-      document.querySelectorAll('.search-btn').forEach(button => {
-          button.addEventListener('click', function () {
-              const id = this.dataset.id;
-              const input = document.getElementById(`memberSearch${id}`);
-              const memberId = input.value;
-              const info = document.getElementById(`coordinator-info${id}`);
-              const submitBtn = document.getElementById(`submit-coor${id}`);
-  
-              // Hidden fields
-              const hiddenMemberId = document.getElementById(`hidden-memberId${id}`);
-              const hiddenMemberName = document.getElementById(`hidden-memberName${id}`);
-              const hiddenEmail = document.getElementById(`hidden-email${id}`);
-              const hiddenPassword = document.getElementById(`hidden-password${id}`);
-              const hiddenJson = document.getElementById(`hidden-json${id}`);
-  
-              if (!memberId) {
-                  info.innerHTML = `<em class="text-danger">Member ID is required.</em>`;
-                  submitBtn.classList.add('disabled');
-                  return;
-              }
-  
-              info.innerHTML = `<em>Searching...</em>`;
-              submitBtn.classList.add('disabled');
-  
-              fetch(`{{ route('service') }}?memberId=${memberId}`)
-                  .then(response => response.json())
-                  .then(data => {
-                      const d = data.data || data; // fleksibel untuk response nested atau flat
-  
-                      if (d?.memberId) {
-                          info.innerHTML = `
-                              <strong>${d.name}</strong> <br/> ${d.email}<br>
-                              <strong>${d.category?.name}</strong> - ${d.membership?.name}<br>
-                          `;
-                          submitBtn.classList.remove('disabled');
-  
-                          hiddenMemberId.value = d.memberId || '';
-                          hiddenMemberName.value = d.name || '';
-                          hiddenEmail.value = d.email || '';
-                          hiddenPassword.value = d.password || '';
-                          hiddenJson.value = JSON.stringify(d);
-                      } else {
-                          info.innerHTML = `<em class="text-warning">No data found.</em>`;
-                          submitBtn.classList.add('disabled');
-  
-                          hiddenMemberId.value = '';
-                          hiddenMemberName.value = '';
-                          hiddenEmail.value = '';
-                          hiddenPassword.value = '';
-                          hiddenJson.value = '';
-                      }
-                  })
-                  .catch(() => {
-                      info.innerHTML = `<em class="text-danger">Failed to fetch data.</em>`;
-                      submitBtn.classList.add('disabled');
-                  });
-          });
-      });
-  
-      // Cancel button reset
-      document.querySelectorAll('.btn-cancel').forEach(button => {
-          button.addEventListener('click', function () {
-              const id = this.dataset.id;
-              document.getElementById(`memberSearch${id}`).value = '';
-              document.getElementById(`coordinator-info${id}`).innerHTML = `<em>Coordinator info will appear here...</em>`;
-              document.getElementById(`submit${id}`).classList.add('disabled');
-  
-              document.getElementById(`hidden-memberId${id}`).value = '';
-              document.getElementById(`hidden-memberName${id}`).value = '';
-              document.getElementById(`hidden-email${id}`).value = '';
-              document.getElementById(`hidden-password${id}`).value = '';
-              document.getElementById(`hidden-json${id}`).value = '';
-          });
-      });
-  
-      // Prevent form submit if button has 'disabled' class
-      document.querySelectorAll('form[id^="formUpdate"]').forEach(form => {
-          form.addEventListener('submit', function (e) {
-              const submitButton = this.querySelector('button[type="submit"]');
-              if (submitButton.classList.contains('disabled')) {
-                  e.preventDefault();
-              }
-          });
-      });
-  });
-  </script>
-  
 @endsection
