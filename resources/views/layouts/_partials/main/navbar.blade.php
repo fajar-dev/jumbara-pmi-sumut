@@ -79,7 +79,7 @@
               </div>
             </div>
           </div>
-        <div class="app-navbar-item ms-2 ms-lg-5">
+        <div class="app-navbar-item me-2 ms-lg-2">
           <div class="btn btn-icon bg-gray-200 btn-icon-gray-700 btn-active-light btn-active-color-danger w-35px h-35px w-lg-40px h-lg-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="45px, -40px">
             <span class="menu-title position-relative ps-6">
               <span class="ms-5 position-absolute  translate-middle-y top-50 end-0">
@@ -102,8 +102,8 @@
               </span></span>
           </div>
           <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px" data-kt-menu="true" data-kt-element="theme-mode-menu">
-            <div class="menu-item px-3 my-0">
-              <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
+            <div class="menu-item px-3 text-hover-danger text-active-danger my-0">
+              <a href="#" class="menu-link px-3 py-2 text-hover-danger text-active-danger" data-kt-element="mode" data-kt-value="light">
                 <span class="menu-icon" data-kt-element="icon">
                   <i class="ki-duotone ki-night-day fs-2">
                     <span class="path1"></span>
@@ -118,22 +118,22 @@
                     <span class="path10"></span>
                   </i>
                 </span>
-                <span class="menu-title">Light</span>
+                <span class="menu-title text-hover-danger text-active-danger">Light</span>
               </a>
             </div>
-            <div class="menu-item px-3 my-0">
-              <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
+            <div class="menu-item px-3 my-0 text-hover-danger text-active-danger">
+              <a href="#" class="menu-link  text-hover-danger text-active-danger px-3 py-2" data-kt-element="mode" data-kt-value="dark">
                 <span class="menu-icon" data-kt-element="icon">
                   <i class="ki-duotone ki-moon fs-2">
                     <span class="path1"></span>
                     <span class="path2"></span>
                   </i>
                 </span>
-                <span class="menu-title">Dark</span>
+                <span class="menu-title text-hover-danger text-active-danger">Dark</span>
               </a>
             </div>
-            <div class="menu-item px-3 my-0">
-              <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="system">
+            <div class="menu-item px-3 my-0  text-hover-danger text-active-danger">
+              <a href="#" class="menu-link px-3 py-2  text-hover-danger text-active-danger" data-kt-element="mode" data-kt-value="system">
                 <span class="menu-icon" data-kt-element="icon">
                   <i class="ki-duotone ki-screen fs-2">
                     <span class="path1"></span>
@@ -142,44 +142,44 @@
                     <span class="path4"></span>
                   </i>
                 </span>
-                <span class="menu-title">System</span>
+                <span class="menu-title  text-hover-danger text-active-danger">System</span>
               </a>
             </div>
           </div>
         </div>
         <div class="app-navbar-item ms-2 ms-lg-5">
-          @auth
+          @if (Auth::check())
             <div class="cursor-pointer symbol symbol-circle symbol-35px symbol-md-45px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-              <img src="{{ Auth::user()->photo_path ? Storage::url(Auth::user()->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='.Auth::user()->name }}" alt="user" />
+              <img src="{{ Auth::user() && Auth::user()->photo_path ? Storage::url(Auth::user()->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.Auth::user()->name }}" alt="user" />
             </div>
             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
               <div class="menu-item px-3">
                 <div class="menu-content d-flex align-items-center px-3">
                   <div class="symbol symbol-50px me-5">
-                    <img alt="Logo" src="{{ Auth::user()->photo_path ? Storage::url(Auth::user()->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='.Auth::user()->name }}" />
+                    <img alt="Logo" src="{{ Auth::user() && Auth::user()->photo_path ? Storage::url(Auth::user()->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.Auth::user()->name }}" />
                   </div>
                   <div class="d-flex flex-column">
                     <div class="fw-bold d-flex align-items-center fs-5">{{ Auth::user()->name }}</div>
-                    <a href="#" class="fw-semibold text-muted text-hover-danger fs-7">{{ Auth::user()->email }}</a>
+                    <a href="#" class="fw-semibold text-muted text-hover-danger fs-7">{{ Auth::user()->member_id }}</a>
                   </div>
                 </div>
               </div>
               <div class="separator my-2"></div>
               <div class="menu-item px-5">
-                <a href="{{ route('dashboard') }}" class="menu-link px-5">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="menu-link text-hover-danger text-active-danger px-5">Dashboard</a>
               </div>
               <div class="menu-item px-5">
-                <a href="{{ route('admin.profile') }}" class="menu-link px-5">My Profile</a>
+                <a href="{{ route('admin.profile') }}" class="menu-link text-hover-danger text-active-danger px-5">My Profile</a>
               </div>
               <div class="menu-item px-5">
-                <a href="{{ route('logout') }}" class="menu-link px-5">Sign Out</a>
+                <a href="{{ route('logout') }}" class="menu-link text-hover-danger text-active-danger px-5">Sign Out</a>
               </div>
             </div>
           @else
             <a href="{{ route('login') }}" class="btn btn-danger">
               Login
             </a>
-          @endauth
+          @endif
         </div>
       </div>
     </div>

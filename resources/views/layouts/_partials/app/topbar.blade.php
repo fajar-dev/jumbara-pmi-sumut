@@ -56,8 +56,8 @@
             </span></span>
         </div>
         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px" data-kt-menu="true" data-kt-element="theme-mode-menu">
-          <div class="menu-item px-3 my-0">
-            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
+          <div class="menu-item px-3 text-hover-danger text-active-danger my-0">
+            <a href="#" class="menu-link px-3 py-2 text-hover-danger text-active-danger" data-kt-element="mode" data-kt-value="light">
               <span class="menu-icon" data-kt-element="icon">
                 <i class="ki-duotone ki-night-day fs-2">
                   <span class="path1"></span>
@@ -72,22 +72,22 @@
                   <span class="path10"></span>
                 </i>
               </span>
-              <span class="menu-title">Light</span>
+              <span class="menu-title text-hover-danger text-active-danger">Light</span>
             </a>
           </div>
-          <div class="menu-item px-3 my-0">
-            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
+          <div class="menu-item px-3 my-0 text-hover-danger text-active-danger">
+            <a href="#" class="menu-link  text-hover-danger text-active-danger px-3 py-2" data-kt-element="mode" data-kt-value="dark">
               <span class="menu-icon" data-kt-element="icon">
                 <i class="ki-duotone ki-moon fs-2">
                   <span class="path1"></span>
                   <span class="path2"></span>
                 </i>
               </span>
-              <span class="menu-title">Dark</span>
+              <span class="menu-title text-hover-danger text-active-danger">Dark</span>
             </a>
           </div>
-          <div class="menu-item px-3 my-0">
-            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="system">
+          <div class="menu-item px-3 my-0  text-hover-danger text-active-danger">
+            <a href="#" class="menu-link px-3 py-2  text-hover-danger text-active-danger" data-kt-element="mode" data-kt-value="system">
               <span class="menu-icon" data-kt-element="icon">
                 <i class="ki-duotone ki-screen fs-2">
                   <span class="path1"></span>
@@ -96,7 +96,7 @@
                   <span class="path4"></span>
                 </i>
               </span>
-              <span class="menu-title">System</span>
+              <span class="menu-title  text-hover-danger text-active-danger">System</span>
             </a>
           </div>
         </div>
@@ -119,10 +119,10 @@
           </div>
           <div class="separator my-2"></div>
           <div class="menu-item px-5">
-            <a href="{{ route('admin.profile') }}" class="menu-link px-5">My Profile</a>
+            <a href="{{ route('admin.profile') }}" class="menu-link text-hover-danger px-5">My Profile</a>
           </div>
           <div class="menu-item px-5">
-            <a href="{{ route('logout') }}" class="menu-link px-5">Sign Out</a>
+            <a href="{{ route('logout') }}" class="menu-link text-hover-danger px-5">Sign Out</a>
           </div>
         </div>
       </div>

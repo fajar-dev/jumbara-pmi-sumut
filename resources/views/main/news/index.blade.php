@@ -80,27 +80,28 @@
                     <div class="card-xl-stretch me-md-6">
                       <div class="d-block bgi-no-repeat bgi-size-cover bgi-position-center card-rounded position-relative min-h-175px mb-5" style="background-image:url('{{ Storage::url($item->thumbnail_path) }}')">
                       </div>
-                        <div class="m-0">
-                          <a href="{{ route('news.show', $item->slug) }}" class="fs-4 text-gray-900 fw-bold text-hover-danger text-gray-900 lh-base">{{ $item->title }}</a>
-                          <div class="fw-semibold fs-5 text-gray-600 text-gray-900 my-4">
-                            {!! Str::limit(strip_tags($item->content), 100) !!}
-                          </div>
-                            <div class="d-flex flex-stack flex-wrap">    
-                              <div class="d-flex align-items-center pe-2">
-                                  <div class="symbol symbol-35px symbol-circle me-3">
-                                      <img alt="" src="{{  $item->user->photo_path ? Storage::url( $item->user->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='. $item->user->name ?? '-' }}">                                          
-                                  </div>           
-                                  <div class="fs-5 fw-bold">
-                                      <a href="/metronic8/demo47/Ppages/user-profile/overview.html" class="text-gray-700 text-hover-danger">{{ $item->user->name ?? '-' }}</a>
-                                      <span class="text-muted">on {{ \Carbon\Carbon::parse($item->created_at)->format('M d, Y') }}</span>                   
-                                  </div>
-                              </div>
-                              <span class="badge badge-light-danger fw-bold my-2">{{ $item->newsCategory->name }}</span>
-                          </div>
+                      <div class="m-0">
+                        <a href="{{ route('news.show', $item->slug) }}" class="fs-4 text-gray-900 fw-bold text-hover-danger text-gray-900 lh-base">{{ $item->title }}</a>
+                        <div class="fw-semibold fs-5 text-gray-600 text-gray-900 my-4">
+                          {!! Str::limit(strip_tags($item->content), 100) !!}
                         </div>
+                        <div class="d-flex flex-stack flex-wrap">    
+                          <div class="d-flex align-items-center pe-2">
+                            <div class="symbol symbol-35px symbol-circle me-3">
+                              <img alt="" src="{{ optional($item->user)->photo_path ? Storage::url($item->user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='. (optional($item->user)->name ?? 'admin') }}" />
+                            </div>           
+                            <div class="fs-5 fw-bold">
+                              <a href="/metronic8/demo47/Ppages/user-profile/overview.html" class="text-gray-700 text-hover-danger">{{ optional($item->user)->name ?? 'admin' }}</a>
+                              <span class="text-muted">on {{ \Carbon\Carbon::parse($item->created_at)->format('M d, Y') }}</span>                   
+                            </div>
+                          </div>
+                          <span class="badge badge-light-danger fw-bold my-2">{{ $item->newsCategory->name }}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 @endforeach
+
               @endif
             </div>
             <div class="row">
@@ -109,48 +110,51 @@
                     Showing {{ $news->firstItem() }} to {{ $news->lastItem() }} of {{ $news->total() }}  records
                 </div>
                 <ul class="pagination">
-                    @if ($news->onFirstPage())
-                        <li class="page-item previous">
-                            <a href="#" class="page-link"><i class="previous"></i></a>
-                        </li>
-                    @else
-                        <li class="page-item previous">
-                            <a href="{{ $news->previousPageUrl() }}" class="page-link bg-light"><i class="previous"></i></a>
-                        </li>
-                    @endif
-            
-                    @php
-                        $start = max($news->currentPage() - 2, 1);
-                        $end = min($start + 4, $news->lastPage());
-                    @endphp
-            
-                    @if ($start > 1)
-                        <li class="page-item disabled">
-                            <span class="page-link">...</span>
-                        </li>
-                    @endif
-            
-                    @foreach ($news->getUrlRange($start, $end) as $page => $url)
-                        <li class="page-item{{ ($page == $news->currentPage()) ? ' active' : '' }}">
-                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                        </li>
-                    @endforeach
-            
-                    @if ($end < $news->lastPage())
-                        <li class="page-item disabled">
-                            <span class="page-link">...</span>
-                        </li>
-                    @endif
-            
-                    @if ($news->hasMorePages())
-                        <li class="page-item next">
-                            <a href="{{ $news->nextPageUrl() }}" class="page-link bg-light"><i class="next"></i></a>
-                        </li>
-                    @else
-                        <li class="page-item next">
-                            <a href="#" class="page-link"><i class="next"></i></a>
-                        </li>
-                    @endif
+                  @if ($news->onFirstPage())
+                      <li class="page-item previous">
+                          <a href="#" class="page-link disabled"><i class="previous"></i></a>
+                      </li>
+                  @else
+                      <li class="page-item previous">
+                          <a href="{{ $news->previousPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="previous"></i></a>
+                      </li>
+                  @endif
+          
+                  @php
+                      // Menghitung halaman pertama dan terakhir yang akan ditampilkan
+                      $start = max($news->currentPage() - 2, 1);
+                      $end = min($start + 4, $news->lastPage());
+                  @endphp
+          
+                  @if ($start > 1)
+                      <!-- Menampilkan tanda elipsis jika halaman pertama tidak termasuk dalam tampilan -->
+                      <li class="page-item disabled">
+                          <span class="page-link">...</span>
+                      </li>
+                  @endif
+          
+                  @foreach ($news->getUrlRange($start, $end) as $page => $url)
+                      <li class="page-item{{ ($page == $news->currentPage()) ? ' active' : '' }}">
+                          <a class="page-link {{ ($page == $news->currentPage()) ? ' bg-danger' : 'text-hover-danger' }}" href="{{ $url }}">{{ $page }}</a>
+                      </li>
+                  @endforeach
+          
+                  @if ($end < $news->lastPage())
+                      <!-- Menampilkan tanda elipsis jika halaman terakhir tidak termasuk dalam tampilan -->
+                      <li class="page-item disabled">
+                          <span class="page-link">...</span>
+                      </li>
+                  @endif
+          
+                  @if ($news->hasMorePages())
+                      <li class="page-item next">
+                          <a href="{{ $news->nextPageUrl() }}" class="page-link bg-light text-hover-danger"><i class="next"></i></a>
+                      </li>
+                  @else
+                      <li class="page-item next">
+                          <a href="#" class="page-link disabled"><i class="next"></i></a>
+                      </li>
+                  @endif
                 </ul>
               </div>
             </div>

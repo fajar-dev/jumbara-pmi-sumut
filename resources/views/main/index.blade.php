@@ -77,27 +77,27 @@
               <div class="row">
                 @foreach ($news as $index => $item)
                     @if ($index == 0)
-                        <div class="col-md-6 pb-10 ">
+                        <div class="col-md-6 pb-10">
                             <div class="card-xl-stretch me-md-6">
-                              <div class="d-block bgi-no-repeat bgi-size-cover bgi-position-center card-rounded position-relative min-h-350px mb-5" style="background-image:url('{{ Storage::url($item->thumbnail_path) }}')" data-fslightbox="lightbox-video-tutorials" href="https://www.youtube.com/embed/btornGtLwIo">
-                              </div>
+                                <div class="d-block bgi-no-repeat bgi-size-cover bgi-position-center card-rounded position-relative min-h-350px mb-5" style="background-image:url('{{ Storage::url($item->thumbnail_path) }}')" data-fslightbox="lightbox-video-tutorials" href="https://www.youtube.com/embed/btornGtLwIo">
+                                </div>
                                 <div class="m-0">
-                                  <a href="{{ route('news.show', $item->slug) }}" class="fs-1 text-gray-900 fw-bold text-hover-danger text-gray-900 lh-base">{{ $item->title }}</a>
-                                  <div class="fw-semibold fs-5 text-gray-600 text-gray-900 my-4 d-none d-md-block">
-                                    {!! Str::limit(strip_tags($item->content), 300) !!}
-                                  </div>
+                                    <a href="{{ route('news.show', $item->slug) }}" class="fs-1 text-gray-900 fw-bold text-hover-danger text-gray-900 lh-base">{{ $item->title }}</a>
+                                    <div class="fw-semibold fs-5 text-gray-600 text-gray-900 my-4 d-none d-md-block">
+                                        {!! Str::limit(strip_tags($item->content), 300) !!}
+                                    </div>
                                     <div class="d-flex flex-stack flex-wrap">    
-                                      <div class="d-flex align-items-center pe-2">
-                                          <div class="symbol symbol-35px symbol-circle me-3">
-                                              <img alt="" src="{{  $item->user->photo_path ? Storage::url( $item->user->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='. $item->user->name }}">                                          
-                                          </div>           
-                                          <div class="fs-5 fw-bold">
-                                              <span class="text-gray-700">{{ $item->user->name }}</span>
-                                              <span class="text-muted">on {{ \Carbon\Carbon::parse($item->created_at)->format('M d, Y') }}</span>                   
-                                          </div>
-                                      </div>
-                                      <span class="badge badge-light-danger fw-bold my-2">{{ $item->newsCategory->name }}</span>
-                                  </div>
+                                        <div class="d-flex align-items-center pe-2">
+                                            <div class="symbol symbol-35px symbol-circle me-3">
+                                                <img alt="" src="{{ optional($item->user)->photo_path ? Storage::url($item->user->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='. (optional($item->user)->name ?? 'admin') }}" />
+                                            </div>           
+                                            <div class="fs-5 fw-bold">
+                                                <span class="text-gray-700">{{ optional($item->user)->name ?? 'admin' }}</span>
+                                                <span class="text-muted">on {{ \Carbon\Carbon::parse($item->created_at)->format('M d, Y') }}</span>                   
+                                            </div>
+                                        </div>
+                                        <span class="badge badge-light-danger fw-bold my-2">{{ $item->newsCategory->name }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -105,33 +105,33 @@
                 @endforeach
 
                 <div class="col-md-6">
-                  <div class="row">
-                    @foreach ($news as $index => $item)
-                        @if ($index >= 1)
-                            <div class="col-md-6 pb-10">
-                                <div class="card-xl-stretch me-md-6">
-                                    <div class="d-block bgi-no-repeat bgi-size-cover bgi-position-center card-rounded position-relative min-h-175px mb-5" style="background-image:url('{{ Storage::url($item->thumbnail_path) }}')" data-fslightbox="lightbox-video-tutorials" href="https://www.youtube.com/embed/btornGtLwIo">
-                                    </div>
-                                    <div class="m-0">
-                                        <a href="{{ route('news.show', $item->slug) }}" class="fs-4 text-gray-900 fw-bold text-hover-danger text-gray-900 lh-base">{{ $item->title }}</a>
-                                        <div class="d-flex flex-stack flex-wrap">    
-                                            <div class="d-flex align-items-center pe-2">
-                                                <div class="symbol symbol-35px symbol-circle me-3">
-                                                    <img alt="" src="{{  $item->user->photo_path ? Storage::url( $item->user->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='. $item->user->name }}">                                          
-                                                </div>           
-                                                <div class="fs-5 fw-bold">
-                                                    <span class="text-gray-700">{{ $item->user->name }}</span>
-                                                    <span class="text-muted">on {{ \Carbon\Carbon::parse($item->created_at)->format('M d, Y') }}</span>                   
+                    <div class="row">
+                        @foreach ($news as $index => $item)
+                            @if ($index >= 1)
+                                <div class="col-md-6 pb-10">
+                                    <div class="card-xl-stretch me-md-6">
+                                        <div class="d-block bgi-no-repeat bgi-size-cover bgi-position-center card-rounded position-relative min-h-175px mb-5" style="background-image:url('{{ Storage::url($item->thumbnail_path) }}')" data-fslightbox="lightbox-video-tutorials" href="https://www.youtube.com/embed/btornGtLwIo">
+                                        </div>
+                                        <div class="m-0">
+                                            <a href="{{ route('news.show', $item->slug) }}" class="fs-4 text-gray-900 fw-bold text-hover-danger text-gray-900 lh-base">{{ $item->title }}</a>
+                                            <div class="d-flex flex-stack flex-wrap">    
+                                                <div class="d-flex align-items-center pe-2">
+                                                    <div class="symbol symbol-35px symbol-circle me-3">
+                                                        <img alt="" src="{{ optional($item->user)->photo_path ? Storage::url($item->user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='. (optional($item->user)->name ?? 'admin') }}" />
+                                                    </div>           
+                                                    <div class="fs-5 fw-bold">
+                                                        <span class="text-gray-700">{{ optional($item->user)->name ?? 'admin' }}</span>
+                                                        <span class="text-muted">on {{ \Carbon\Carbon::parse($item->created_at)->format('M d, Y') }}</span>                   
+                                                    </div>
                                                 </div>
+                                                <span class="badge badge-light-danger fw-bold my-2">{{ $item->newsCategory->name }}</span>
                                             </div>
-                                            <span class="badge badge-light-danger fw-bold my-2">{{ $item->newsCategory->name }}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endif
-                    @endforeach
-                  </div>
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
               </div>
             </div>
