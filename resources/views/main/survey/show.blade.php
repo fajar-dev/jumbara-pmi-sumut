@@ -4,7 +4,7 @@
   name="keywords"
   content="tracer, study, university, malikussaleh, unimal, universitas, bkk, upt, alumni, mahasiswa, dosen, survey, kuisioner"
   />
-  <meta name="author" content="{{ $survey->user->name }}" />
+  <meta name="author" content="{{ $survey->user->name ?? '' }}" />
   <meta name="description" content="{!! Str::limit(strip_tags($survey->content), 100) !!}" />
 
   <!-- Open Graph Meta Tags -->

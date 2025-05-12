@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Contingent;
 use App\Models\ActivityType;
 use App\Models\Coordinator;
+use App\Models\Secretariat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -69,15 +70,47 @@ class EventController extends Controller
         return redirect()->route('admin.event.contingent')->with('success', 'Contingent has been deleted successfully');
     }
 
-    public function coordinatorStore($id, Request $request){        
-        $user = New User();
-        $user->member_id = $request->input('memberId');
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = $request->input('password');
-        $user->data = $request->input('json');
-        $user->role = 'coordinator';
-        $user->save();
+    public function coordinatorStore($id, Request $request){  
+        $data =json_decode($request->input('json'));
+
+        $secretariat = Secretariat::where('name', $data->membership->name)->first();
+        if (!$secretariat) {
+            $secretariat = New Secretariat();
+            $secretariat->category = $data->membership->type->category;
+            $secretariat->type = $data->membership->type->subCategory;
+            $secretariat->name = $data->membership->name;
+            $secretariat->address = $data->membership->address;
+            $secretariat->phone = $data->membership->phone;
+            $secretariat->email = $data->membership->email;
+            $secretariat->administrative_area_level_1 = $data->membership->administrativeAreaLevel1;
+            $secretariat->administrative_area_level_2 = $data->membership->administrativeAreaLevel2;
+            $secretariat->save();
+        }
+        
+        $user = User::where('member_id', $request->input('memberId'))->first();
+        if (!$user) {
+            $user = New User();
+            $user->member_id = $request->input('memberId');
+            $user->name = $data->name;
+            $user->email = $data->email;
+            $user->gender_id = $data->gender->id;
+            $user->religion_id = $data->religion->id;
+            $user->blood_type_id = $data->bloodType->id;
+            $user->phone_number = $data->phone;
+            $user->birth_place = $data->birthPlace;
+            $user->birth_date = $data->birthDate;
+            $user->password = $data->password;
+            $user->secretariat_id = $secretariat->id;
+            $user->member_type_id = $data->category->id;
+            $user->data = $request->input('json');
+            $user->joined_at = $data->membership->joinedAt;
+            $user->save();
+        }
+
+        $checkPermission = Coordinator::where('user_id', $user->id)->exists();
+        if ($checkPermission) {
+            return redirect()->route('admin.event.contingent')->with('error', 'Coordinator already exists');
+        }
 
         $permission = New Coordinator();
         $permission->user_id = $user->id;

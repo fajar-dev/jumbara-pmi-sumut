@@ -90,12 +90,12 @@
                       </td>
                       <td>
                         <div class="text-start">
-                          {{ $item->user->name }}
+                          {{ $item->user->name ?? '-' }}
                         </div>
                       </td>
                       <td>
                         <div class="text-start">
-                          {{ $item->user->created_at }}
+                          {{ $item->created_at }}
                         </div>
                       </td>
                       <td class="text-end">

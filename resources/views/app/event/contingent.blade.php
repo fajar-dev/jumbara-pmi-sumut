@@ -341,9 +341,6 @@
 
           {{-- Hidden fields --}}
           <input type="hidden" name="memberId" id="hidden-memberId{{ $item->id }}">
-          <input type="hidden" name="name" id="hidden-memberName{{ $item->id }}">
-          <input type="hidden" name="email" id="hidden-email{{ $item->id }}">
-          <input type="hidden" name="password" id="hidden-password{{ $item->id }}">
           <input type="hidden" name="json" id="hidden-json{{ $item->id }}">
         </div>
       </div>
@@ -393,9 +390,6 @@
   
               // Hidden fields
               const hiddenMemberId = document.getElementById(`hidden-memberId${id}`);
-              const hiddenMemberName = document.getElementById(`hidden-memberName${id}`);
-              const hiddenEmail = document.getElementById(`hidden-email${id}`);
-              const hiddenPassword = document.getElementById(`hidden-password${id}`);
               const hiddenJson = document.getElementById(`hidden-json${id}`);
   
               if (!memberId) {
@@ -420,18 +414,12 @@
                           submitBtn.classList.remove('disabled');
   
                           hiddenMemberId.value = d.memberId || '';
-                          hiddenMemberName.value = d.name || '';
-                          hiddenEmail.value = d.email || '';
-                          hiddenPassword.value = d.password || '';
                           hiddenJson.value = JSON.stringify(d);
                       } else {
                           info.innerHTML = `<em class="text-warning">No data found.</em>`;
                           submitBtn.classList.add('disabled');
   
                           hiddenMemberId.value = '';
-                          hiddenMemberName.value = '';
-                          hiddenEmail.value = '';
-                          hiddenPassword.value = '';
                           hiddenJson.value = '';
                       }
                   })
@@ -451,9 +439,6 @@
               document.getElementById(`submit${id}`).classList.add('disabled');
   
               document.getElementById(`hidden-memberId${id}`).value = '';
-              document.getElementById(`hidden-memberName${id}`).value = '';
-              document.getElementById(`hidden-email${id}`).value = '';
-              document.getElementById(`hidden-password${id}`).value = '';
               document.getElementById(`hidden-json${id}`).value = '';
           });
       });
