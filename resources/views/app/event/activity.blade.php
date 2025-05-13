@@ -93,6 +93,15 @@
                             </div>
                           @enderror
                         </div>
+                        <div class="mb-5">
+                          <label for="exampleFormControlInput1" class="required form-label">Max Participant</label>
+                          <input type="number" name="max" class="form-control form-control-solid @error('max') is-invalid @enderror"  value="{{ old('max') }}" placeholder="Max Participant" required/>
+                          @error('max')
+                            <div class="invalid-feedback">
+                              {{ $message }}
+                            </div>
+                          @enderror
+                        </div>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
@@ -114,7 +123,7 @@
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-50px">Name</th>
                   <th class="min-w-100px">Description</th>
-                  <th class="min-w-50px">Category</th>
+                  <th class="min-w-50px text-center">Max Participant</th>
                   <th class="min-w-100px">Ongoing date</th>
                   <th class="min-w-100px">Crew</th>
                   <th class="text-end">Action</th>
@@ -132,8 +141,10 @@
                     <tr>
                       <td>
                         <div class="text-start">
-                          <div class="fs-6 fw-bold">
-                            <div class="fs-6 fw-bold">{{ $item->name }}</div>
+                          <div class="fs-6">
+                            <div class="d-flex flex-column">
+                            <span class="text-gray-800 fw-bold mb-1">{{ $item->name }}</span>
+                            <span class="text-gray-600 fs-8">{{ $item->activityType->name }}</span>
                           </div>
                         </div>
                       </td>
@@ -143,8 +154,8 @@
                         </div>
                       </td>
                       <td>
-                        <div class="text-start">
-                          <div class="fs-6">{{ $item->activityType->name }}</div>
+                        <div class="text-center">
+                          <div class="fs-6">{{ $item->max_participant }}</div>
                         </div>
                       </td>
                       <td>
@@ -267,10 +278,10 @@
   @foreach ($activity as $item)
 <div class="modal fade" tabindex="-1" id="edit{{$item->id}}">
   <div class="modal-dialog">
-    <form method="POST" action="{{ route('admin.event.contingent.update', $item->id) }}" class="modal-content" id="formUpdate{{$item->id}}">
+    <form method="POST" action="{{ route('admin.event.activity.update', $item->id) }}" class="modal-content" id="formUpdate{{$item->id}}">
       @csrf
         <div class="modal-header">
-            <h3 class="modal-title">Edit Contingent</h3>
+            <h3 class="modal-title">Edit Activity</h3>
             <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
                 <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
             </div>
@@ -286,18 +297,52 @@
             @enderror
           </div>
           <div class="mb-5">
-            <label for="province{{$item->id}}" class="required form-label">Province ID</label>
-            <input type="text" id="province{{$item->id}}" name="provinceId" class="form-control form-control-solid @error('provinceId') is-invalid @enderror" value="{{ $item->administrative_area_level_1 }}" placeholder="provinceId" required/>
-            @error('provinceId')
+            <label for="exampleFormControlInput{{$item->id}}" class="required form-label">Description</label>
+            <textarea name="description" class="form-control form-control-solid @error('description') is-invalid @enderror"  placeholder="Description" rows="3" required>{{ $item->description }}</textarea>
+            @error('description')
+              <div class="invalid-feedback">
+                {{ $message }}
+              </div>
+            @enderror
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput{{$item->id}}" class="col-form-label required fw-bold fs-6">Type</label>
+            <select class="form-select form-select-solid @error('type') is-invalid @enderror" name="type" data-control="select2" data-placeholder="Choose type">
+              <option></option>
+              @foreach ($activityType as $type)
+                <option value="{{ $type->id }}" {{ $item->id == $type->id ? 'selected' : '' }}>
+                  {{ $type->name }}
+                </option>
+              @endforeach
+            </select>
+            @error('type')
               <div class="invalid-feedback">
                 {{ $message }}
               </div>
             @enderror
           </div>
           <div class="mb-5">
-            <label for="city{{$item->id}}" class="required form-label">City ID</label>
-            <input type="text" id="city{{$item->id}}" name="cityId" class="form-control form-control-solid @error('cityId') is-invalid @enderror" value="{{ $item->administrative_area_level_2 }}" placeholder="cityId" required/>
-            @error('cityId')
+            <label for="start{{$item->id}}" class="required form-label">Start Date</label>
+            <input type="datetime-local" id="start{{$item->id}}" name="start" class="form-control form-control-solid @error('start') is-invalid @enderror" value="{{ $item->start }}" placeholder="start" required/>
+            @error('start')
+              <div class="invalid-feedback">
+                {{ $message }}
+              </div>
+            @enderror
+          </div>
+          <div class="mb-5">
+            <label for="end{{$item->id}}" class="required form-label">End Date</label>
+            <input type="datetime-local" id="end{{$item->id}}" name="end" class="form-control form-control-solid @error('end') is-invalid @enderror" value="{{ $item->end }}" placeholder="End" required/>
+            @error('end')
+              <div class="invalid-feedback">
+                {{ $message }}
+              </div>
+            @enderror
+          </div>
+          <div class="mb-5">
+            <label for="max{{$item->id}}" class="required form-label">Max Participant</label>
+            <input type="number" id="max{{$item->id}}" name="max" class="form-control form-control-solid @error('max') is-invalid @enderror" value="{{ $item->max_participant }}" placeholder="Max Participant" required/>
+            @error('max')
               <div class="invalid-feedback">
                 {{ $message }}
               </div>

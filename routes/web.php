@@ -33,7 +33,6 @@ Route::prefix('/survey')->group(function () {
     Route::post('/{id}/sumbit', [SurveyController::class, 'submit'])->name('survey.submit');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::prefix('/auth')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -46,6 +45,17 @@ Route::prefix('/auth')->group(function () {
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::prefix('/app')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::prefix('/profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('app.profile');
+        Route::post('/', [ProfileController::class, 'profileUpdate'])->name('app.profile.update');
+        Route::post('/signin-method', [ProfileController::class, 'signinUpdate'])->name('app.profile.signin');
+        Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('app.profile.change-password');
+    });
+    Route::get('/service', [ServiceController::class, 'handle'])->name('service');
+});
+
+Route::prefix('/admin')->group(function () {
     Route::prefix('/master-data')->group(function () {
         Route::prefix('/member-type')->group(function () {
             Route::get('/', [MasterDataController::class, 'member'])->name('admin.master-data.member');
@@ -86,6 +96,8 @@ Route::prefix('/app')->group(function () {
             Route::post('/{id}/edit', [EventController::class, 'contingentUpdate'])->name('admin.event.contingent.update');
             Route::post('/{id}/coordinator', [EventController::class, 'coordinatorStore'])->name('admin.event.contingent.coordinator.store');
             Route::get('/{id}/destroy', [EventController::class, 'contingentDestroy'])->name('admin.event.contingent.destroy');
+            Route::get('/{id}/participant', [EventController::class, 'contingentparticipant'])->name('admin.event.contingent.participant');
+            Route::get('/{id}/activity', [EventController::class, 'contingentActivity'])->name('admin.event.contingent.activity');
         });
         Route::prefix('/activity')->group(function () {
             Route::get('/', [EventController::class, 'activity'])->name('admin.event.activity');
@@ -138,10 +150,17 @@ Route::prefix('/app')->group(function () {
     });
     
     Route::prefix('/user')->group(function () {
-        Route::get('/', [UserController::class, 'user'])->name('admin.user');
-        Route::post('/add', [UserController::class, 'userStore'])->name('admin.user.store');
-        Route::post('/{id}/edit', [UserController::class, 'userUpdate'])->name('admin.user.update');
-        Route::get('/{id}/destroy', [UserController::class, 'userDestroy'])->name('admin.user.destroy');
+        Route::prefix('/admin')->group(function () {
+            Route::get('/', [UserController::class, 'admin'])->name('admin.user.admin');
+            Route::post('/add', [UserController::class, 'adminStore'])->name('admin.user.admin.store');
+            Route::get('/{id}/destroy', [UserController::class, 'adminDestroy'])->name('admin.user.admin.destroy');
+        });
+        Route::prefix('/crew')->group(function () {
+            Route::get('/', [UserController::class, 'crew'])->name('admin.user.crew');
+            Route::post('/add', [UserController::class, 'crewStore'])->name('admin.user.crew.store');
+            Route::post('/{id}/edit', [UserController::class, 'crewUpdate'])->name('admin.user.crew.update');
+            Route::get('/{id}/destroy', [UserController::class, 'crewDestroy'])->name('admin.user.crew.destroy');
+        });
     });
 
     Route::prefix('/setting')->group(function () {
@@ -152,14 +171,4 @@ Route::prefix('/app')->group(function () {
             Route::get('/{id}/destroy', [SettingController::class, 'faqDestroy'])->name('admin.setting.faq.destroy');
         });
     });
-    
-    Route::prefix('/profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'index'])->name('admin.profile');
-        Route::post('/', [ProfileController::class, 'profileUpdate'])->name('admin.profile.update');
-        Route::post('/signin-method', [ProfileController::class, 'signinUpdate'])->name('admin.profile.signin');
-        Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('admin.profile.change-password');
-    });
-
-    Route::get('/service', [ServiceController::class, 'handle'])->name('service');
-
 })->middleware('auth');

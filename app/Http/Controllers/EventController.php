@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Activity;
 use App\Models\Contingent;
-use App\Models\ActivityType;
 use App\Models\Coordinator;
 use App\Models\Secretariat;
-use App\Models\User;
+use App\Models\ActivityType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
@@ -99,7 +100,7 @@ class EventController extends Controller
             $user->phone_number = $data->phone;
             $user->birth_place = $data->birthPlace;
             $user->birth_date = $data->birthDate;
-            $user->password = $data->password;
+            $user->password = Hash::make($request->input('memberId'));
             $user->secretariat_id = $secretariat->id;
             $user->member_type_id = $data->category->id;
             $user->data = $request->input('json');
@@ -141,6 +142,7 @@ class EventController extends Controller
             'type' => 'required',
             'start' => 'required|date',
             'end' => 'required|date',
+            'max' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return redirect()->route('admin.event.activity')->with('error', 'Validation Error')->withInput()->withErrors($validator);
@@ -151,10 +153,42 @@ class EventController extends Controller
         $activity->description = $request->input('description');
         $activity->activity_type_id = $request->input('type');
         $activity->start = $request->input('start');
-        $activity->name = $request->input('name');
         $activity->end = $request->input('end');
+        $activity->max_participant = $request->input('max');
         $activity->save();
 
         return redirect()->route('admin.event.activity')->with('success', 'Activity has been added successfully');
+    }
+
+    public function activityUpdate($id, Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required',
+            'type' => 'required',
+            'start' => 'required|date',
+            'end' => 'required|date',
+            'max' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('admin.event.activity')->with('error', 'Validation Error')->withInput()->withErrors($validator);
+        }
+
+        $contingent = Activity::findOrFail($id);
+        $contingent->name = $request->input('name');
+        $contingent->description = $request->input('description');
+        $contingent->activity_type_id = $request->input('type');
+        $contingent->start = $request->input('start');
+        $contingent->end = $request->input('end');
+        $contingent->max_participant = $request->input('max');
+        $contingent->save();
+
+
+        return redirect()->route('admin.event.activity')->with('success', 'Activity has been updated successfully');
+    }
+
+    public function activityDestroy($id){
+        $contingent = Activity::findOrFail($id);
+        $contingent->delete();
+        return redirect()->route('admin.event.activity')->with('success', 'Activity has been deleted successfully');
     }
 }

@@ -36,12 +36,6 @@
               <span class="menu-arrow d-lg-none"></span>
             </span>
           </a>
-          {{-- <a href="{{ route('report') }}" class="menu-item @if($title == 'Report') here show menu-here-bg  @endif me-0 me-lg-2">
-            <span class="menu-link">
-              <span class="menu-title">Report</span>
-              <span class="menu-arrow d-lg-none"></span>
-            </span>
-          </a> --}}
         </div>
       </div>
       <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
@@ -169,7 +163,7 @@
                 <a href="{{ route('dashboard') }}" class="menu-link text-hover-danger text-active-danger px-5">Dashboard</a>
               </div>
               <div class="menu-item px-5">
-                <a href="{{ route('admin.profile') }}" class="menu-link text-hover-danger text-active-danger px-5">My Profile</a>
+                <a href="{{ route('app.profile') }}" class="menu-link text-hover-danger text-active-danger px-5">My Profile</a>
               </div>
               <div class="menu-item px-5">
                 <a href="{{ route('logout') }}" class="menu-link text-hover-danger text-active-danger px-5">Sign Out</a>

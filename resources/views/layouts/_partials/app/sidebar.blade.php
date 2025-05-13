@@ -22,10 +22,6 @@
             </span>
           </a>
         </div>
-        <div class="menu-item mb-2">
-          <div class="menu-heading text-uppercase fs-7 fw-bold">Menu</div>
-          <div class="app-sidebar-separator separator separator-dashed"></div>
-        </div>
         <div class="menu-item">
           <a class="menu-link  @if($title == 'Dashboard') active bg-danger @endif" href="{{ route('dashboard') }}">
             <span class="menu-icon">
@@ -33,6 +29,18 @@
             </span>
             <span class="menu-title">Dashboard</span>
           </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link  @if($title == 'Profile') active bg-danger @endif" href="{{ route('app.profile') }}">
+            <span class="menu-icon">
+              <i class="ki-outline ki-user fs-2"></i>
+            </span>
+            <span class="menu-title">Profile</span>
+          </a>
+        </div>
+        <div class="menu-item mt-5">
+          <div class="menu-heading text-uppercase fs-7 fw-bold">Admin</div>
+          <div class="app-sidebar-separator separator separator-dashed"></div>
         </div>
         <div data-kt-menu-trigger="click" class="menu-item @if($title == 'Master Data') here show @endif menu-accordion">
           <span class="menu-link">
@@ -171,13 +179,32 @@
             <span class="menu-title">Message</span>
           </a>
         </div>
-        <div class="menu-item">
-          <a class="menu-link @if($title == 'User') active bg-danger @endif menu-accordion"" href="{{ route('admin.user') }}">
+        <div data-kt-menu-trigger="click" class="menu-item @if($title == 'User') here show @endif menu-accordion">
+          <span class="menu-link">
             <span class="menu-icon">
               <i class="ki-outline ki-profile-user fs-2"></i>
             </span>
             <span class="menu-title">User</span>
-          </a>
+            <span class="menu-arrow"></span>
+          </span>
+          <div class="menu-sub menu-sub-accordion">
+            <div class="menu-item">
+              <a class="menu-link  @if($subTitle == 'Admin') active bg-danger bg-danger @endif" href="{{ route('admin.user.admin') }}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Admin</span>
+              </a>
+            </div>
+            <div class="menu-item">
+              <a class="menu-link @if($subTitle == 'Crew') active bg-danger @endif" href="{{ route('admin.user.crew') }}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Crew</span>
+              </a>
+            </div>
+          </div>
         </div>
         <div data-kt-menu-trigger="click" class="menu-item @if($title == 'Setting') here show @endif menu-accordion">
           <span class="menu-link">
@@ -205,6 +232,57 @@
               </a>
             </div>
           </div>
+        </div>
+        <div class="menu-item mt-5">
+          <div class="menu-heading text-uppercase fs-7 fw-bold">Coordinator</div>
+          <div class="app-sidebar-separator separator separator-dashed"></div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+            <span class="menu-icon">
+              <i class="ki-outline ki-people fs-2"></i> 
+            </span>
+            <span class="menu-title">Participant</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+            <span class="menu-icon">
+              <i class="ki-outline ki-flag fs-2"></i> 
+            </span>
+            <span class="menu-title">Activity</span>
+          </a>
+        </div>
+        <div class="menu-item mt-5">
+          <div class="menu-heading text-uppercase fs-7 fw-bold">Crew</div>
+          <div class="app-sidebar-separator separator separator-dashed"></div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+            <span class="menu-icon">
+              <i class="ki-outline ki-scan-barcode fs-2"></i>
+            </span>
+            <span class="menu-title">Assignment</span>
+          </a>
+        </div>
+        <div class="menu-item mt-5">
+          <div class="menu-heading text-uppercase fs-7 fw-bold">Participant</div>
+          <div class="app-sidebar-separator separator separator-dashed"></div>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+            <span class="menu-icon">
+              <i class="ki-outline ki-medal-star fs-2"></i>
+            </span>
+            <span class="menu-title">Certificate</span>
+          </a>
+        </div><div class="menu-item">
+          <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+            <span class="menu-icon">
+              <i class="ki-outline ki-flag fs-2"></i> 
+            </span>
+            <span class="menu-title">Activity</span>
+          </a>
         </div>
       </div>
     </div>

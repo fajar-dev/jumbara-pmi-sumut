@@ -10,11 +10,11 @@
           </div>
         </div>
         <div>
-          <form method="POST" id="form" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data" class="form">
+          <form method="POST" id="form" action="{{ route('app.profile.update') }}" enctype="multipart/form-data" class="form">
             @csrf
             <div class="card-body border-top p-9">
               <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Foto</label>
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Photo</label>
                 <div class="col-lg-8 fv-row">
                   <style>.image-input-placeholder { background-image: url("{{ Auth::user()->photo_path ? Storage::url(Auth::user()->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='.Auth::user()->name }}"); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('{{ Auth::user()->photo_path ? Storage::url(Auth::user()->photo_path) : asset("assets/media/svg/files/blank-image-dark.svg")}}'); }</style>
                   <div class="image-input image-input-empty image-input-outline image-input-placeholder" data-kt-image-input="true">
@@ -53,7 +53,7 @@
             </div>
             <div class="card-footer d-flex justify-content-end py-6 px-9">
               <button type="submit" id="submit" class="btn btn-danger">
-                <span class="indicator-label">Simpan</span>
+                <span class="indicator-label">Save</span>
                 <span class="indicator-progress" style="display: none;">Loading... 
                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
               </button>
@@ -75,7 +75,7 @@
                 <div class="fw-semibold text-gray-600">{{ Auth::user()->email }}</div>
               </div>
               <div id="kt_signin_email_edit" class="flex-row-fluid d-none">
-                <form action="{{ route('admin.profile.signin') }}" id="formSignin" method="POST" class="form">
+                <form action="{{ route('app.profile.signin') }}" id="formSignin" method="POST" class="form">
                   @csrf
                   <div class="row mb-6">
                     <div class="col-lg-6 mb-4 mb-lg-0">
@@ -92,7 +92,7 @@
                   </div>
                   <div class="d-flex">
                     <button type="submit" id="submitSignin" class="btn btn-danger">
-                      <span class="indicator-label">Simpan</span>
+                      <span class="indicator-label">Save</span>
                       <span class="indicator-progress" style="display: none;">Loading... 
                       <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                     </button>
@@ -101,7 +101,7 @@
                 </form>
               </div>
               <div id="kt_signin_email_button" class="ms-auto">
-                <button class="btn btn-light btn-active-light-danger">Ubah</button>
+                <button class="btn btn-light btn-active-light-danger">Change</button>
               </div>
             </div>
             <div class="separator separator-dashed my-6"></div>
@@ -111,7 +111,7 @@
                 <div class="fw-semibold text-gray-600">************</div>
               </div>
               <div id="kt_signin_password_edit" class="flex-row-fluid d-none">
-                <form id="formPassword" method="POST" action="{{ route('admin.profile.change-password') }}" class="form">
+                <form id="formPassword" method="POST" action="{{ route('app.profile.change-password') }}" class="form">
                   @csrf
                   <div class="row mb-6">
                     <div class="col-lg-6">
@@ -139,7 +139,7 @@
                   </div>
                   <div class="d-flex">
                     <button type="submit" id="submitPassword" class="btn btn-danger">
-                      <span class="indicator-label">Simpan</span>
+                      <span class="indicator-label">Save</span>
                       <span class="indicator-progress" style="display: none;">Loading... 
                       <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                     </button>             
@@ -148,7 +148,7 @@
                 </form>
               </div>
               <div id="kt_signin_password_button" class="ms-auto">
-                <button class="btn btn-light btn-active-light-danger">Ubah</button>
+                <button class="btn btn-light btn-active-light-danger">Change</button>
               </div>
             </div>
           </div>

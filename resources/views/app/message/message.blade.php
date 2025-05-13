@@ -72,7 +72,7 @@
                         </div>
                       </td>
                       <td class="text-end">
-                        <button class="btn btn-danger btn-icon btn-sm btn-del" id="{{ route('admin.message.destroy', $item->id) }}">
+                        <button class="btn btn-dark btn-icon btn-sm btn-del" id="{{ route('admin.message.destroy', $item->id) }}">
                           <i class="ki-outline ki-trash btn-del" id="{{ route('admin.message.destroy', $item->id) }}">
                           </i>
                         </button>

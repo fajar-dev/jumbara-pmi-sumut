@@ -119,7 +119,7 @@
           </div>
           <div class="separator my-2"></div>
           <div class="menu-item px-5">
-            <a href="{{ route('admin.profile') }}" class="menu-link text-hover-danger px-5">My Profile</a>
+            <a href="{{ route('app.profile') }}" class="menu-link text-hover-danger px-5">My Profile</a>
           </div>
           <div class="menu-item px-5">
             <a href="{{ route('logout') }}" class="menu-link text-hover-danger px-5">Sign Out</a>

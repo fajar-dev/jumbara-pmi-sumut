@@ -88,8 +88,8 @@
               <thead>
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-100px">Name</th>
-                  <th class="min-w-50px">Province ID</th>
-                  <th class="min-w-50px">city ID</th>
+                  <th class="min-w-50px text-center">Province ID</th>
+                  <th class="min-w-50px text-center">city ID</th>
                   <th class="min-w-100px">Coordinator</th>
                   <th class="text-end">Action</th>
                 </tr>
@@ -112,12 +112,12 @@
                         </div>
                       </td>
                       <td>
-                        <div class="text-start">
+                        <div class="text-center">
                           <div class="fs-6">{{ $item->administrative_area_level_1 }}</div>
                         </div>
                       </td>
                       <td>
-                        <div class="text-start">
+                        <div class="text-center">
                           <div class="fs-6">{{ $item->administrative_area_level_2 }}</div>
                         </div>
                       </td>

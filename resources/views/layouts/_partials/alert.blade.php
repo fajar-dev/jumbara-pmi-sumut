@@ -7,10 +7,10 @@
       myToast.show();
   });
 </script>
-<div class="position-fixed bottom-0 end-0 mt-5 me-5" style="z-index: 9999;">
-  <div class="toast align-items-center bg-success" id="success" role="alert" aria-live="assertive" aria-atomic="true">
+<div class="position-fixed bottom-0 end-0 mb-5 me-5" style="z-index: 9999;">
+  <div class="toast align-items-center bg-light" id="success" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
-      <div class="toast-body text-white fs-6">
+      <div class="toast-body text-gray-900 fs-6">
         {{ session('success') }}
       </div>
       <button type="button" class="btn-close me-2 m-auto bg-white p-2" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -27,7 +27,7 @@
       myToast.show();
   });
 </script>
-<div class="position-fixed bottom-0 end-0 mt-5 me-5" style="z-index: 9999;">
+<div class="position-fixed bottom-0 end-0 mb-5 me-5" style="z-index: 9999;">
   <div class="toast align-items-center bg-danger" id="error" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body text-white fs-6">

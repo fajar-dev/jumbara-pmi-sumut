@@ -13,7 +13,7 @@ class ProfileController extends Controller
 {
     public function index(){
         $data = [
-            'title' => 'Profil',
+            'title' => 'Profile',
             'subTitle' => null,
             'page_id' => null
         ];

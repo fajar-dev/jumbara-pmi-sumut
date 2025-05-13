@@ -34,9 +34,11 @@ class User extends Authenticatable
         'birth_place',
         'birth_date',
         'password',
+        'is_default',
         'photo_path',
         'secretariat_id',
         'member_type_id',
+        'address',
         'data',
         'joined_at',
     ];
