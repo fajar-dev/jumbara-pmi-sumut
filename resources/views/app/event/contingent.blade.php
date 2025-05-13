@@ -125,7 +125,7 @@
                         @if ($item->coordinator)
                           <div class="symbol-group symbol-hover me-3">
                             <div class="symbol symbol-45px symbol-circle" data-bs-toggle="tooltip" title="{{ $item->coordinator->user->name }}">
-                              <img src="https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name={{ $item->coordinator->user->name}}" alt="">
+                              <img src="{{ $item->coordinator->user->photo_path ? Storage::url($item->coordinator->user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.$item->coordinator->user->name }}" alt="">
                             </div>
                           </div>
                           <div class="d-flex flex-column">

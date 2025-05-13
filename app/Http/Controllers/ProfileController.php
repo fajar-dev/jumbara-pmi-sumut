@@ -36,7 +36,7 @@ class ProfileController extends Controller
         }
         $profile->save();
 
-        return redirect()->route('admin.profile')->with('success', 'Profile has been saved successfully');
+        return redirect()->route('app.profile')->with('success', 'Profile has been saved successfully');
     }
 
     public function signinUpdate(Request $request){
@@ -48,14 +48,14 @@ class ProfileController extends Controller
             ],
         ]);
         if ($validator->fails()) {
-        return redirect()->route('admin.profile')->with('error', 'Validation Error')->withInput()->withErrors($validator);
+        return redirect()->route('app.profile')->with('error', 'Validation Error')->withInput()->withErrors($validator);
         }
 
         $profile =  User::find(Auth::user()->id);
         $profile->email = $request->input('email');
         $profile->save();
 
-        return redirect()->route('admin.profile')->with('success', 'Profile has been saved successfully');
+        return redirect()->route('app.profile')->with('success', 'Profile has been saved successfully');
     }
 
     public function changePassword(Request $request){
@@ -63,7 +63,7 @@ class ProfileController extends Controller
         $oldPassword = $request->input('oldPassword');
     
         if (!Hash::check($oldPassword, $user->password)) {
-            return redirect()->route('admin.profile')->with('error', 'Old password is incorrect');
+            return redirect()->route('app.profile')->with('error', 'Old password is incorrect');
         }
         
         $validator = Validator::make($request->all(), [
@@ -72,13 +72,13 @@ class ProfileController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return redirect()->route('admin.profile')->with('error', 'Validation Error')->withErrors($validator);
+            return redirect()->route('app.profile')->with('error', 'Validation Error')->withErrors($validator);
         }
     
         $userSave = User::findOrFail($user->id);
         $userSave->password = Hash::make($request->input('newPassword'));
         $userSave->save();
     
-        return redirect()->route('admin.profile')->with('success', 'Password has been saved successfully');
+        return redirect()->route('app.profile')->with('success', 'Password has been saved successfully');
     }
 }

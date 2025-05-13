@@ -6,10 +6,11 @@ use App\Models\Crew;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Activity;
-use App\Models\CrewAssignment;
 use App\Models\Secretariat;
 use Illuminate\Http\Request;
+use App\Models\CrewAssignment;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -62,6 +63,21 @@ class UserController extends Controller
             $user->birth_place = $data->birthPlace;
             $user->birth_date = $data->birthDate;
             $user->password = Hash::make($request->input('memberId'));
+            if ($data->photo) {
+                $photoUrl = $data->photo;
+                $headers = get_headers($photoUrl, 1);
+                $httpStatus = substr($headers[0], 9, 3);
+                if ($httpStatus == '404') {
+                    $user->photo_path = null;
+                } else {
+                    $photoContent = file_get_contents($photoUrl);
+                    $photoName = basename($photoUrl);
+                    $path = Storage::disk('public')->put('user/' . $photoName, $photoContent);
+                    $user->photo_path = 'user/' . $photoName;
+                }
+            } else {
+                $user->photo_path = null;
+            }
             $user->secretariat_id = $secretariat->id;
             $user->member_type_id = $data->category->id;
             $user->data = $request->input('json');
@@ -135,6 +151,21 @@ class UserController extends Controller
             $user->birth_place = $data->birthPlace;
             $user->birth_date = $data->birthDate;
             $user->password = Hash::make($request->input('memberId'));
+            if ($data->photo) {
+                $photoUrl = $data->photo;
+                $headers = get_headers($photoUrl, 1);
+                $httpStatus = substr($headers[0], 9, 3);
+                if ($httpStatus == '404') {
+                    $user->photo_path = null;
+                } else {
+                    $photoContent = file_get_contents($photoUrl);
+                    $photoName = basename($photoUrl);
+                    $path = Storage::disk('public')->put('user/' . $photoName, $photoContent);
+                    $user->photo_path = 'user/' . $photoName;
+                }
+            } else {
+                $user->photo_path = null;
+            }
             $user->secretariat_id = $secretariat->id;
             $user->member_type_id = $data->category->id;
             $user->data = $request->input('json');
