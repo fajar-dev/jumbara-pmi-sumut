@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('participant_assignment_id')->unique();
             $table->unsignedBigInteger('crew_assignment_id');
-            $table->unsignedBigInteger('ip_address')->nullable();
+            $table->string('ip_address')->nullable();
             $table->string('user_agent')->nullable();
             $table->string('longitude')->nullable();
             $table->string('latitude')->nullable();
