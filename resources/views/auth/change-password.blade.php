@@ -4,11 +4,11 @@
 <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
   <div class="d-flex flex-center flex-column flex-lg-row-fluid">
     <div class="w-lg-500px  w-100 p-10">
-      <form class="form w-100" action="{{ route('reset', $token) }}" method="POST" id="loginForm">
+      <form class="form w-100" action="{{ route('change.submit') }}" method="POST" id="loginForm">
         @csrf
         <div class="mb-11">
-          <h1 class="text-gray-900 fw-bolder mb-3 fs-3qx">Reset Password</h1>
-          <div class="text-gray-500 fw-semibold fs-5">Please enter your new password </div>
+          <h1 class="text-gray-900 fw-bolder mb-3 fs-3qx">Change Password</h1>
+          <div class="text-gray-500 fw-semibold fs-5">Please change your default password </div>
         </div>
 
         <div class="fv-row mb-8">
@@ -16,16 +16,15 @@
             <div class="symbol-label">
               <div class="symbol symbol-circle symbol-40px overflow-hidden me-5">
                   <div class="symbol-label">
-                    <img src="{{ $user->photo_path ? Storage::url($user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.$user->name }}" alt="" class="w-100">
+                    <img src="{{ Auth::user()->photo_path ? Storage::url(Auth::user()->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.Auth::user()->name }}" alt="" class="w-100">
                   </div>
               </div>
             </div>
             <div class="d-flex flex-column pe-0 pe-sm-10">
-                <h4 class="mb-1 fs-6">{{ $user->name }}</h4>
-                <span class="text-muted fs-7">{{ $user->email }}</span>
+                <h4 class="mb-1 fs-6">{{ Auth::user()->name }}</h4>
+                <span class="text-muted fs-7">{{ Auth::user()->member_id }}</span>
             </div>
           </div>
-          <input type="hidden" placeholder="email" name="email" value="{{ $user->email }}" />
         </div>
 
         <div class="fv-row mb-8">
@@ -44,7 +43,7 @@
           </button>
         </div>
         <div>
-          <a href="{{ route('login') }}" class="btn btn-light w-100">Back</a>
+          <a href="{{ route('dashboard') }}" class="btn btn-light w-100">Not now</a>
         </div>
       </form>
     </div>

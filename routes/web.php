@@ -35,14 +35,16 @@ Route::prefix('/survey')->group(function () {
 
 
 Route::prefix('/auth')->group(function () {
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login', [AuthController::class, 'loginSubmit'])->name('login.submit');
-    Route::get('/forgot-password', [AuthController::class, 'forgot'])->name('forgot');
-    Route::post('/forgot-password', [AuthController::class, 'forgotSubmit'])->name('forgot.submit');
-    Route::get('/forget/{token}/reset', [AuthController::class, 'reset'])->name('reset');
-    Route::post('/forget/{token}/reset', [AuthController::class, 'resetSubmit'])->name('reset.submit');
-})->middleware(['guest']);
-Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+    Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+    Route::post('/login', [AuthController::class, 'loginSubmit'])->name('login.submit')->middleware('guest');
+    Route::get('/forgot-password', [AuthController::class, 'forgot'])->name('forgot')->middleware('guest');
+    Route::post('/forgot-password', [AuthController::class, 'forgotSubmit'])->name('forgot.submit')->middleware('guest');
+    Route::get('/forget/{token}/reset', [AuthController::class, 'reset'])->name('reset')->middleware('guest');
+    Route::post('/forget/{token}/reset', [AuthController::class, 'resetSubmit'])->name('reset.submit')->middleware('guest');
+    Route::get('/change-password', [AuthController::class, 'change'])->name('change')->middleware('auth');
+    Route::post('/change-password', [AuthController::class, 'changeSubmit'])->name('change.submit')->middleware('auth');
+    Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+});
 
 Route::prefix('/app')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

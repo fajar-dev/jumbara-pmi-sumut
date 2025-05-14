@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Crew;
 use App\Models\User;
+use App\Models\Admin;
 use Ramsey\Uuid\Uuid;
+use App\Models\Coordinator;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -37,12 +41,51 @@ class AuthController extends Controller
     
         // Attempt to authenticate using the determined login type
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $user = User::where('email', $email)->first();
+            $admin = Admin::where('user_id', $user->id)->exists();
+            $coordinator = Coordinator::where('user_id', $user->id)->exists();
+            $participant = Participant::where('user_id', $user->id)->exists();
+            $crew = Crew::where('user_id', $user->id)->exists();
+            if (($admin OR $crew) OR ($coordinator OR $participant)) {
+                if($user->is_default == true){
+                    return redirect()->route('change');
+                }
+                return redirect()->route('dashboard');
+            } else {
+                Auth::logout();
+                return redirect()->route('login')->with('error', 'You are not authorized to access this application');
+            }
             return redirect()->route('dashboard');
         } else {
             return redirect()->route('login')->with('error', 'Username/Email and password are incorrect, please try again');
         }
     }
     
+    public function change(){
+        if(Auth::user()->is_default == false){
+            return redirect()->route('dashboard');
+        }
+        $data = [
+            'title' => 'Change Password',
+            'subTitle' => null,
+            'page_id' => null
+        ];
+        return view('auth.change-password',  $data);
+    }
+    public function changeSubmit(Request $request){
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:8',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('change')->withInput()->withErrors($validator);
+        }
+        $user = User::findOrFail(Auth::user()->id);
+        $user->password = Hash::make($request->password);
+        $user->is_default = false;
+        $user->save();
+        return redirect()->route('dashboard')->with('success','Congratulation!, Your password has been changed successfully');
+    }
+
     public function forgot(){
         $data = [
             'title' => 'Forget Password',
