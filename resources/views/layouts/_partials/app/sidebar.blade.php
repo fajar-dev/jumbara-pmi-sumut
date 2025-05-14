@@ -224,11 +224,19 @@
               </a>
             </div>
             <div class="menu-item">
-              <a class="menu-link @if($subTitle == 'List') active bg-danger @endif" href="{{ route('admin.news') }}">
+              <a class="menu-link @if($subTitle == 'General') active bg-danger @endif" href="{{ route('admin.setting.general') }}">
                 <span class="menu-bullet">
                   <span class="bullet bullet-dot"></span>
                 </span>
                 <span class="menu-title">General</span>
+              </a>
+            </div>
+            <div class="menu-item">
+              <a class="menu-link @if($subTitle == 'Sponsor') active bg-danger @endif" href="{{ route('admin.setting.sponsor') }}">
+                <span class="menu-bullet">
+                  <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Sponsor</span>
               </a>
             </div>
           </div>

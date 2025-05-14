@@ -172,5 +172,15 @@ Route::prefix('/admin')->group(function () {
             Route::post('/{id}/edit', [SettingController::class, 'faqUpdate'])->name('admin.setting.faq.update');
             Route::get('/{id}/destroy', [SettingController::class, 'faqDestroy'])->name('admin.setting.faq.destroy');
         });
+        Route::prefix('/general')->group(function () {
+            Route::get('/', [SettingController::class, 'general'])->name('admin.setting.general');
+            Route::post('/edit', [SettingController::class, 'generalUpdate'])->name('admin.setting.general.update');
+        });
+        Route::prefix('/sponsor')->group(function () {
+            Route::get('/', [SettingController::class, 'sponsor'])->name('admin.setting.sponsor');
+            Route::post('/add', [SettingController::class, 'sponsorStore'])->name('admin.setting.sponsor.store');
+            Route::post('/{id}/edit', [SettingController::class, 'sponsorUpdate'])->name('admin.setting.sponsor.update');
+            Route::get('/{id}/destroy', [SettingController::class, 'sponsorDestroy'])->name('admin.setting.sponsor.destroy');
+        });
     });
 })->middleware('auth');
