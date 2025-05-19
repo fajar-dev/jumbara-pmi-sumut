@@ -246,7 +246,7 @@
           <div class="app-sidebar-separator separator separator-dashed"></div>
         </div>
         <div class="menu-item">
-          <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+          <a class="menu-link @if($title == 'Participant') active bg-danger @endif menu-accordion"" href="{{ route('coordinator.participant') }}">
             <span class="menu-icon">
               <i class="ki-outline ki-people fs-2"></i> 
             </span>

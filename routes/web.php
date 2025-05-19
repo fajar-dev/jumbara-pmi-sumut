@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnnouncementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
@@ -46,7 +47,7 @@ Route::prefix('/auth')->group(function () {
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 });
 
-Route::prefix('/app')->group(function () {
+Route::prefix('/app')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('/profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('app.profile');
@@ -57,7 +58,7 @@ Route::prefix('/app')->group(function () {
     Route::get('/service', [ServiceController::class, 'handle'])->name('service');
 });
 
-Route::prefix('/admin')->group(function () {
+Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::prefix('/master-data')->group(function () {
         Route::prefix('/member-type')->group(function () {
             Route::get('/', [MasterDataController::class, 'member'])->name('admin.master-data.member');
@@ -183,4 +184,14 @@ Route::prefix('/admin')->group(function () {
             Route::get('/{id}/destroy', [SettingController::class, 'sponsorDestroy'])->name('admin.setting.sponsor.destroy');
         });
     });
-})->middleware('auth');
+});
+
+
+Route::prefix('/coordinator')->middleware(['auth', 'isCoordinator'])->group(function () {
+    Route::prefix('/participant')->group(function () {
+        Route::get('/', [CoordinatorController::class, 'participant'])->name('coordinator.participant');
+        Route::get('/add', [CoordinatorController::class, 'participantAdd'])->name('coordinator.participant.add');
+        Route::post('/{provinceId}/{cityId}/check', [CoordinatorController::class, 'participantCheck'])->name('coordinator.participant.check');
+        Route::post('/{contingentId}/add', [CoordinatorController::class, 'participantStore'])->name('coordinator.participant.store');
+    });
+});

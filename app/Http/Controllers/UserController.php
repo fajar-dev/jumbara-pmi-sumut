@@ -80,7 +80,7 @@ class UserController extends Controller
             }
             $user->secretariat_id = $secretariat->id;
             $user->member_type_id = $data->category->id;
-            $user->address -> $data->address;
+            $user->address -> $data->domicile->address;
             $user->data = $request->input('json');
             $user->joined_at = $data->membership->joinedAt;
             $user->save();
@@ -169,7 +169,7 @@ class UserController extends Controller
             }
             $user->secretariat_id = $secretariat->id;
             $user->member_type_id = $data->category->id;
-            $user->address -> $data->address;
+            $user->address -> $data->domicile->address;
             $user->data = $request->input('json');
             $user->joined_at = $data->membership->joinedAt;
             $user->save();
