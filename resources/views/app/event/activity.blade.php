@@ -123,7 +123,7 @@
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-50px">Name</th>
                   <th class="min-w-100px">Description</th>
-                  <th class="min-w-50px text-center">Max Participant</th>
+                  <th class="min-w-50px">Max Participant</th>
                   <th class="min-w-100px">Ongoing date</th>
                   <th class="min-w-100px">Crew</th>
                   <th class="text-end">Action</th>
@@ -150,12 +150,19 @@
                       </td>
                       <td>
                         <div class="text-start">
-                          <div class="fs-6">{{ $item->description }}</div>
+                          <div class="fs-6">{!! $item->description !!}</div>
                         </div>
                       </td>
                       <td>
-                        <div class="text-center">
-                          <div class="fs-6">{{ $item->max_participant }}</div>
+                        <div class="text-start">
+                          <div class="fs-7">
+                            @foreach ($item->activityParticipations as $participation)
+                                <span class="{{ $participation->participantType->class }} mb-1">
+                                  {{ $participation->participantType->name }}: {{  $participation->max_participant }}
+                                </span>
+                                <br>
+                            @endforeach
+                          </div>
                         </div>
                       </td>
                       <td>

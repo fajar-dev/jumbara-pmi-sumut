@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityType;
 use App\Models\BloodType;
 use App\Models\Gender;
+use App\Models\MemberParticipation;
 use App\Models\MemberType;
 use App\Models\ParticipantType;
 use App\Models\Religion;
@@ -21,7 +22,8 @@ class MasterDataController extends Controller
             'title' => 'Master Data',
             'subTitle' => 'Member Type',
             'page_id' => null,
-            'memberType' => $data
+            'memberType' => $data,
+            'participantType' => ParticipantType::all()
         ];
         return view('app.master-data.member-type',  $data);
     }
@@ -60,6 +62,19 @@ class MasterDataController extends Controller
         return redirect()->route('admin.master-data.member')->with('success', 'Member has been updated successfully');
     }
 
+    public function memberParticipantion($id, Request $request){
+        MemberParticipation::where('member_type_id', $id)->delete();
+        if ($request->assignment) {
+            foreach ($request->assignment as  $result) {
+                MemberParticipation::updateOrInsert([
+                    'member_type_id' => $id,
+                    'participant_type_id' => $result
+                ]);
+            }
+        }
+        return redirect()->route('admin.master-data.member')->with('success', 'Member Participation has been updated successfully');
+    }
+
     public function participant(Request $request){
         $search = $request->input('q');
         $data = ParticipantType::where('name', 'LIKE', '%' . $search . '%')->orderBy('created_at', 'desc')->paginate(10);
@@ -77,6 +92,8 @@ class MasterDataController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
+            'max' => 'required',
+            'class' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->route('admin.master-data.participant')->with('error', 'Validation Error')->withInput()->withErrors($validator);
@@ -85,6 +102,8 @@ class MasterDataController extends Controller
         $participant = New ParticipantType();
         $participant->name = $request->input('name');
         $participant->description = $request->input('description');
+        $participant->max_participant = $request->input('max');
+        $participant->class = $request->input('class');
         $participant->save();
 
         return redirect()->route('admin.master-data.participant')->with('success', 'Participant has been added successfully');
@@ -94,6 +113,8 @@ class MasterDataController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
+            'max' => 'required',
+            'class' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->route('admin.master-data.participant')->with('error', 'Validation Error')->withInput()->withErrors($validator);
@@ -102,6 +123,8 @@ class MasterDataController extends Controller
         $participant = ParticipantType::findOrFail($id);
         $participant->name = $request->input('name');
         $participant->description = $request->input('description');
+        $participant->max_participant = $request->input('max');
+        $participant->class = $request->input('class');
         $participant->save();
 
         return redirect()->route('admin.master-data.participant')->with('success', 'Participant has been updated successfully');

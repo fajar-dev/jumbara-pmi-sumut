@@ -49,18 +49,24 @@
             <div class="card bg-danger bg-opacity-15 h-md-100" dir="ltr">
               <div class="card-body d-flex justify-content-center">
                 <div class="d-md-flex align-items-center pe-lg-5">
-                  <div class="pe-lg-20">
-                    <h1 class="fw-semibold text-gray-800 fs-lg-3hx fs-md-2hx">Jumbara XXI PMR-PMI
-                      <br />
-                      <span class="fw-bolder">Provinsi Sumatera Utara</span>
+                   <div class="pe-lg-10 pt-10 pt-md-0">
+                    <img src="{{ asset('icon/logo-jumbara.png') }}" class="w-lg-600px w-100 w-md-300px" alt="" />
+                  </div>
+                  <div class="ps-lg-10 text-center text-md-start">
+                    <h1 class=" fs-lg-3hx fs-1hx fw-bolder text-danger">JUMPA BAKTI GEMBIRA V 
                     </h1>
+                    <span class="fw-semibold fs-lg-1hx fs-md-2 fs-5">PMR-PMI PROVINSI SUMATERA UTARA <br>Tahun 2025 </span>
                     <div class="mb-1 mt-5">
-                      <a class="btn btn-lg btn-danger me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal">Isi Survey</a>
+                      <a class="btn btn-lg btn-light-danger me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal">
+                        <i class="ki-duotone ki-exit-down fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        </i>
+                        Unduh Juknis
+                      </a>
                     </div>
                   </div>
-                  <div class="ps-lg-20">
-                    <img src="{{ asset('app/media/svg/illustrations/easy/9.svg') }}" class="w-lg-400px w-md-300px" alt="" />
-                  </div>
+                 
                 </div>
               </div>
             </div>

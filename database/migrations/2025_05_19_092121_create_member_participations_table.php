@@ -11,22 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('member_participations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->unsignedBigInteger('activity_type_id');
-            $table->dateTime('start')->nullable();
-            $table->dateTime('end')->nullable();
+            $table->unsignedBigInteger('member_type_id');
+            $table->unsignedBigInteger('participant_type_id');
             $table->timestamps();
 
-            $table->foreign('activity_type_id')
+            $table->foreign('member_type_id')
             ->references('id')
-            ->on('activity_types')
+            ->on('member_types')
             ->onDelete('cascade')
             ->onUpdate('cascade');
-            
-            $table->index('name');
+
+            $table->foreign('participant_type_id')
+            ->references('id')
+            ->on('participant_types')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
         });
     }
 
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activities');
+        Schema::dropIfExists('member_participations');
     }
 };

@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
+            $table->integer('max_participant');
+            $table->string('class');
             $table->timestamps();
+
+            $table->index('name');
         });
     }
 

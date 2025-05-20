@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('administrative_area_level_2')->unique();
             $table->string('name');
             $table->timestamps();
+
+            $table->index('name');
         });
     }
 

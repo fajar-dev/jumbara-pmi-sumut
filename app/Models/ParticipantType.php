@@ -15,5 +15,7 @@ class ParticipantType extends Model
     protected $fillable = [
         'name',
         'description',
+        'max_participant',
+        'class'
     ];
 }

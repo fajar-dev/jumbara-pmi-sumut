@@ -1,8 +1,7 @@
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
-  <div class="app-sidebar-header d-flex flex-stack d-none d-lg-flex pt-8 pb-2" id="kt_app_sidebar_header">
+  <div class="app-sidebar-header d-flex flex-stack d-none d-lg-flex pt-2 pb-0" id="kt_app_sidebar_header">
     <a href="{{ route('dashboard') }}" class="app-sidebar-logo">
-      <img alt="Logo" src="{{ asset('icon/logo.png') }}" class="h-60px d-none d-sm-inline app-sidebar-logo-default theme-light-show" />
-      <img alt="Logo" src="{{ asset('icon/logo.png') }}" class="h-60px h-lg-25px theme-dark-show" />
+      <img alt="Logo" src="{{ asset('icon/logo-jumbara.png') }}" class="h-80px d-none d-sm-inline app-sidebar-logo-default" />
     </a>
     <div id="kt_app_sidebar_toggle" class="app-sidebar-toggle btn btn-sm btn-icon bg-light btn-color-gray-700 btn-active-color-danger d-none d-lg-flex rotate" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="app-sidebar-minimize">
       <i class="ki-outline ki-text-align-right rotate-180 fs-1"></i>

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\Coordinator;
 use App\Models\Crew;
 use App\Models\Secretariat;
 use App\Models\User;
@@ -51,6 +52,11 @@ class UserSeeder extends Seeder
 
         Crew::create([
             'user_id' => 1,
+        ]);
+
+        Coordinator::created([
+            'user_id' => 1,
+            'contingent_id' => 26
         ]);
     }
 }

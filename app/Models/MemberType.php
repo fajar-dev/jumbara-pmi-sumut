@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\MemberParticipation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MemberType extends Model
@@ -16,4 +18,9 @@ class MemberType extends Model
         'name',
         'description',
     ];
+
+    public function memberParticipations(): HasMany
+    {
+        return $this->hasMany(MemberParticipation::class);
+    }
 }

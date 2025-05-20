@@ -5,7 +5,7 @@
         <i class="ki-outline ki-abstract-14 fs-2"></i>
       </div>
       <a href="{{ route('dashboard') }}">
-        <img alt="Logo" src="{{ asset('icon/logo.png') }}" class="h-50px" />
+        <img alt="Logo" src="{{ asset('icon/logo-jumbara.png') }}" class="h-50px" />
       </a>
     </div>
     <div class="app-navbar flex-lg-grow-1" id="kt_app_header_navbar">

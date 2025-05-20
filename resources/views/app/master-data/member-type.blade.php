@@ -79,13 +79,14 @@
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-100px">Name</th>
                   <th class="min-w-200px">Description</th>
+                  <th class="min-w-200px">Participant</th>
                   <th class="text-end">Action</th>
                 </tr>
               </thead>
               <tbody>
                 @if ($memberType->total() == 0)
                   <tr class="max-w-10px">
-                    <td colspan="6" class="text-center">
+                    <td colspan="4" class="text-center">
                       No data available in table
                     </td>
                   </tr>
@@ -102,6 +103,26 @@
                       <td>
                         <div class="text-start">
                           <div class="fs-6">{{ $item->description }}</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="text-start">
+                          <div class="fs-7 class d-flex">
+                            <div>
+                              @foreach ($item->memberParticipations as $participation)
+                                  <span class="{{ $participation->participantType->class }} mb-1">
+                                    {{ $participation->participantType->name }}
+                                  </span>
+                                  <br>
+                              @endforeach
+                            </div>
+                            <button data-bs-toggle="modal" data-bs-target="#participation{{$item->id}}" class="btn text-danger btn-sm">
+                                  <i class="ki-duotone ki-pencil fs-2 text-danger">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                  </i>
+                            </button>
+                          </div>
                         </div>
                       </td>
                       <td class="text-end">
@@ -184,6 +205,46 @@
       </div>
     </div>
   </div>
+
+@foreach ($memberType as $item)
+<div class="modal fade" tabindex="-1" id="participation{{$item->id}}">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ route('admin.master-data.participant.member-participation', $item->id) }}" class="modal-content" id="formUpdate{{$item->id}}">
+      @csrf
+        <div class="modal-header">
+            <h3 class="modal-title">Participation</h3>
+            <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
+                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+            </div>
+        </div>
+        <div class="modal-body">
+          <div class="mb-5">
+            <label for="exampleFormControlInput1" class="form-label">Participant</label>
+            <select id="participantSelect{{$item->id}}" class="form-select form-select-solid" data-control="select2"
+            data-close-on-select="false" data-placeholder="Select the participant" data-allow-clear="true" multiple name="assignment[]">
+            @foreach ($participantType as $participation)
+              @php
+                $isSelected = $item->memberParticipations->pluck('participant_type_id')->contains($participation->id);
+              @endphp
+              <option value="{{ $participation->id }}" {{ $isSelected ? 'selected' : '' }}>
+                {{ $participation->name }}
+              </option>
+            @endforeach
+          </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger" id="submit{{$item->id}}">
+              <span class="indicator-label">Save</span>
+              <span class="indicator-progress" style="display: none;">Loading... 
+              <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
+    </form>
+  </div>
+</div>
+@endforeach
 
   @foreach ($memberType as $item)
 <div class="modal fade" tabindex="-1" id="edit{{$item->id}}">

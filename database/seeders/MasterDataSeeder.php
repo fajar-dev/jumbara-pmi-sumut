@@ -16,30 +16,47 @@ class MasterDataSeeder extends Seeder
     {
         $participant = [
             [
-                'id' => 1, 
-                'name' => 'Pimpinan Kontingen',
-                'description' => 'Pimpinan Kontingen',
-            ],
-            [
                 'id' => 2, 
-                'name' => 'peserta',
-                'description' => 'Peserta',
+                'name' => 'PMR Mula',
+                'description' => 'berusia 10-12 tahun atau kelas 4-6 SD sederajat',
+                'max_participant' => 10,
+                'class' => 'badge badge-primary'
             ],
             [
                 'id' => 3, 
-                'name' => 'Peninjau',
-                'description' => 'Peninjau',
+                'name' => 'PMR Madya',
+                'description' => 'berusia 12 – 15 tahun atau SLTP sederajat',
+                'max_participant' => 20,
+                'class' => 'badge badge-success'
             ],
             [
                 'id' => 4, 
-                'name' => 'Pendamping',
-                'description' => 'Pendamping',
+                'name' => 'PMR Wira',
+                'description' => 'berusia 15 – 17 tahun atau SMU sederajat',
+                'max_participant' => 30,
+                'class' => 'badge badge-warning'
             ],
             [
                 'id' => 5, 
-                'name' => 'Panitia Lokal',
-                'description' => 'Panitia Lokal',
-            ]
+                'name' => 'Pembina pendamping',
+                'description' => 'Pembina dari masing-masing tingkatan unit PMR, yang terdiri dari 3 pembina pendamping putra dan 3 pembina pendamping putri',
+                'max_participant' => 6,
+                'class' => 'badge badge-dark'
+            ],
+            [
+                'id' => 7, 
+                'name' => 'Fasilitator PMR',
+                'description' => 'Fasilitator PMR yang aktif memfasilitasi kegiatan unit PMR Atau Pelatih Bidang yang aktif memfasilitasi kegiatan unit PMR di sekolah. ',
+                'max_participant' => 3,
+                'class' => 'badge badge-danger'
+            ],
+            [
+                'id' => 8, 
+                'name' => 'Peninjau',
+                'description' => 'Pengurus PMI Propinsi maupun Pengurus PMI kab/kota, Kepala Sekolah dan Guru ',
+                'max_participant' => 100,
+                'class' => 'badge badge-secondary'
+            ],
         ];
         DB::table('participant_types')->insert($participant);
 
@@ -52,7 +69,7 @@ class MasterDataSeeder extends Seeder
             [
                 'id' => 2, 
                 'name' => 'KSR',
-                'description' => 'Korps',
+                'description' => 'Korps Sukarela',
             ],
             [
                 'id' => 3, 
@@ -62,12 +79,17 @@ class MasterDataSeeder extends Seeder
             [
                 'id' => 4, 
                 'name' => 'Pengurus',
-                'description' => 'Pengurus',
+                'description' => 'Pengurus PMI',
             ],
             [
                 'id' => 5, 
                 'name' => 'Staff',
-                'description' => 'Staff',
+                'description' => 'Staff PMI',
+            ],
+            [
+                'id' => 6, 
+                'name' => 'Pembina',
+                'description' => 'Pembina PMR',
             ]
         ];
         DB::table('member_types')->insert($member);
@@ -76,17 +98,17 @@ class MasterDataSeeder extends Seeder
             [
                 'id' => 1, 
                 'name' => 'Jumpa',
-                'description' => 'Kegiatan Jumpa',
+                'description' => 'Kegiatan yang menekankan pada pertemuan, diskusi, dan berbagi pengalaman antar anggota PMR dari berbagai daerah ',
             ],
             [
                 'id' => 2, 
                 'name' => 'Bakti',
-                'description' => 'Kegiatan Bakti',
+                'description' => 'Kegiatan yang menumbuhkan rasa kepedulian dan aksi nyata untuk masyarakat',
             ],
             [
                 'id' => 3, 
                 'name' => 'Gembira',
-                'description' => 'Kegiatan Gembira',
+                'description' => 'Kegiatan yang menciptakan suasana menyenangkan, mempererat kebersamaan, dan meningkatkan kreativitas peserta',
             ],
         ];
         DB::table('activity_types')->insert($activity);
@@ -212,5 +234,77 @@ class MasterDataSeeder extends Seeder
             ]
         ];
         DB::table('blood_types')->insert($bloodType);
+
+        $participation = [
+            [
+                'member_type_id' => 1,
+                'participant_type_id' => 2,
+            ],
+            [
+                'member_type_id' => 1,
+                'participant_type_id' => 3,
+            ],
+            [
+                'member_type_id' => 1,
+                'participant_type_id' => 4,
+            ],
+            [
+                'member_type_id' => 2,
+                'participant_type_id' => 5,
+            ],
+            [
+                'member_type_id' => 2,
+                'participant_type_id' => 7,
+            ],
+            [
+                'member_type_id' => 2,
+                'participant_type_id' => 8,
+            ],
+            [
+                'member_type_id' => 3,
+                'participant_type_id' => 5,
+            ],
+            [
+                'member_type_id' => 3,
+                'participant_type_id' => 7,
+            ],
+            [
+                'member_type_id' => 3,
+                'participant_type_id' => 8,
+            ],
+            [
+                'member_type_id' => 4,
+                'participant_type_id' => 5,
+            ],
+            [
+                'member_type_id' => 4,
+                'participant_type_id' => 7,
+            ],
+            [
+                'member_type_id' => 4,
+                'participant_type_id' => 8,
+            ],
+            [
+                'member_type_id' => 5,
+                'participant_type_id' => 5,
+            ],
+            [
+                'member_type_id' => 5,
+                'participant_type_id' => 7,
+            ],
+            [
+                'member_type_id' => 5,
+                'participant_type_id' => 8,
+            ],
+            [
+                'member_type_id' => 6,
+                'participant_type_id' => 5,
+            ],
+            [
+                'member_type_id' => 6,
+                'participant_type_id' => 8,
+            ],
+        ];
+        DB::table('member_participations')->insert($participation);
     }
 }

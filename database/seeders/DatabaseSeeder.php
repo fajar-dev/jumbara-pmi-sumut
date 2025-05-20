@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             MasterDataSeeder::class,
             ContingentsSeeder::class,
             UserSeeder::class,
+            ActivitySeeder::class
         ]);
     }
 }

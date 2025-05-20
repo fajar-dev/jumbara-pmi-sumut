@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_default')->default(true);
             $table->string('photo_path')->nullable();
-            $table->unsignedBigInteger('secretariat_id');
+            $table->unsignedBigInteger('secretariat_id')->nullable();
             $table->unsignedBigInteger('member_type_id');
             $table->text('address')->nullable();
             $table->rememberToken();

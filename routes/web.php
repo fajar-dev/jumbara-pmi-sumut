@@ -69,6 +69,7 @@ Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
             Route::get('/', [MasterDataController::class, 'participant'])->name('admin.master-data.participant');
             Route::post('/add', [MasterDataController::class, 'participantStore'])->name('admin.master-data.participant.store');
             Route::post('/{id}/edit', [MasterDataController::class, 'participantUpdate'])->name('admin.master-data.participant.update');
+            Route::post('/{id}/participation', [MasterDataController::class, 'memberParticipantion'])->name('admin.master-data.participant.member-participation');
         });
         Route::prefix('/activity-type')->group(function () {
             Route::get('/', [MasterDataController::class, 'activity'])->name('admin.master-data.activity');

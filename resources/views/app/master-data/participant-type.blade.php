@@ -58,6 +58,24 @@
                             </div>
                           @enderror
                         </div>
+                        <div class="mb-5">
+                          <label for="exampleFormControlInput1" class="required form-label">Max Participant  / Contingent</label>
+                          <input type="number" name="max" class="form-control form-control-solid @error('max') is-invalid @enderror"  value="{{ old('max') }}" placeholder="0" required/>
+                          @error('max')
+                            <div class="invalid-feedback">
+                              {{ $message }}
+                            </div>
+                          @enderror
+                        </div>
+                        <div class="mb-5">
+                          <label for="exampleFormControlInput1" class="required form-label">Class</label>
+                          <input type="text" name="class" class="form-control form-control-solid @error('class') is-invalid @enderror"  value="{{ old('Class') }}" placeholder="class" required/>
+                          @error('class')
+                            <div class="invalid-feedback">
+                              {{ $message }}
+                            </div>
+                          @enderror
+                        </div>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
@@ -79,6 +97,7 @@
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-100px">Name</th>
                   <th class="min-w-200px">Description</th>
+                  <th class="min-w-50px text-center">Max Participant  / Contingent</th>
                   <th class="text-end">Action</th>
                 </tr>
               </thead>
@@ -102,6 +121,11 @@
                       <td>
                         <div class="text-start">
                           <div class="fs-6">{{ $item->description }}</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="text-center">
+                          <div class="fs-6">{{ $item->max_participant }}</div>
                         </div>
                       </td>
                       <td class="text-end">
@@ -210,6 +234,24 @@
             <label for="description{{$item->id}}" class="required form-label">Description</label>
             <textarea id="description{{$item->id}}" name="description" class="form-control form-control-solid @error('description') is-invalid @enderror" placeholder="Description" rows="3" required>{{ $item->description }}</textarea>
             @error('description')
+              <div class="invalid-feedback">
+                {{ $message }}
+              </div>
+            @enderror
+          </div>
+          <div class="mb-5">
+            <label for="max{{$item->id}}" class="required form-label">Max Participant  / Contingent / Contingent</label>
+            <input type="number" id="max{{$item->id}}" name="max" class="form-control form-control-solid @error('max') is-invalid @enderror" value="{{ $item->max_participant }}" placeholder="0" required/>
+            @error('max')
+              <div class="invalid-feedback">
+                {{ $message }}
+              </div>
+            @enderror
+          </div>
+          <div class="mb-5">
+            <label for="clas{{$item->id}}" class="required form-label">Class</label>
+            <input type="text" id="class{{$item->id}}" name="class" class="form-control form-control-solid @error('class') is-invalid @enderror" value="{{ $item->class }}" placeholder="Badge Class" required/>
+            @error('class')
               <div class="invalid-feedback">
                 {{ $message }}
               </div>

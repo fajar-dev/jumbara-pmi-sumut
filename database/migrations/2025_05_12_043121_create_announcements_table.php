@@ -24,6 +24,8 @@ return new class extends Migration
             ->on('users')
             ->onDelete('set null')
             ->onUpdate('cascade');
+
+            $table->index('title');
         });
     }
 

@@ -11,25 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('participants', function (Blueprint $table) {
+        Schema::create('acticity_participations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->unique();
-            $table->unsignedBigInteger('contingent_id');
+            $table->unsignedBigInteger('activity_id');
             $table->unsignedBigInteger('participant_type_id');
-            $table->string('health_certificate')->nullable();
-            $table->string('assignment_letter')->nullable();
-            $table->boolean('is_draft')->default(true);
+            $table->integer('max_participant');
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('activity_id')
             ->references('id')
-            ->on('users')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
-
-            $table->foreign('contingent_id')
-            ->references('id')
-            ->on('contingents')
+            ->on('activities')
             ->onDelete('cascade')
             ->onUpdate('cascade');
 
@@ -38,6 +29,8 @@ return new class extends Migration
             ->on('participant_types')
             ->onDelete('cascade')
             ->onUpdate('cascade');
+
+            $table->index('max_participant');
         });
     }
 
@@ -46,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('participants');
+        Schema::dropIfExists('acticity_participations');
     }
 };
