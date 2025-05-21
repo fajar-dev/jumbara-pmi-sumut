@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->unsignedBigInteger('contingent_id');
-            $table->unsignedBigInteger('participant_type_id');
+            $table->unsignedBigInteger('participant_type_id')->nullable();
             $table->string('health_certificate')->nullable();
             $table->string('assignment_letter')->nullable();
             $table->boolean('is_draft')->default(true);

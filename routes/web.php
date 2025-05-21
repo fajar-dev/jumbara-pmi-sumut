@@ -56,6 +56,7 @@ Route::prefix('/app')->middleware(['auth'])->group(function () {
         Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('app.profile.change-password');
     });
     Route::get('/service', [ServiceController::class, 'handle'])->name('service');
+    Route::get('/member-type/{id}/participant-types', [ServiceController::class, 'participantType'])->name('participant-type');
 });
 
 Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
@@ -192,6 +193,9 @@ Route::prefix('/coordinator')->middleware(['auth', 'isCoordinator'])->group(func
     Route::prefix('/participant')->group(function () {
         Route::get('/', [CoordinatorController::class, 'participant'])->name('coordinator.participant');
         Route::get('/add', [CoordinatorController::class, 'participantAdd'])->name('coordinator.participant.add');
+        Route::get('/register', [CoordinatorController::class, 'participantRegister'])->name('coordinator.participant.register');
+        Route::post('/register', [CoordinatorController::class, 'participantRegisterStore'])->name('coordinator.participant.register.store');
+        
         Route::post('/{provinceId}/{cityId}/check', [CoordinatorController::class, 'participantCheck'])->name('coordinator.participant.check');
         Route::post('/{contingentId}/add', [CoordinatorController::class, 'participantStore'])->name('coordinator.participant.store');
     });

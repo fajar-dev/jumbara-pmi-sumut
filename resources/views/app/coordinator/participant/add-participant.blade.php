@@ -35,6 +35,7 @@
                     $member = json_decode(session('found')); // Ambil seluruh data member dari session
                 @endphp
                 <form action="{{ route('coordinator.participant.store', $coordinator->contingent->id) }}" method="POST" id="member">
+                  @csrf
                     <div class="alert alert-dismissible bg-light-primary d-flex flex-column flex-sm-row p-5 mb-10 mt-5">
                         <div class="d-flex flex-column pe-0 pe-sm-10">
                             <h4 class="fw-semibold">{{ $member->name }}</h4>
@@ -50,6 +51,9 @@
                     </div>
                 </form>
             @endif
+        </div>
+        <div class="card-footer text-center">
+          Don't have an Member ID? <a href="{{ route('coordinator.participant.register') }}" class="fw-bold text-danger"> Click Here</a>
         </div>
       </div>
     </div>
