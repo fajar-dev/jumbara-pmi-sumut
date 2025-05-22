@@ -7,12 +7,12 @@
         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
           <div class="card-title">
             <h3 class="card-title align-items-start flex-column">
-              <span class="card-label fw-bold fs-3 mb-1">Registered Participants</span>
+              <span class="card-label fw-bold fs-3 mb-1">Completed Participants</span>
               <span class="text-muted fw-semibold fs-7">{{ $coordinator->contingent->name }}</span>
             </h3>
           </div>
         </div>
-        <form method="POST" id="form" action="{{ route('coordinator.participant.register.store') }}" enctype="multipart/form-data" class="form">
+        <form method="POST" id="form" action="{{ route('coordinator.participant.completed.store', $user->member_id) }}" enctype="multipart/form-data" class="form">
             @csrf
             <div class="card-body border-top p-9">
               <div class="row mb-6">
@@ -42,21 +42,16 @@
                 </div>
               </div>
               <div class="row mb-6">
-                <label class="required fw-semibold fs-6">Name</label>
-                  <input type="text" name="name" class="form-control form-control-lg form-control-solid @error('name') is-invalid @enderror" placeholder="Full Name" value="{{ old('name') }}" required />
-                  @error('name')
-                  <div class="text-sm text-danger">
-                    {{ $message }}
-                  </div>
-                  @enderror
+                <label class="fw-semibold fs-6">Name</label>
+                  <input type="text" name="name" class="form-control form-control-lg form-control-solid" placeholder="Full Name" value="{{ $user->name }}" disabled/>
               </div>
               <div class="row mb-6">
                 <div class="col-md mb-6 mb-md-0">
-                  <label class="required fw-semibold fs-6">Member Type</label>
-                  <select class="form-select form-select-solid @error('memberType') is-invalid @enderror" name="memberType" required>
+                  <label class="fw-semibold fs-6">Member Type</label>
+                  <select class="form-select form-select-solid" name="memberType" disabled>
                     <option selected disabled>Select member type</option>
                     @foreach ($memberType as $item)       
-                      <option value="{{ $item->id }}" {{ old('memberType') == $item->id ? 'selected' : '' }}>
+                      <option value="{{ $item->id }}" {{ $user->memberType->id == $item->id ? 'selected' : '' }}>
                         {{ $item->name }}
                       </option>
                     @endforeach
@@ -82,28 +77,18 @@
               </div>
               <div class="row mb-6">
                 <div class="col-md mb-6 mb-md-0">
-                  <label class="required fw-semibold fs-6">Birth Place</label>
-                  <input type="text" name="birthPlace" class="form-control form-control-lg form-control-solid @error('birthPlace') is-invalid @enderror" placeholder="e.g. Medan" value="{{ old('birthPlace') }}" required/>
-                  @error('birthPlace')
-                  <div class="text-sm text-danger">
-                    {{ $message }}
-                  </div>
-                  @enderror
+                  <label class="fw-semibold fs-6">Birth Place</label>
+                  <input type="text" name="birthPlace" class="form-control form-control-lg form-control-solid" placeholder="e.g. Medan" value="{{ $user->birth_place }}" disabled/>
                 </div>
                 <div class="col-md">
-                  <label class="required fw-semibold fs-6">Birth Date</label>
-                  <input type="date" name="birthDate" class="form-control form-control-lg form-control-solid @error('birthDate') is-invalid @enderror" value="{{ old('birthDate') }}" required/>
-                  @error('birthDate')
-                  <div class="text-sm text-danger">
-                    {{ $message }}
-                  </div>
-                  @enderror
+                  <label class="fw-semibold fs-6">Birth Date</label>
+                  <input type="date" name="birthDate" class="form-control form-control-lg form-control-solid"  value="{{ $user->birth_date }}" disabled/>
                 </div>
               </div>
               <div class="row mb-6">
                 <div class="col-md mb-6 mb-md-0">
-                  <label class="required fw-semibold fs-6">Email</label>
-                  <input type="email" name="email" class="form-control form-control-lg form-control-solid @error('email') is-invalid @enderror" placeholder="Email Address" value="{{ old('email') }}" required/>
+                  <label class="fw-semibold fs-6">Email</label>
+                  <input type="email" name="email" class="form-control form-control-lg form-control-solid " placeholder="Email Address" value="{{ $user->email }}" disabled//>
                   @error('email')
                   <div class="text-sm text-danger">
                     {{ $message }}
@@ -111,8 +96,8 @@
                   @enderror
                 </div>
                 <div class="col-md">
-                  <label class="required fw-semibold fs-6">Phone</label>
-                  <input type="number" name="phone" class="form-control form-control-lg form-control-solid @error('phone') is-invalid @enderror" placeholder="Phone Number" value="{{ old('phone') }}" required/>
+                  <label class="fw-semibold fs-6">Phone</label>
+                  <input type="number" name="phone" class="form-control form-control-lg form-control-solid" placeholder="Phone Number" value="{{ $user->phone_number }}" disabled//>
                   @error('phone')
                   <div class="text-sm text-danger">
                     {{ $message }}
@@ -122,48 +107,37 @@
               </div>
               <div class="row mb-6">
                 <div class="col-md mb-6 mb-md-0">
-                  <label class="required fw-semibold fs-6">Gender</label>
-                  <select class="form-select form-select-solid @error('gender') is-invalid @enderror" name="gender" required>
-                    <option selected disabled>Select gender</option>
+                  <label class="fw-semibold fs-6">Gender</label>
+                  <select class="form-select form-select-solid" name="gender" disabled>
                     @foreach ($gender as $item)       
-                      <option value="{{ $item->id }}" {{ old('gender') == $item->id ? 'selected' : '' }}>
+                      <option value="{{ $item->id }}" {{ $user->gender->id == $item->id ? 'selected' : '' }}>
                         {{ $item->name }}
                       </option>
                     @endforeach
                   </select>
-                  @error('gender')
-                  <div class="text-sm text-danger">
-                    {{ $message }}
-                  </div>
-                  @enderror
                 </div>
                 <div class="col-md mb-6 mb-md-0">
-                  <label class="required fw-semibold fs-6">Religion</label>
-                  <select class="form-select form-select-solid @error('religion') is-invalid @enderror" name="religion" required>
+                  <label class="fw-semibold fs-6">Religion</label>
+                  <select class="form-select form-select-solid" name="religion" disabled>
                     <option selected disabled>Select Religion</option>
                     @foreach ($religion as $item)       
-                      <option value="{{ $item->id }}" {{ old('religion') == $item->id ? 'selected' : '' }}>
+                      <option value="{{ $item->id }}" {{ $user->religion->id == $item->id ? 'selected' : '' }}>
                         {{ $item->name }}
                       </option>
                     @endforeach
-                  </select>                  
-                  @error('religion')
-                  <div class="text-sm text-danger">
-                    {{ $message }}
-                  </div>
-                  @enderror
+                  </select>
                 </div>
                 <div class="col-md">
                   <label class="required fw-semibold fs-6">Blood Type</label>
                   <select class="form-select form-select-solid @error('bloodType') is-invalid @enderror" name="bloodType" required>
                     <option selected disabled>Select Blood Type</option>
                     @foreach ($bloodType as $item)       
-                      <option value="{{ $item->id }}" {{ old('bloodType') == $item->id ? 'selected' : '' }}>
+                      <option value="{{ $item->id }}" {{ old('bloodType') ?? $user->bloodType->id == $item->id ? 'selected' : '' }}>
                         {{ $item->name }}
                       </option>
                     @endforeach
                   </select>                  
-                  @error('bloodType') {{-- Perbaikan: sebelumnya tertulis 'religion' --}}
+                  @error('bloodType')
                   <div class="text-sm text-danger">
                     {{ $message }}
                   </div>
@@ -172,7 +146,7 @@
               </div>
               <div class="row mb-6">
                 <label class="required fw-semibold fs-6">Address</label>
-                <textarea class="form-control form-control form-control-solid @error('address') is-invalid @enderror" data-kt-autosize="true" placeholder="Full Addrress" name="address" required>{{ old('address') }}</textarea>
+                <textarea class="form-control form-control form-control-solid @error('address') is-invalid @enderror" data-kt-autosize="true" placeholder="Full Addrress" name="address" required>{{ old('address') ?? $user->address }}</textarea>
                   @error('address')
                   <div class="text-sm text-danger">
                     {{ $message }}
@@ -198,6 +172,29 @@
                     {{ $message }}
                   </div>
                   @enderror
+              </div>
+            </div>
+            <div class="card-body">
+              <h2 class="mb-5">
+                Secretariat Info
+              </h2>
+              <div class="row mb-5">
+                <label class="fw-semibold fs-6">Name</label>
+                  <input type="text" class="form-control form-control-lg form-control-solid"value="{{ $user->secretariat->name }}" disabled/>
+              </div>
+              <div class="row mb-5">
+                <div class="col">
+                  <label class="fw-semibold fs-6">Category</label>
+                  <input type="text" class="form-control form-control-lg form-control-solid" value="{{ $user->secretariat->category }}" disabled/>
+                </div>
+                <div class="col">
+                  <label class="fw-semibold fs-6">Type</label>
+                  <input type="text"  class="form-control form-control-lg form-control-solid" value="{{ $user->secretariat->type }}" disabled/>
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="fw-semibold fs-6">Address</label>
+                <textarea class="form-control form-control form-control-solid" data-kt-autosize="true" disabled>{{ old('address') ?? $user->secretariat->address }}</textarea>
               </div>
               <div class="row">
                 <div class="col">

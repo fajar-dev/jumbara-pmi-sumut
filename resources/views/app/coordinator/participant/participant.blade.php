@@ -3,6 +3,16 @@
 @section('content')
   <div class="row g-5 g-xl-10">
     <div class="col-xl-12 mb-8">
+      <div class="alert alert-dismissible bg-light-danger d-flex flex-column flex-sm-row p-5 mb-10">
+          <i class="ki-duotone ki-notification-bing fs-2hx text-danger me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+          <div class="d-flex flex-column pe-0 pe-sm-10">
+            <h4 class="fw-semibold">Important Notice</h4>
+            <span>Participant data registration will close on <strong>{{ \Carbon\Carbon::parse($setting->last_registration)->format('F d, Y h.iA') }}</strong>. Please ensure all required information is completed and submitted before the deadline to avoid any issues with the next steps.</span>
+          </div>
+          <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+              <i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+          </button>
+      </div>
       <div class="card card-flush">
         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
           <div class="card-title">
@@ -12,32 +22,99 @@
             </h3>
           </div>
           <div class="card-toolbar">
-            <form method="GET" class="card-title">
-              <input type="hidden" name="page" value="{{ request('page', 1) }}">
-              <div class="input-group d-flex align-items-center position-relative my-1">
-                <input type="text"  class="form-control form-control-solid rounded-start-3 ps-5 rounded-0" name="q" value="{{ request('q') }}" placeholder="Search" />
-                <button class="btn btn-danger btn-icon" type="submit" id="button-addon2">
-                  <span class="svg-icon svg-icon-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                    </svg>
-                  </span>
-                </button>
-              </div>
-              <!--end::Search-->
-            </form>
-            <a href="{{ route('coordinator.participant.add') }}" class="btn btn-danger d-flex align-items-center"><i class="ki-duotone ki-plus fs-2"></i>
-              Add
-            </a>
+          @if ($setting->last_registration > now())
+              <a href="{{ route('coordinator.participant.add') }}" class="btn btn-danger d-flex align-items-center">
+                  <i class="ki-duotone ki-plus fs-2"></i> Add
+              </a>
+          @endif
           </div>
         </div>
         <div class="card-body pt-0">
+          <form method="GET" class="card-title">
+            <input type="hidden" name="page" value="{{ request('page', 1) }}">
+
+            <div class="row">
+                {{-- Search by Name --}}
+                <div class="col mb-5">
+                    <input type="text" name="q" class="form-control form-control-lg form-control-solid" placeholder="Search by name" value="{{ request('q') }}" />
+                </div>
+
+                {{-- Gender Filter --}}
+                <div class="col mb-5">
+                    <select class="form-select form-select-solid @error('gender') is-invalid @enderror" name="gender">
+                        <option selected disabled>Select gender</option>
+                        @foreach ($gender as $item)
+                            <option value="{{ $item->id }}" {{ request('gender') == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                {{-- Member Type Filter --}}
+                <div class="col mb-5">
+                    <select class="form-select form-select-solid @error('memberType') is-invalid @enderror" name="memberType" id="memberType">
+                        <option selected disabled>Select member type</option>
+                        @foreach ($memberType as $item)
+                            <option value="{{ $item->id }}" {{ request('memberType') == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- Participant Type (dependent dropdown) --}}
+                <div class="col mb-5">
+                  <select class="form-select form-select-solid @error('participantType') is-invalid @enderror"
+                          name="participantType"
+                          id="participantType"
+                          data-loaded="{{ request('memberType') ? 'true' : 'false' }}">
+                      @if (request('memberType'))
+                          <option selected disabled>Select participant type</option>
+                          @foreach ($participantTypeList as $item)
+                              <option value="{{ $item['id'] }}" {{ request('participantType') == $item['id'] ? 'selected' : '' }}>
+                                  {{ $item['name'] }}
+                              </option>
+                          @endforeach
+                      @else
+                          <option selected disabled>Select a member type first</option>
+                      @endif
+                  </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end gap-5">
+                  <a href="{{ route('coordinator.participant') }}" class="btn btn-light-danger btn-md">
+                        <span class="svg-icon svg-icon-3">
+                            <i class="ki-duotone ki-arrows-circle fs-4">
+                              <span class="path1"></span>
+                              <span class="path2"></span>
+                            </i>
+                            Reset
+                        </span>
+                    </a>
+                    <button class="btn btn-danger btn-md" type="submit" id="button-addon2">
+                        <span class="svg-icon svg-icon-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                            Search
+                        </span>
+                    </button>
+                </div>
+            </div>
+          </form>
+
           <div class="table-responsive">
             <table class="table table-row-dashed fs-6 gy-5">
               <thead>
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                  <th class="min-w-100px">Participant</th>
-                  <th class="min-w-200px">Description</th>
+                  <th class="min-w-200px">Participant</th>
+                  <th class="min-w-100px">Gender</th>
+                  <th class="min-w-200px">Category</th>
                   <th class="text-end">Action</th>
                 </tr>
               </thead>
@@ -51,33 +128,55 @@
                 @else
                   @foreach ($participant as $item)     
                     <tr>
+                      <td class="d-flex align-items-center min-w-150px">
+                        <div class="symbol-group symbol-hover me-3">
+                          <div class="symbol symbol-45px symbol-circle" data-bs-toggle="tooltip" title="{{ $item->name }}">
+                            <img src="{{ $item->user->photo_path ? Storage::url($item->user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.$item->user->name }}" alt="">
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <span class="text-gray-800 fw-bold mb-1">{{ $item->user->name }}</span>
+                          <span class="text-gray-600 fs-7">{{ $item->user->member_id }}</span>
+                        </div>
+                        @if ($item->user->secretariat_id)
+                        <div>
+                          <a href="#" class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="SIAMO Verified">
+                            <i class="ki-duotone ki-verify fs-1 text-danger">
+                              <span class="path1"></span>
+                              <span class="path2"></span>
+                            </i>
+                          </a>
+                        </div>
+                        @endif
+                      </td>
                       <td>
                         <div class="text-start">
-                          <div class="fs-6 fw-bold">{{ $item->user->name }}</div>
+                          <div class="fs-6">{{ $item->user->gender->name }}</div>
                         </div>
                       </td>
                       <td>
                         <div class="text-start">
-                          <div class="fs-6">{{ $item->description }}</div>
+                          <div class="fs-6">{{ $item->user->memberType->name }} - {{ $item->participantType->name ?? '' }}</div>
                         </div>
                       </td>
                       <td class="text-end">
-                        <a href="#" class="btn btn-sm btn-light btn-active-light-danger btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                          Actions
-                          <span class="svg-icon fs-5 m-0 ps-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <polygon points="0 0 24 0 24 24 0 24"></polygon>
-                                <path d="M6.70710678,15.7071068 C6.31658249,16.0976311 5.68341751,16.0976311 5.29289322,15.7071068 C4.90236893,15.3165825 4.90236893,14.6834175 5.29289322,14.2928932 L11.2928932,8.29289322 C11.6714722,7.91431428 12.2810586,7.90106866 12.6757246,8.26284586 L18.6757246,13.7628459 C19.0828436,14.1360383 19.1103465,14.7686056 18.7371541,15.1757246 C18.3639617,15.5828436 17.7313944,15.6103465 17.3242754,15.2371541 L12.0300757,10.3841378 L6.70710678,15.7071068 Z" fill="currentColor" fill-rule="nonzero" transform="translate(12.000003, 11.999999) rotate(-180.000000) translate(-12.000003, -11.999999)"></path>
-                              </g>
-                            </svg>
-                          </span>
-                        </a>
-                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                          <div class="menu-item px-3">
-                            <a data-bs-toggle="modal" data-bs-target="#edit{{$item->id}}"class="menu-link text-hover-danger bg-hover-light px-3">Edit</a>
-                          </div>
-                        </div>
+                        <button class="btn btn-light-danger btn-sm">
+                          <i class="ki-outline ki-document"></i>
+                          Certificate
+                        </button>
+                        <button class="btn btn-danger btn-sm">
+                          <i class="ki-outline ki-scan-barcode"></i>
+                          ID Card
+                        </button>
+                        <button data-bs-toggle="modal" data-bs-target="#detail{{$item->id}}" class="btn btn-light btn-icon btn-sm">
+                          <i class="ki-outline ki-eye"></i>
+                        </button>
+                        @if ($setting->last_registration > now())
+                          <button class="btn btn-dark btn-icon btn-sm btn-del" id="{{ route('coordinator.participant.destroy', $item->id) }}">
+                            <i class="ki-outline ki-trash btn-del" id="{{ route('coordinator.participant.destroy', $item->id) }}">
+                            </i>
+                          </button>
+                        @endif
                       </td>
                     </tr>
                   @endforeach
@@ -142,46 +241,129 @@
     </div>
   </div>
 
-  @foreach ($participant as $item)
-<div class="modal fade" tabindex="-1" id="edit{{$item->id}}">
-  <div class="modal-dialog">
-    <form method="POST" action="{{ route('admin.master-data.blood.update', $item->id) }}" class="modal-content" id="formUpdate{{$item->id}}">
-      @csrf
+@foreach ($participant as $item)
+<div class="modal fade" tabindex="-1" id="detail{{$item->id}}">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" id="formUpdate{{$item->id}}">
         <div class="modal-header">
-            <h3 class="modal-title">Edit Type</h3>
+            <h3 class="modal-title">Participant Detail</h3>
             <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
                 <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
             </div>
         </div>
-        <div class="modal-body">
-          <div class="mb-5">
-            <label for="name{{$item->id}}" class="required form-label">Name</label>
-            <input type="text" id="name{{$item->id}}" name="name" class="form-control form-control-solid @error('name') is-invalid @enderror" value="{{ $item->name }}" placeholder="Name" required/>
-            @error('name')
-              <div class="invalid-feedback">
-                {{ $message }}
-              </div>
-            @enderror
+        <div class="card-body">
+          <div class="p-5">
+            <img src="{{ Storage::url($item->user->photo_path) }}" class="w-100px rounded" alt="">
           </div>
-          <div class="mb-5">
-            <label for="description{{$item->id}}" class="required form-label">Description</label>
-            <textarea id="description{{$item->id}}" name="description" class="form-control form-control-solid @error('description') is-invalid @enderror" placeholder="Description" rows="3" required>{{ $item->description }}</textarea>
-            @error('description')
-              <div class="invalid-feedback">
-                {{ $message }}
-              </div>
-            @enderror
+          <div class="table-responsive px-5">
+            <table class="table table-bo fw-normal">
+              <tbody>
+                <tr class="border-bottom border-gray-200">
+                  <td>Name</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->name }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>ID</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->member_id }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Member Type</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->memberType->name }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Participant Type</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->participantType->name }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Birth Place</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->birth_place }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Birth Date</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->birth_date }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Email</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->email }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Phone</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->phone_number }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Gender</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->gender->name }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Religion</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->religion->name }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Blood Type</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->bloodType->name }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Address</td>
+                  <td>:</td>
+                  <td>
+                    {{ $item->user->address }}
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Health Certificate</td>
+                  <td>:</td>
+                  <td>
+                    <a href="{{ Storage::url($item->health_certificate) }}" target="_blank" class="text-danger">View</a>
+                  </td>
+                </tr>
+                <tr class="border-bottom border-gray-200">
+                  <td>Assignment Letter</td>
+                  <td>:</td>
+                  <td>
+                    <a href="{{ Storage::url($item->assignment_letter) }}" target="_blank" class="text-danger">View</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-danger" id="submit{{$item->id}}">
-              <span class="indicator-label">Save</span>
-              <span class="indicator-progress" style="display: none;">Loading... 
-              <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-            </button>
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
         </div>
-    </form>
+      </div>
   </div>
 </div>
 @endforeach
@@ -206,4 +388,44 @@
     submitButton.setAttribute('disabled', 'disabled');
   });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const memberTypeSelect = document.getElementById('memberType');
+        const participantTypeSelect = document.getElementById('participantType');
+
+        const selectedParticipantType = '{{ request('participantType') }}';
+
+        function loadParticipantTypes(memberTypeId, callback) {
+          fetch(`/app/member-type/${memberTypeId}/participant-types`)
+                .then(res => res.json())
+                .then(data => {
+                    participantTypeSelect.innerHTML = '<option selected disabled>Select participant type</option>';
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.name;
+                        if (selectedParticipantType == item.id) {
+                            option.selected = true;
+                        }
+                        participantTypeSelect.appendChild(option);
+                    });
+
+                    if (callback) callback();
+                });
+        }
+
+        // Trigger when member type changes
+        memberTypeSelect.addEventListener('change', function () {
+            const selectedId = this.value;
+            participantTypeSelect.innerHTML = '<option>Loading...</option>';
+            loadParticipantTypes(selectedId);
+        });
+
+        // Trigger on first load only if not already loaded by server
+        if (memberTypeSelect.value && participantTypeSelect.dataset.loaded === 'false') {
+            loadParticipantTypes(memberTypeSelect.value);
+        }
+    });
+</script>
+
 @endsection

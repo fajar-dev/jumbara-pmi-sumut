@@ -115,6 +115,16 @@
                 <div class="fw-bold d-flex align-items-center fs-5">{{ Auth::user()->name }}</div>
                 <a href="#" class="fw-semibold text-muted text-hover-danger fs-7">{{ Auth::user()->member_id }}</a>
               </div>
+              @if (Auth::user()->secretariat_id)
+                <div>
+                  <a href="#" class="ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="SIAMO Verified">
+                    <i class="ki-duotone ki-verify fs-1 text-danger">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </a>
+                </div>
+              @endif
             </div>
           </div>
           <div class="separator my-2"></div>

@@ -253,7 +253,7 @@
           </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+          <a class="menu-link @if($title == 'Activity') active bg-danger @endif menu-accordion"" href="{{ route('coordinator.activity') }}">
             <span class="menu-icon">
               <i class="ki-outline ki-flag fs-2"></i> 
             </span>

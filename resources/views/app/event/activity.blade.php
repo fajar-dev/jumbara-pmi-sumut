@@ -291,7 +291,7 @@
             <h3 class="modal-title">Edit Activity</h3>
             <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
                 <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-            </div>
+            </div> 
         </div>
         <div class="modal-body">
           <div class="mb-5">

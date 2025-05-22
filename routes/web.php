@@ -192,11 +192,17 @@ Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
 Route::prefix('/coordinator')->middleware(['auth', 'isCoordinator'])->group(function () {
     Route::prefix('/participant')->group(function () {
         Route::get('/', [CoordinatorController::class, 'participant'])->name('coordinator.participant');
+        Route::post('/{provinceId}/{cityId}/check', [CoordinatorController::class, 'participantCheck'])->name('coordinator.participant.check');
         Route::get('/add', [CoordinatorController::class, 'participantAdd'])->name('coordinator.participant.add');
+        Route::post('/add', [CoordinatorController::class, 'participantStore'])->name('coordinator.participant.store');
+        Route::get('/{memberId}/completed', [CoordinatorController::class, 'participantCompleted'])->name('coordinator.participant.completed');
+        Route::post('/{memberId}/completed', [CoordinatorController::class, 'participantCompletedStore'])->name('coordinator.participant.completed.store');
         Route::get('/register', [CoordinatorController::class, 'participantRegister'])->name('coordinator.participant.register');
         Route::post('/register', [CoordinatorController::class, 'participantRegisterStore'])->name('coordinator.participant.register.store');
-        
-        Route::post('/{provinceId}/{cityId}/check', [CoordinatorController::class, 'participantCheck'])->name('coordinator.participant.check');
-        Route::post('/{contingentId}/add', [CoordinatorController::class, 'participantStore'])->name('coordinator.participant.store');
+        Route::get('/{id}/destroy', [CoordinatorController::class, 'participantDestroy'])->name('coordinator.participant.destroy');
+    });
+
+    Route::prefix('/activity')->group(function () {
+        Route::get('/', [CoordinatorController::class, 'activity'])->name('coordinator.activity');
     });
 });

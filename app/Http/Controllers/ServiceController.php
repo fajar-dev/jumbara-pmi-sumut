@@ -51,6 +51,7 @@ class ServiceController extends Controller
             // Hitung jumlah peserta yang sudah ada
             $currentCount = Participant::where('contingent_id', $coordinator->contingent_id)
                 ->where('participant_type_id', $participantType->id)
+                // ->where('is_draft', true)
                 ->count();
 
             $max = $participantType->max_participant;

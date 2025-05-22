@@ -7,8 +7,10 @@ use App\Models\Gender;
 use App\Models\Religion;
 use App\Models\BloodType;
 use App\Models\MemberType;
+use App\Models\Participant;
 use App\Models\Secretariat;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -89,5 +91,10 @@ class User extends Authenticatable
     public function memberType(): BelongsTo
     {
         return $this->belongsTo(MemberType::class);
+    }
+
+    public function participant(): HasOne
+    {
+        return $this->hasOne(Participant::class);
     }
 }

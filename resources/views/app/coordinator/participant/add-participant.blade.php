@@ -34,7 +34,7 @@
                 @php
                     $member = json_decode(session('found')); // Ambil seluruh data member dari session
                 @endphp
-                <form action="{{ route('coordinator.participant.store', $coordinator->contingent->id) }}" method="POST" id="member">
+                <form action="{{ route('coordinator.participant.store')}}" method="POST" id="member">
                   @csrf
                     <div class="alert alert-dismissible bg-light-primary d-flex flex-column flex-sm-row p-5 mb-10 mt-5">
                         <div class="d-flex flex-column pe-0 pe-sm-10">
