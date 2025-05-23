@@ -155,7 +155,7 @@
                         
                       </td>
                       <td class="text-end">
-                        <a href="#" class="btn btn-danger btn-sm mb-3 mb-md-0" style="white-space: nowrap;">
+                        <a href="{{ route('admin.event.contingent.participant', $item->id) }}" class="btn btn-danger btn-sm mb-3 mb-md-0" style="white-space: nowrap;">
                           <i class="ki-duotone ki-people">
                             <span class="path1"></span>
                             <span class="path2"></span>
@@ -165,7 +165,7 @@
                           </i>                          
                           Participant
                         </a>
-                        <a href="#" class="btn btn-light-danger btn-sm mb-3 mb-md-0">
+                        <a href="{{ route('admin.event.contingent.activity', $item->id) }}" class="btn btn-light-danger btn-sm mb-3 mb-md-0">
                           <i class="ki-duotone ki-flag">
                             <span class="path1"></span>
                             <span class="path2"></span>

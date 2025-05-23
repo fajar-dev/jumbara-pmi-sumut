@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ActicityParticipation;
 use App\Models\User;
+use App\Models\Gender;
 use App\Models\Activity;
 use App\Models\Contingent;
+use App\Models\MemberType;
 use App\Models\Coordinator;
+use App\Models\Participant;
 use App\Models\Secretariat;
 use App\Models\ActivityType;
-use App\Models\MemberType;
-use App\Models\ParticipantAssignment;
-use App\Models\ParticipantType;
 use Illuminate\Http\Request;
+use App\Models\ParticipantType;
 use Illuminate\Support\Facades\Hash;
+use App\Models\ActicityParticipation;
+use App\Models\ParticipantAssignment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +31,7 @@ class EventController extends Controller
             'page_id' => null,
             'contingent' => $data
         ];
-        return view('app.event.contingent',  $data);
+        return view('app.event.contingent.contingent',  $data);
     }
 
     public function contingentStore(Request $request){
@@ -207,7 +209,7 @@ class EventController extends Controller
         if($request->delete == "true"){
             ParticipantAssignment::where('activity_id', $id)->delete();
         };
-        
+
         // Simpan data participant type baru
         if ($request->participantTypes && $request->participantCounts) {
             foreach ($request->participantTypes as $key => $participantTypeId) {
@@ -233,6 +235,62 @@ class EventController extends Controller
         }
 
         return redirect()->back()->with('success', 'Participation rules updated successfully.');
+    }
+
+    public function contingentParticipant($id, Request $request)
+    {
+        $search = $request->input('q');
+        $gender = $request->input('gender');
+        $memberType = $request->input('memberType');
+        $participantType = $request->input('participantType');
+
+        $participant = Participant::with('user')
+            ->where('contingent_id', $id)
+            ->where('is_draft', false)
+            ->whereHas('user', function ($query) use ($search, $gender, $memberType) {
+                if ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                }
+
+                if ($gender) {
+                    $query->where('gender_id', $gender);
+                }
+
+                if ($memberType) {
+                    $query->where('member_type_id', $memberType);
+                }
+            })
+            ->when($participantType, function ($query) use ($participantType) {
+                $query->where('participant_type_id', $participantType);
+            })
+            ->orderBy('participant_type_id', 'desc')
+            ->paginate(10);
+
+        $participant->appends($request->all());
+
+        $memberTypeList = MemberType::with(['memberParticipations.participantType'])->find($memberType);
+
+        $participantTypeList = [];
+        if ($memberType) {
+            foreach ($memberTypeList->memberParticipations as $participation) {
+                $participantType = $participation->participantType;
+                $participantTypeList[] = [
+                    'id' => $participantType->id,
+                    'name' => $participantType->name,
+                ];
+            }
+        }
+
+        // return $participantTypeList;
+        return view('app.event.contingent.participant', [
+            'title' => 'Event',
+            'subTitle' => 'Contingent',
+            'participant' => $participant,
+            'gender' => Gender::all(),
+            'memberType' => MemberType::all(),
+            'participantTypeList' => $participantTypeList,
+            'contingent' => Contingent::find($id)
+        ]);
     }
 
 }

@@ -79,9 +79,11 @@
                           </span>
                         </a>
                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                          <div class="menu-item px-3">
-                            <a href="{{ route('admin.news.edit', $item->id) }}" class="menu-link px-3 text-hover-danger bg-hover-light">Participant</a>
-                          </div>
+                            @if (now()->lessThan(Carbon\Carbon::parse($item->start)->subMinutes(15)))
+                              <div class="menu-item px-3">
+                                <a href="{{ route('admin.news.edit', $item->id) }}" class="menu-link px-3 text-hover-danger bg-hover-light">Participant</a>
+                              </div>
+                            @endif
                           <div class="menu-item px-3">
                             <a id="{{ route('admin.news.destroy', $item->id) }}" class="menu-link px-3 text-hover-danger bg-hover-light btn-del">Attedance</a>
                           </div>
@@ -245,45 +247,6 @@
     submitButton.querySelector('.indicator-progress').style.display = 'inline-block';
     submitButton.setAttribute('disabled', 'disabled');
   });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const memberTypeSelect = document.getElementById('memberType');
-        const participantTypeSelect = document.getElementById('participantType');
-
-        const selectedParticipantType = '{{ request('participantType') }}';
-
-        function loadParticipantTypes(memberTypeId, callback) {
-          fetch(`/app/member-type/${memberTypeId}/participant-types`)
-                .then(res => res.json())
-                .then(data => {
-                    participantTypeSelect.innerHTML = '<option selected disabled>Select participant type</option>';
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.name;
-                        if (selectedParticipantType == item.id) {
-                            option.selected = true;
-                        }
-                        participantTypeSelect.appendChild(option);
-                    });
-
-                    if (callback) callback();
-                });
-        }
-
-        // Trigger when member type changes
-        memberTypeSelect.addEventListener('change', function () {
-            const selectedId = this.value;
-            participantTypeSelect.innerHTML = '<option>Loading...</option>';
-            loadParticipantTypes(selectedId);
-        });
-
-        // Trigger on first load only if not already loaded by server
-        if (memberTypeSelect.value && participantTypeSelect.dataset.loaded === 'false') {
-            loadParticipantTypes(memberTypeSelect.value);
-        }
-    });
 </script>
 
 @endsection
