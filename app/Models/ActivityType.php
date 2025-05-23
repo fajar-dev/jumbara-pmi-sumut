@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ActivityType extends Model
@@ -16,4 +18,9 @@ class ActivityType extends Model
         'name',
         'description',
     ];
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(Activity::class);
+    }
 }

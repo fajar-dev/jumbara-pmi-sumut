@@ -3,14 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Crew;
+use App\Models\Admin;
 use App\Models\Gender;
 use App\Models\Religion;
 use App\Models\BloodType;
 use App\Models\MemberType;
+use App\Models\Coordinator;
 use App\Models\Participant;
 use App\Models\Secretariat;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -96,5 +100,20 @@ class User extends Authenticatable
     public function participant(): HasOne
     {
         return $this->hasOne(Participant::class);
+    }
+
+    public function coordinator(): HasOne
+    {
+        return $this->hasOne(Coordinator::class);
+    }
+
+    public function admin(): HasOne
+    {
+        return $this->hasOne(Admin::class);
+    }
+
+    public function crew(): HasMany
+    {
+        return $this->hasMany(Crew::class);
     }
 }

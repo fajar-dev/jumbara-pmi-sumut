@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActicityParticipation;
 use App\Models\User;
 use App\Models\Activity;
 use App\Models\Contingent;
 use App\Models\Coordinator;
 use App\Models\Secretariat;
 use App\Models\ActivityType;
+use App\Models\MemberType;
+use App\Models\ParticipantAssignment;
+use App\Models\ParticipantType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -139,6 +143,8 @@ class EventController extends Controller
             'page_id' => null,
             'activity' => $data,
             'activityType' => ActivityType::all(),
+            'participantType' => ParticipantType::all(),
+            'memberType' => MemberType::all() 
         ];
         return view('app.event.activity',  $data);
     }
@@ -150,7 +156,6 @@ class EventController extends Controller
             'type' => 'required',
             'start' => 'required|date',
             'end' => 'required|date',
-            'max' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return redirect()->route('admin.event.activity')->with('error', 'Validation Error')->withInput()->withErrors($validator);
@@ -162,7 +167,6 @@ class EventController extends Controller
         $activity->activity_type_id = $request->input('type');
         $activity->start = $request->input('start');
         $activity->end = $request->input('end');
-        $activity->max_participant = $request->input('max');
         $activity->save();
 
         return redirect()->route('admin.event.activity')->with('success', 'Activity has been added successfully');
@@ -175,7 +179,6 @@ class EventController extends Controller
             'type' => 'required',
             'start' => 'required|date',
             'end' => 'required|date',
-            'max' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return redirect()->route('admin.event.activity')->with('error', 'Validation Error')->withInput()->withErrors($validator);
@@ -187,10 +190,7 @@ class EventController extends Controller
         $contingent->activity_type_id = $request->input('type');
         $contingent->start = $request->input('start');
         $contingent->end = $request->input('end');
-        $contingent->max_participant = $request->input('max');
         $contingent->save();
-
-
         return redirect()->route('admin.event.activity')->with('success', 'Activity has been updated successfully');
     }
 
@@ -199,4 +199,40 @@ class EventController extends Controller
         $contingent->delete();
         return redirect()->route('admin.event.activity')->with('success', 'Activity has been deleted successfully');
     }
+
+    public function participationRule($id, Request $request)
+    {
+        ActicityParticipation::where('activity_id', $id)->delete();
+
+        if($request->delete == "true"){
+            ParticipantAssignment::where('activity_id', $id)->delete();
+        };
+        
+        // Simpan data participant type baru
+        if ($request->participantTypes && $request->participantCounts) {
+            foreach ($request->participantTypes as $key => $participantTypeId) {
+                ActicityParticipation::updateOrInsert([
+                    'activity_id' => $id,
+                    'participant_type_id' => $participantTypeId,
+                ], [
+                    'max_participant' => $request->participantCounts[$key]
+                ]);
+            }
+        }
+
+        // Simpan data member type baru (termasuk kondisi All)
+        if ($request->memberTypes && $request->memberCounts) {
+            foreach ($request->memberTypes as $key => $memberTypeId) {
+                ActicityParticipation::updateOrInsert([
+                    'activity_id' => $id,
+                    'member_type_id' => $memberTypeId ?: null,
+                ], [
+                    'max_participant' => $request->memberCounts[$key]
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Participation rules updated successfully.');
+    }
+
 }

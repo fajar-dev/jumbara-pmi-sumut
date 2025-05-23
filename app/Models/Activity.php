@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\ActivityType;
 use App\Models\CrewAssignment;
 use App\Models\ActicityParticipation;
+use App\Models\ParticipantAssignment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +34,11 @@ class Activity extends Model
     public function crewAssignment(): HasMany
     {
         return $this->hasMany(CrewAssignment::class);
+    }
+
+    public function participantAssignment(): HasMany
+    {
+        return $this->hasMany(ParticipantAssignment::class);
     }
 
     public function activityParticipations(): HasMany

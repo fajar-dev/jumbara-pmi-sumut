@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Activity;
+use App\Models\MemberType;
 use App\Models\ParticipantType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,5 +30,10 @@ class ActicityParticipation extends Model
     public function participantType(): BelongsTo
     {
         return $this->belongsTo(ParticipantType::class);
+    }
+
+    public function memberType(): BelongsTo
+    {
+        return $this->belongsTo(MemberType::class);
     }
 }

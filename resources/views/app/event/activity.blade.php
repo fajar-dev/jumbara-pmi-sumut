@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('style')
+    <script src="{{ asset('app/plugins/custom/ckeditor/ckeditor-classic.bundle.js') }}"></script>
+@endsection
 
 @section('content')
   <div class="row g-5 g-xl-10">
@@ -51,7 +54,9 @@
                         </div>
                         <div class="mb-5">
                           <label for="exampleFormControlInput1" class="required form-label">Description</label>
-                          <textarea name="description" class="form-control form-control-solid @error('description') is-invalid @enderror"  placeholder="Description" rows="3" required>{{ old('description') }}</textarea>
+                          <textarea name="description" id="kt_docs_ckeditor_classic" required>
+                            {{ old('content') }}
+                          </textarea>
                           @error('description')
                             <div class="invalid-feedback">
                               {{ $message }}
@@ -93,15 +98,6 @@
                             </div>
                           @enderror
                         </div>
-                        <div class="mb-5">
-                          <label for="exampleFormControlInput1" class="required form-label">Max Participant</label>
-                          <input type="number" name="max" class="form-control form-control-solid @error('max') is-invalid @enderror"  value="{{ old('max') }}" placeholder="Max Participant" required/>
-                          @error('max')
-                            <div class="invalid-feedback">
-                              {{ $message }}
-                            </div>
-                          @enderror
-                        </div>
                       </div>
                       <div class="modal-footer">
                           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
@@ -123,7 +119,7 @@
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-50px">Name</th>
                   <th class="min-w-100px">Description</th>
-                  <th class="min-w-50px">Max Participant</th>
+                  <th class="min-w-50px">Participation Rule</th>
                   <th class="min-w-100px">Ongoing date</th>
                   <th class="min-w-100px">Crew</th>
                   <th class="text-end">Action</th>
@@ -155,13 +151,35 @@
                       </td>
                       <td>
                         <div class="text-start">
-                          <div class="fs-7">
-                            @foreach ($item->activityParticipations as $participation)
-                                <span class="{{ $participation->participantType->class }} mb-1">
-                                  {{ $participation->participantType->name }}: {{  $participation->max_participant }}
-                                </span>
-                                <br>
-                            @endforeach
+                          <div class="fs-7 d-flex align-items-center">
+                            <div>
+                              @forelse ($item->activityParticipations as $participation)
+                                    @if ($participation->participantType)
+                                      <span class="{{ $participation->participantType->class }} mb-1">
+                                        {{ $participation->participantType->name }}: {{  $participation->max_participant ?? '-' }}
+                                      </span>
+                                    @elseif ($participation->memberType)
+                                      <span class=" badge badge-light-danger mb-1">
+                                        {{ $participation->memberType->name }}: {{  $participation->max_participant }}
+                                      </span>
+                                    @else
+                                      <span class="badge badge-light-danger mb-1">
+                                        All : {{  $participation->max_participant }}
+                                      </span>
+                                    @endif
+                                  <br>
+                              @empty
+                                  <span class="badge badge-light mb-1">
+                                    Free
+                                  </span>
+                              @endforelse
+                            </div>
+                            <button data-bs-toggle="modal" data-bs-target="#participation{{$item->id}}" class="btn text-danger btn-sm">
+                            <i class="ki-duotone ki-pencil fs-2 text-danger">
+                              <span class="path1"></span>
+                              <span class="path2"></span>
+                            </i>
+                          </button>
                           </div>
                         </div>
                       </td>
@@ -178,7 +196,7 @@
                                 <img src="{{ $crew->crew->user->photo_path ? Storage::url($crew->crew->user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.$crew->crew->user->name }}" alt=""/>
                               </div>
                             @endforeach
-                        </div>
+                          </div>
                         </div>
                       </td>
                       <td class="text-end">
@@ -282,7 +300,170 @@
     </div>
   </div>
 
-  @foreach ($activity as $item)
+@foreach ($activity as $item)
+<div class="modal fade" tabindex="-1" id="participation{{ $item->id }}">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ route('admin.event.activity.rule', $item->id) }}" class="modal-content" id="formUpdate{{ $item->id }}">
+      @csrf
+      <div class="modal-header">
+        <h3 class="modal-title">Change Participation Rule</h3>
+        <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
+          <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        {{-- Participant Type --}}
+        <h5 class="mb-5">Participant Type</h5>
+        <div class="form-group" id="participant-type-container-{{ $item->id }}">
+          @foreach ($item->activityParticipations as $p)
+            @if ($p->participantType)
+              <div class="form-group row mb-4">
+                <div class="col-8">
+                  <label class="form-label">Type:</label>
+                  <select name="participantTypes[]" class="form-control form-select-solid">
+                    @foreach ($participantType as $pt)
+                      <option value="{{ $pt->id }}" {{ $pt->id == $p->participant_type_id ? 'selected' : '' }}>
+                        {{ $pt->name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-2">
+                  <label class="form-label">Max:</label>
+                  <input type="number" name="participantCounts[]" value="{{ $p->max_participant }}" class="form-control" placeholder="0" required />
+                </div>
+                <div class="col-2 mt-10">
+                  <button type="button" class="btn btn-sm btn-light-danger btn-icon" onclick="this.closest('.form-group').remove()">
+                    <i class="ki-outline ki-trash fs-5"></i>
+                  </button>
+                </div>
+              </div>
+            @endif
+          @endforeach
+        </div>
+        <div class="form-group mt-5">
+          <button type="button" class="btn btn-light-success btn-sm" onclick="addParticipantTypeRow({{ $item->id }})">
+            <i class="ki-duotone ki-plus fs-3"></i> Add
+          </button>
+        </div>
+
+        <hr class="my-10">
+
+        {{-- Member Type --}}
+        <h5 class="mb-5">Member Type</h5>
+        <div class="form-group" id="member-type-container-{{ $item->id }}">
+          @foreach ($item->activityParticipations as $m)
+            @if ($m->memberType || (is_null($m->member_type_id) && is_null($m->participant_type_id)))
+              <div class="form-group row mb-4">
+                <div class="col-8">
+                  <label class="form-label">Type:</label>
+                  <select name="memberTypes[]" class="form-control form-select-solid">
+                    <option value="" {{ is_null($m->member_type_id) && is_null($m->participant_type_id) ? 'selected' : '' }}>All</option>
+                    @foreach ($memberType as $mt)
+                      <option value="{{ $mt->id }}" {{ $mt->id == $m->member_type_id ? 'selected' : '' }}>
+                        {{ $mt->name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-2">
+                  <label class="form-label">Max:</label>
+                  <input type="number" name="memberCounts[]" value="{{ $m->max_participant }}" class="form-control" placeholder="0" required />
+                </div>
+                <div class="col-2 mt-10">
+                  <button type="button" class="btn btn-sm btn-light-danger btn-icon" onclick="this.closest('.form-group').remove()">
+                    <i class="ki-outline ki-trash fs-5"></i>
+                  </button>
+                </div>
+              </div>
+            @endif
+          @endforeach
+        </div>
+        <div class="form-group mt-5">
+          <button type="button" class="btn btn-light-success btn-sm" onclick="addMemberTypeRow({{ $item->id }})">
+            <i class="ki-duotone ki-plus fs-3"></i> Add
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="form-check">
+          <input class="form-check-input bg-active-danger" type="checkbox" value="true" name="delete" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault">
+              Detele all participant on this activity
+          </label>
+        </div>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-danger" id="submit{{ $item->id }}">
+          <span class="indicator-label">Save</span>
+          <span class="indicator-progress" style="display: none;">Loading...
+            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function addParticipantTypeRow(id) {
+  const container = document.getElementById('participant-type-container-' + id);
+  const html = `
+    <div class="form-group row mb-4">
+      <div class="col-8">
+        <label class="form-label">Type:</label>
+        <select name="participantTypes[]" class="form-control form-select-solid">
+          @foreach ($participantType as $pt)
+            <option value="{{ $pt->id }}">{{ $pt->name }}</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="col-2">
+        <label class="form-label">Max:</label>
+        <input type="number" name="participantCounts[]" class="form-control" placeholder="0" required />
+      </div>
+      <div class="col-2 mt-10">
+        <button type="button" class="btn btn-sm btn-light-danger btn-icon" onclick="this.closest('.form-group').remove()">
+          <i class="ki-outline ki-trash fs-5"></i>
+        </button>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+}
+
+function addMemberTypeRow(id) {
+  const container = document.getElementById('member-type-container-' + id);
+  const html = `
+    <div class="form-group row mb-4">
+      <div class="col-8">
+        <label class="form-label">Type:</label>
+        <select name="memberTypes[]" class="form-control form-select-solid">
+          <option value="">All</option>
+          @foreach ($memberType as $mt)
+            <option value="{{ $mt->id }}">{{ $mt->name }}</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="col-2">
+        <label class="form-label">Max:</label>
+        <input type="number" name="memberCounts[]" class="form-control" placeholder="0"  required />
+      </div>
+      <div class="col-2 mt-10">
+        <button type="button" class="btn btn-sm btn-light-danger btn-icon" onclick="this.closest('.form-group').remove()">
+          <i class="ki-outline ki-trash fs-5"></i>
+        </button>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+}
+</script>
+@endforeach
+
+@foreach ($activity as $item)
 <div class="modal fade" tabindex="-1" id="edit{{$item->id}}">
   <div class="modal-dialog">
     <form method="POST" action="{{ route('admin.event.activity.update', $item->id) }}" class="modal-content" id="formUpdate{{$item->id}}">
@@ -305,7 +486,9 @@
           </div>
           <div class="mb-5">
             <label for="exampleFormControlInput{{$item->id}}" class="required form-label">Description</label>
-            <textarea name="description" class="form-control form-control-solid @error('description') is-invalid @enderror"  placeholder="Description" rows="3" required>{{ $item->description }}</textarea>
+            <textarea name="description" id="kt_docs_ckeditor_classic{{ $item->id }}" required>
+            {!! $item->description !!}            
+            </textarea>
             @error('description')
               <div class="invalid-feedback">
                 {{ $message }}
@@ -346,15 +529,6 @@
               </div>
             @enderror
           </div>
-          <div class="mb-5">
-            <label for="max{{$item->id}}" class="required form-label">Max Participant</label>
-            <input type="number" id="max{{$item->id}}" name="max" class="form-control form-control-solid @error('max') is-invalid @enderror" value="{{ $item->max_participant }}" placeholder="Max Participant" required/>
-            @error('max')
-              <div class="invalid-feedback">
-                {{ $message }}
-              </div>
-            @enderror
-          </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
@@ -367,10 +541,30 @@
     </form>
   </div>
 </div>
+<script>
+  ClassicEditor
+    .create(document.querySelector('#kt_docs_ckeditor_classic{{ $item->id }}'))
+    .then(editor => {
+        console.log(editor);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+</script>
 @endforeach
 @endsection
 
 @section('script')
+<script>
+  ClassicEditor
+    .create(document.querySelector('#kt_docs_ckeditor_classic'))
+    .then(editor => {
+        console.log(editor);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+</script>
 <script>
   document.querySelectorAll('form').forEach(function(form) {
     form.addEventListener('submit', function(event) {
@@ -389,4 +583,5 @@
     submitButton.setAttribute('disabled', 'disabled');
   });
 </script>
+
 @endsection

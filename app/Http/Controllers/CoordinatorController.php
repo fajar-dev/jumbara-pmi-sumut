@@ -329,12 +329,32 @@ class CoordinatorController extends Controller
     }
 
     public function activity(){
+        $coordinator = Coordinator::where('user_id', Auth::user()->id)->first();
+        $activity = ActivityType::with([
+            'activities' => function($q) use ($coordinator) {
+                $q->orderBy('start')
+                ->with([
+                    'participantAssignment' => function($q2) use ($coordinator) {
+                        $q2->orderBy('created_at')
+                            ->with([
+                                'participant' => function($q3) use ($coordinator) {
+                                    $q3->where('contingent_id', $coordinator->contingent->id)->limit(5);
+                                }
+                            ]);
+                    }
+                ]);
+            }
+        ])->get();
+
         $data = [
             'title' => 'Activity',
-            'subTitle' => 'null',
-            'coordinator' => Coordinator::where('user_id', Auth::user()->id)->first(),
-            'activity' => ActivityType::all()
+            'subTitle' => null,
+            'coordinator' => $coordinator,
+            'activities' => $activity
         ];
+
+        // $activity = ActivityType::with('activities')->get();
+        // dd($activity);
         return view('app.coordinator.activity.activity', $data);
     }
 

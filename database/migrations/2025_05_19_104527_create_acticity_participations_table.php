@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('acticity_participations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('activity_id');
-            $table->unsignedBigInteger('participant_type_id');
-            $table->integer('max_participant');
+            $table->unsignedBigInteger('participant_type_id')->nullable();
+            $table->unsignedBigInteger('member_type_id')->nullable();
+            $table->integer('max_participant')->nullable();
             $table->timestamps();
 
             $table->foreign('activity_id')
@@ -27,6 +28,12 @@ return new class extends Migration
             $table->foreign('participant_type_id')
             ->references('id')
             ->on('participant_types')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('member_type_id')
+            ->references('id')
+            ->on('member_types')
             ->onDelete('cascade')
             ->onUpdate('cascade');
 

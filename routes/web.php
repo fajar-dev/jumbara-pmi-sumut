@@ -108,6 +108,7 @@ Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
             Route::get('/', [EventController::class, 'activity'])->name('admin.event.activity');
             Route::post('/add', [EventController::class, 'activityStore'])->name('admin.event.activity.store');
             Route::post('/{id}/edit', [EventController::class, 'activityUpdate'])->name('admin.event.activity.update');
+            Route::post('/{id}/rule', [EventController::class, 'participationRule'])->name('admin.event.activity.rule');
             Route::get('/{id}/destroy', [EventController::class, 'activityDestroy'])->name('admin.event.activity.destroy');
         });
     });
