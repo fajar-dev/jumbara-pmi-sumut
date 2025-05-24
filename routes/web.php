@@ -101,7 +101,7 @@ Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
             Route::post('/{id}/edit', [EventController::class, 'contingentUpdate'])->name('admin.event.contingent.update');
             Route::post('/{id}/coordinator', [EventController::class, 'coordinatorStore'])->name('admin.event.contingent.coordinator.store');
             Route::get('/{id}/destroy', [EventController::class, 'contingentDestroy'])->name('admin.event.contingent.destroy');
-            Route::get('/{id}/participant', [EventController::class, 'contingentparticipant'])->name('admin.event.contingent.participant');
+            Route::get('/{id}/participant', [EventController::class, 'contingentParticipant'])->name('admin.event.contingent.participant');
             Route::get('/{id}/activity', [EventController::class, 'contingentActivity'])->name('admin.event.contingent.activity');
         });
         Route::prefix('/activity')->group(function () {
@@ -110,6 +110,9 @@ Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
             Route::post('/{id}/edit', [EventController::class, 'activityUpdate'])->name('admin.event.activity.update');
             Route::post('/{id}/rule', [EventController::class, 'participationRule'])->name('admin.event.activity.rule');
             Route::get('/{id}/destroy', [EventController::class, 'activityDestroy'])->name('admin.event.activity.destroy');
+            Route::get('/{id}/participant', [EventController::class, 'activityParticipant'])->name('admin.event.activity.participant');
+            Route::get('/{id}/crew', [EventController::class, 'activityCrew'])->name('admin.event.activity.crew');
+
         });
     });
 

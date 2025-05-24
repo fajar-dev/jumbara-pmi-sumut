@@ -200,7 +200,7 @@
                         </div>
                       </td>
                       <td class="text-end">
-                        <a href="#" class="btn btn-danger btn-sm btn-sm mb-3 mb-md-0" style="white-space: nowrap;">
+                        <a href="{{ route('admin.event.activity.participant', $item->id) }}" class="btn btn-danger btn-sm btn-sm mb-3 mb-md-0" style="white-space: nowrap;">
                           <i class="ki-duotone ki-people">
                             <span class="path1"></span>
                             <span class="path2"></span>
@@ -210,7 +210,7 @@
                           </i>                          
                           Participant
                         </a>
-                        <a href="#" class="btn btn-light text-danger btn-sm btn-sm mb-3 mb-md-0">
+                        <a href="{{ route('admin.event.activity.crew', $item->id) }}" class="btn btn-light text-danger btn-sm btn-sm mb-3 mb-md-0">
                           <i class="ki-duotone ki-security-user text-danger">
                             <span class="path1"></span>
                             <span class="path2"></span>

@@ -5,10 +5,10 @@
     <div class="col-xl-12 mb-8">
       <ul class="nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6">
         <li class="nav-item">
-            <a class="nav-link  border-hover-danger text-danger border-danger" href="{{ route('admin.event.contingent.participant', $contingent->id) }}">Participant</a>
+            <a class="nav-link  border-hover-danger text-danger border-danger" href="{{ route('admin.event.activity.participant', $activity->id) }}">Participant</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link border-hover-danger" data-bs-toggle="tab" href="{{ route('admin.event.contingent.activity', $contingent->id) }}">Activiity</a>
+            <a class="nav-link border-hover-danger" href="{{ route('admin.event.activity.crew', $activity->id) }}">Crew</a>
         </li>
     </ul>
       <div class="card card-flush">
@@ -22,7 +22,7 @@
             </a>
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold fs-3 mb-1">Participant</span>
-              <span class="text-muted fw-semibold fs-7">{{ $contingent->name }}</span>
+              <span class="text-muted fw-semibold fs-7">{{ $activity->name }}</span>
             </h3>
           </div>
           <div class="card-toolbar">
@@ -45,6 +45,14 @@
                     <input type="text" name="q" class="form-control form-control-lg form-control-solid" placeholder="Search by name" value="{{ request('q') }}" />
                 </div>
 
+                <div class="col mb-5">
+                    <select class="form-select form-select-solid @error('attendance') is-invalid @enderror" name="attendance">
+                        <option selected disabled>Select attendance status</option>
+                          <option value="true" {{ request('attendance') === 'true' ? 'selected' : '' }}>Attended</option>
+                          <option value="false" {{ request('attendance') === 'false' ? 'selected' : '' }}>Not Yet Attended</option>
+                    </select>
+                </div>
+
                 {{-- Gender Filter --}}
                 <div class="col mb-5">
                     <select class="form-select form-select-solid @error('gender') is-invalid @enderror" name="gender">
@@ -59,6 +67,17 @@
             </div>
 
             <div class="row">
+                <div class="col mb-5">
+                    <select class="form-select form-select-solid @error('contingent') is-invalid @enderror" name="contingent" data-control="select2" data-placeholder="Select Contingent">
+                        <option selected disabled>Select Contingent</option>
+                        @foreach ($contingent as $item)
+                            <option value="{{ $item->id }}" {{ request('contingent') == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 {{-- Member Type Filter --}}
                 <div class="col mb-5">
                     <select class="form-select form-select-solid @error('memberType') is-invalid @enderror" name="memberType" id="memberType">
@@ -93,7 +112,7 @@
 
             <div class="row">
                 <div class="col-12 d-flex justify-content-end gap-5">
-                  <a href="{{ route('coordinator.participant') }}" class="btn btn-light-danger btn-md">
+                  <a href="{{ route('admin.event.activity.participant', $activity->id) }}" class="btn btn-light-danger btn-md">
                         <span class="svg-icon svg-icon-3">
                             <i class="ki-duotone ki-arrows-circle fs-4">
                               <span class="path1"></span>
@@ -119,15 +138,16 @@
               <thead>
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-200px">Participant</th>
+                  <th class="min-w-200px">Contingent</th>
                   <th class="min-w-100px">Gender</th>
-                  <th class="min-w-200px">Category</th>
+                  <th class="min-w-200px">Attendance</th>
                   <th class="text-end">Action</th>
                 </tr>
               </thead>
               <tbody>
                 @if ($participant->total() == 0)
                   <tr class="max-w-10px">
-                    <td colspan="4" class="text-center">
+                    <td colspan="6" class="text-center">
                       No data available in table
                     </td>
                   </tr>
@@ -156,24 +176,31 @@
                         @endif
                       </td>
                       <td>
+                        <div class="d-flex flex-column">
+                          <span class="text-gray-800 fw-bold mb-1">{{ $item->contingent->name }}</span>
+                          <span class="text-gray-600 fs-7">{{ $item->user->memberType->name }} - {{ $item->participantType->name ?? '' }}</span>
+                        </div>
+                      </td>
+                      <td>
                         <div class="text-start">
                           <div class="fs-6">{{ $item->user->gender->name }}</div>
                         </div>
                       </td>
                       <td>
-                        <div class="text-start">
-                          <div class="fs-6">{{ $item->user->memberType->name }} - {{ $item->participantType->name ?? '' }}</div>
-                        </div>
+                        @php
+                        $assignment = $item->participantAssignment->first();
+                        $attendanceTime = $assignment?->activityAttendance?->created_at;
+                        @endphp
+                        @if ($attendanceTime)
+                            <span class="badge badge-light-success">
+                          {{ $attendanceTime ? $attendanceTime->format('d M Y H:i') : '-' }}
+                        </span>
+                        @else
+                            -
+                        @endif
+                        
                       </td>
                       <td class="text-end">
-                        <button class="btn btn-light-danger btn-sm">
-                          <i class="ki-outline ki-document"></i>
-                          Certificate
-                        </button>
-                        <button class="btn btn-danger btn-sm">
-                          <i class="ki-outline ki-scan-barcode"></i>
-                          ID Card
-                        </button>
                         <button data-bs-toggle="modal" data-bs-target="#detail{{$item->id}}" class="btn btn-light btn-icon btn-sm">
                           <i class="ki-outline ki-eye"></i>
                         </button>

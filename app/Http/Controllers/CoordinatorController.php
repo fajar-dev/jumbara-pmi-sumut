@@ -333,16 +333,25 @@ class CoordinatorController extends Controller
         $activity = ActivityType::with([
             'activities' => function($q) use ($coordinator) {
                 $q->orderBy('start')
-                ->with([
-                    'participantAssignment' => function($q2) use ($coordinator) {
-                        $q2->orderBy('created_at')
-                            ->with([
-                                'participant' => function($q3) use ($coordinator) {
-                                    $q3->where('contingent_id', $coordinator->contingent->id)->limit(5);
-                                }
-                            ]);
-                    }
-                ]);
+                    ->with([
+                        'participantAssignment' => function($q2) use ($coordinator) {
+                            $q2->orderBy('created_at')
+                                ->whereHas('participant', function($q3) use ($coordinator) {
+                                    $q3->where('contingent_id', $coordinator->contingent->id);
+                                })
+                                ->withCount([
+                                    'participant as total_participant_count' => function($q4) use ($coordinator) {
+                                        $q4->where('contingent_id', $coordinator->contingent->id);
+                                    }
+                                ])
+                                ->with([
+                                    'participant' => function($q3) use ($coordinator) {
+                                        $q3->where('contingent_id', $coordinator->contingent->id)
+                                            ->limit(5);
+                                    }
+                                ]);
+                        }
+                    ]);
             }
         ])->get();
 
@@ -352,9 +361,6 @@ class CoordinatorController extends Controller
             'coordinator' => $coordinator,
             'activities' => $activity
         ];
-
-        // $activity = ActivityType::with('activities')->get();
-        // dd($activity);
         return view('app.coordinator.activity.activity', $data);
     }
 

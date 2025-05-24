@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Models\Activity;
 use App\Models\Participant;
+use App\Models\ActivityAttendance;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -28,5 +30,10 @@ class ParticipantAssignment extends Model
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
+    }
+
+    public function activityAttendance(): HasOne
+    {
+        return $this->hasOne(ActivityAttendance::class);
     }
 }

@@ -30,8 +30,8 @@
           <div class="card-body pt-0">
 
             @forelse($activity->activities as $item)
-              <div class="d-md-flex justify-content-between align-items-center mb-6">
-                <div class="d-flex align-items-center">
+              <div class="d-md-flex justify-content-between align-items-center mb-10">
+                <div class="d-flex align-items-lg-center">
                   <span data-kt-element="bullet"
                         class="bullet bullet-vertical d-md-flex align-items-center min-h-150px mh-100 me-4 bg-danger"></span>
                   <div class="flex-grow-1 me-5">
@@ -48,8 +48,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                  {{-- <span class="fs-6 fw-bolder text-gray-800 d-block mb-2">Participants</span> --}}
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex flex-column me-5">
+                    <span class="fs-6 fw-bolder text-gray-800 d-block mb-2">Assigned to:</span>
                     <div class="symbol-group symbol-hover">
                       @forelse($item->participantAssignment as $assign)
                         @if($assign->participant && $assign->participant->user)
@@ -65,29 +66,32 @@
                           </div>
                         @endif
                       @empty
+                      -
                       @endforelse
                     </div>
-                        <a href="#" class="btn btn-sm btn-light btn-active-light-danger btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                          Actions
-                          <span class="svg-icon fs-5 m-0 ps-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <polygon points="0 0 24 0 24 24 0 24"></polygon>
-                                <path d="M6.70710678,15.7071068 C6.31658249,16.0976311 5.68341751,16.0976311 5.29289322,15.7071068 C4.90236893,15.3165825 4.90236893,14.6834175 5.29289322,14.2928932 L11.2928932,8.29289322 C11.6714722,7.91431428 12.2810586,7.90106866 12.6757246,8.26284586 L18.6757246,13.7628459 C19.0828436,14.1360383 19.1103465,14.7686056 18.7371541,15.1757246 C18.3639617,15.5828436 17.7313944,15.6103465 17.3242754,15.2371541 L12.0300757,10.3841378 L6.70710678,15.7071068 Z" fill="currentColor" fill-rule="nonzero" transform="translate(12.000003, 11.999999) rotate(-180.000000) translate(-12.000003, -11.999999)"></path>
-                              </g>
-                            </svg>
-                          </span>
-                        </a>
-                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                            @if (now()->lessThan(Carbon\Carbon::parse($item->start)->subMinutes(15)))
-                              <div class="menu-item px-3">
-                                <a href="{{ route('admin.news.edit', $item->id) }}" class="menu-link px-3 text-hover-danger bg-hover-light">Participant</a>
-                              </div>
-                            @endif
-                          <div class="menu-item px-3">
-                            <a id="{{ route('admin.news.destroy', $item->id) }}" class="menu-link px-3 text-hover-danger bg-hover-light btn-del">Attedance</a>
-                          </div>
-                        </div>
+                  </div>
+                  <div>
+                    @if (now()->lessThan(Carbon\Carbon::parse($item->start)->subMinutes(15)))
+                      <button class="btn btn-light-danger btn-icon btn-sm">
+                        <i class="ki-duotone ki-people fs-5">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                        <span class="path5"></span>
+                        </i>
+                      </button>
+                    @endif
+                    <button class="btn btn-danger btn-icon btn-sm">
+                      <i class="ki-duotone ki-fingerprint-scanning fs-5">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                      </i>
+                    </button>
+                  </div>
                 </div>
               </div>
             @empty

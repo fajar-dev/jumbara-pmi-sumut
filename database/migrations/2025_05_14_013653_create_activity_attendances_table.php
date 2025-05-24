@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('activity_attendances', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('participant_assignment_id')->unique();
-            $table->unsignedBigInteger('crew_assignment_id');
+            $table->unsignedBigInteger('crew_assignment_id')->nullable();
             $table->string('ip_address')->nullable();
             $table->string('user_agent')->nullable();
             $table->string('longitude')->nullable();
@@ -23,14 +23,14 @@ return new class extends Migration
 
             $table->foreign('participant_assignment_id')
             ->references('id')
-            ->on('crew_assignments')
+            ->on('participant_assignments')
             ->onDelete('cascade')
             ->onUpdate('cascade');
 
             $table->foreign('crew_assignment_id')
             ->references('id')
-            ->on('participant_assignments')
-            ->onDelete('cascade')
+            ->on('crew_assignments')
+            ->onDelete('set null')
             ->onUpdate('cascade');
         });
     }

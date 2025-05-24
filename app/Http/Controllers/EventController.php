@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\ParticipantType;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ActicityParticipation;
+use App\Models\CrewAssignment;
 use App\Models\ParticipantAssignment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -148,7 +149,7 @@ class EventController extends Controller
             'participantType' => ParticipantType::all(),
             'memberType' => MemberType::all() 
         ];
-        return view('app.event.activity',  $data);
+        return view('app.event.activity.activity',  $data);
     }
 
     public function activityStore(Request $request){
@@ -293,4 +294,113 @@ class EventController extends Controller
         ]);
     }
 
+    public function activityParticipant($id, Request $request)
+    {
+        $search = $request->input('q');
+        $gender = $request->input('gender');
+        $memberType = $request->input('memberType');
+        $participantType = $request->input('participantType');
+        $contingent = $request->input('contingent');
+        $attendanceStatus = $request->input('attendance'); // 'true', 'false', atau null
+
+        $participant = Participant::with([
+                'user.gender',
+                'user.memberType',
+                'contingent',
+                'participantType',
+                'participantAssignment' => function ($query) use ($id) {
+                    $query->where('activity_id', $id)
+                        ->with('activityAttendance');
+                }
+            ])
+            ->where('is_draft', false)
+            ->whereHas('user', function ($query) use ($search, $gender, $memberType) {
+                if ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                }
+
+                if ($gender) {
+                    $query->where('gender_id', $gender);
+                }
+
+                if ($memberType) {
+                    $query->where('member_type_id', $memberType);
+                }
+            })
+            ->whereHas('participantAssignment', function ($query) use ($id) {
+                $query->where('activity_id', $id);
+            })
+            ->when($participantType, function ($query) use ($participantType) {
+                $query->where('participant_type_id', $participantType);
+            })
+            ->when($contingent, function ($query) use ($contingent) {
+                $query->where('contingent_id', $contingent);
+            })
+            ->when(!is_null($attendanceStatus), function ($query) use ($id, $attendanceStatus) {
+                if ($attendanceStatus === 'true') {
+                    // Peserta yang SUDAH hadir
+                    $query->whereHas('participantAssignment', function ($q) use ($id) {
+                        $q->where('activity_id', $id)
+                        ->whereHas('activityAttendance');
+                    });
+                } elseif ($attendanceStatus === 'false') {
+                    // Peserta yang BELUM hadir
+                    $query->whereHas('participantAssignment', function ($q) use ($id) {
+                        $q->where('activity_id', $id)
+                        ->whereDoesntHave('activityAttendance');
+                    });
+                }
+            })
+            ->orderBy('contingent_id', 'desc')
+            ->orderBy('participant_type_id', 'desc')
+            ->paginate(10);
+
+        $participant->appends($request->all());
+
+        $participantTypeList = [];
+        if ($memberType) {
+            $memberTypeData = MemberType::with(['memberParticipations.participantType'])->find($memberType);
+            if ($memberTypeData) {
+                foreach ($memberTypeData->memberParticipations as $participation) {
+                    $pt = $participation->participantType;
+                    $participantTypeList[] = [
+                        'id' => $pt->id,
+                        'name' => $pt->name,
+                    ];
+                }
+            }
+        }
+
+        return view('app.event.activity.participant', [
+            'title' => 'Event',
+            'subTitle' => 'Activity',
+            'participant' => $participant,
+            'gender' => Gender::all(),
+            'memberType' => MemberType::all(),
+            'participantTypeList' => $participantTypeList,
+            'activity' => Activity::findOrFail($id),
+            'contingent' => Contingent::all(),
+        ]);
+    }
+
+    public function activityCrew($id, Request $request){
+        $search = $request->input('q');
+        $data = CrewAssignment::where('activity_id', $id)
+            ->whereHas('crew', function ($query) use ($search) {
+                $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'LIKE', '%' . $search . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        $data->appends(['q' => $search]);
+        $data = [
+            'title' => 'Event',
+            'subTitle' => 'Activity',
+            'page_id' => null,
+            'crew' => $data,
+            'activity' => Activity::findOrFail($id),
+        ];
+        return view('app.event.activity.crew',  $data);
+    }
 }
