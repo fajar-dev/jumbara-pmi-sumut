@@ -130,7 +130,7 @@
                     <tr>
                       <td class="d-flex align-items-center min-w-150px">
                         <div class="symbol-group symbol-hover me-3">
-                          <div class="symbol symbol-45px symbol-circle" data-bs-toggle="tooltip" title="{{ $item->name }}">
+                          <div class="symbol symbol-45px symbol-circle">
                             <img src="{{ $item->user->photo_path ? Storage::url($item->user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='.$item->user->name }}" alt="">
                           </div>
                         </div>

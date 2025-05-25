@@ -264,7 +264,7 @@
             </a>
           </div>
         @endif
-        @if (Auth::user()->crew)
+        @if (Auth::user()->crew->count() > 0)
           <div class="menu-item mt-5">
             <div class="menu-heading text-uppercase fs-7 fw-bold">Crew</div>
             <div class="app-sidebar-separator separator separator-dashed"></div>

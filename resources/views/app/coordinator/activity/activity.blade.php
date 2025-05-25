@@ -149,14 +149,14 @@
   </div>
 
 <div class="modal fade" tabindex="-1" id="attendance">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <div>
           <h3 class="modal-title">Attendance</h3>
           <small class="text-gray-700" id="activityName"></small>
         </div>
-        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+        <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
           <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
         </div>
       </div>
@@ -167,6 +167,8 @@
             <thead>
               <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                 <th>Participant</th>
+                <th>Gender</th>
+                <th>Category</th>
                 <th class="text-center">Attendance</th>
               </tr>
             </thead>
@@ -259,17 +261,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const pagination = document.getElementById('paginationLinks');
     const paginationInfo = document.getElementById('paginationInfo');
 
-    tbody.innerHTML = `<tr><td colspan="2" class="text-center">Loading...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" class="text-center">Loading...</td></tr>`;
     pagination.innerHTML = '';
     paginationInfo.innerHTML = '';
 
-    fetch(`/app/activity/${activityId}?page=${page}&q=${encodeURIComponent(search)}`)
+    fetch(`/app/activity/${activityId}?page=${page}&q=${encodeURIComponent(search)}&contingentId={{ Auth::user()->coordinator->contingent_id }}`)
       .then(response => response.json())
       .then(data => {
         tbody.innerHTML = '';
 
         if (data.data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="2" class="text-center text-muted">No participants found</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No participants found</td></tr>`;
         } else {
           data.data.forEach(p => {
             const photo = p.photoPath || `https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name=${encodeURIComponent(p.name)}`;
@@ -285,6 +287,16 @@ document.addEventListener('DOMContentLoaded', function () {
                   hour12: true
                 }).replace(':', '.')
               : 'Not attended';
+            const isVerified = p.isVerified ? `
+                <div>
+                  <a href="#" class="ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="SIAMO Verified">
+                    <i class="ki-duotone ki-verify fs-1 text-danger">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </a>
+                </div>
+              ` : '';
 
             tbody.innerHTML += `
               <tr>
@@ -296,6 +308,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span class="text-gray-800 fw-bold">${p.name}</span><br>
                     <span class="text-gray-600 fs-7">${p.memberId ?? '-'}</span><br>
                   </div>
+                  ${isVerified}
+                </td>
+                <td>
+                  ${p.gender}
+                </td>
+                <td>
+                  ${p.memberType} - ${p.participantType}
                 </td>
                 <td class="text-center">
                   ${hasAttendance ? `<span class="badge badge-primary">${formattedDate}</span><br>` : '-'}
