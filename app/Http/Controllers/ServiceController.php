@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Crew;
+use App\Models\Admin;
 use App\Models\MemberType;
 use App\Models\Coordinator;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Models\ParticipantAssignment;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
@@ -69,6 +73,169 @@ class ServiceController extends Controller
 
         return response()->json($result);
     }
+
+    public function participant(Request $request, $id = null)
+    {
+        $q = $request->input('q');
+        $coordinator = Coordinator::where('user_id', Auth::user()->id)->first();
+        if (!$coordinator) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $participantQuery = Participant::where('contingent_id', $coordinator->contingent_id)
+            ->where('is_draft', false)
+            ->whereHas('user', function ($query) use ($q) {
+                if ($q) {
+                    $query->where('name', 'like', '%' . $q . '%')
+                        ->orWhere('member_id', 'like', '%' . $q . '%');
+                }
+            });
+
+        if ($id) {
+            $participantQuery->where('participant_type_id', $id);
+        };
+
+        $participants = $participantQuery->with('user')->get();
+
+        $result = [];
+        foreach ($participants as $p) {
+            $result[] = [
+                'id' => $p->id,
+                'name' => $p->user->name,
+                'memberId' => $p->user->member_id,
+            ];
+        }
+
+        return response()->json($result);
+    }
+
+    public function member(Request $request, $id = null)
+    {
+        $q = $request->input('q');
+        $coordinator = Coordinator::where('user_id', Auth::user()->id)->first();
+        if (!$coordinator) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $participantQuery = Participant::where('contingent_id', $coordinator->contingent_id)
+            ->where('is_draft', false);
+
+        if ($id || $q) {
+            $participantQuery->whereHas('user', function ($query) use ($id, $q) {
+                if ($id) {
+                    $query->where('member_type_id', $id);
+                }
+                if ($q) {
+                    $query->where(function ($subQuery) use ($q) {
+                        $subQuery->where('name', 'like', '%' . $q . '%')
+                                ->orWhere('member_id', 'like', '%' . $q . '%');
+                    });
+                }
+            });
+        } else {
+            $participantQuery->with('user');
+        }
+
+        $participants = $participantQuery->with('user')->get();
+
+        $result = [];
+        foreach ($participants as $p) {
+            $result[] = [
+                'id' => $p->id,
+                'name' => $p->user->name,
+                'memberId' => $p->user->member_id,
+            ];
+        }
+
+        return response()->json($result);
+    }
+
+    public function activity($id, Request $request)
+    {
+        $search = $request->input('q');
+        $attendanceStatus = $request->input('attendance'); // 'true', 'false', atau null
+        $contingentId = $request->input('contingentId');
+
+        $userId = Auth::user()->id;
+
+        $coordinator = Coordinator::where('user_id', $userId)->first();
+        $isAdmin = Admin::where('user_id', $userId)->exists();
+        $isCrew = Crew::where('user_id', $userId)->exists();
+
+        $participantQuery = Participant::with([
+                'user.gender',
+                'user.memberType',
+                'contingent',
+                'participantType',
+                'participantAssignment' => function ($query) use ($id) {
+                    $query->where('activity_id', $id)
+                        ->with('activityAttendance');
+                }
+            ])
+            ->where('is_draft', false)
+            ->whereHas('user', function ($query) use ($search) {
+                if ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                }
+            })
+            ->whereHas('participantAssignment', function ($query) use ($id) {
+                $query->where('activity_id', $id);
+            });
+
+        // Filter berdasarkan status kehadiran
+        if (!is_null($attendanceStatus)) {
+            if ($attendanceStatus === 'true') {
+                $participantQuery->whereHas('participantAssignment', function ($query) use ($id) {
+                    $query->where('activity_id', $id)
+                        ->whereHas('activityAttendance');
+                });
+            } elseif ($attendanceStatus === 'false') {
+                $participantQuery->whereHas('participantAssignment', function ($query) use ($id) {
+                    $query->where('activity_id', $id)
+                        ->whereDoesntHave('activityAttendance');
+                });
+            }
+        }
+
+        // Filter contingent berdasarkan role
+        if (!$isAdmin && !$isCrew && $coordinator) {
+            // Jika bukan admin atau crew, batasi ke contingent milik koordinator
+            $participantQuery->where('contingent_id', $coordinator->contingent_id);
+        } elseif ($contingentId) {
+            // Jika admin atau crew dan ada contingentId yang dikirim
+            $participantQuery->where('contingent_id', $contingentId);
+        }
+
+        $participants = $participantQuery
+            ->orderBy('contingent_id', 'desc')
+            ->orderBy('participant_type_id', 'desc')
+            ->paginate(10);
+
+        // Transformasi hasil agar hanya data penting yang dikembalikan
+        $transformed = $participants->getCollection()->transform(function ($item) {
+            return [
+                'name' => $item->user->name ?? null,
+                'memberId' => $item->user->member_id ?? null,
+                'photoPath' => $item->user->photo_path 
+                    ? Storage::url($item->user->photo_path) 
+                    : null,
+                'gender' => $item->user->gender->name ?? null,
+                'memberType' => $item->user->memberType->name ?? null,
+                'participantType' => $item->participantType->name ?? null,
+                'contingent' => $item->contingent->name ?? null,
+                'isVerified' => (bool) $item->user->secretariat_id,
+                'attendance' => $item->participantAssignment->map(function ($assignment) {
+                    return [
+                        'attendance' => (bool) $assignment->activityAttendance,
+                        'attendanceDate' => optional($assignment->activityAttendance)->created_at,
+                    ];
+                })->toArray(),
+            ];
+        });
+        $participants->setCollection($transformed);
+        return response()->json($participants);
+    }
+
 
 
 }

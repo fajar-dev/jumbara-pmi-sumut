@@ -500,7 +500,7 @@ function addMemberTypeRow(id) {
             <select class="form-select form-select-solid @error('type') is-invalid @enderror" name="type" data-control="select2" data-placeholder="Choose type">
               <option></option>
               @foreach ($activityType as $type)
-                <option value="{{ $type->id }}" {{ $item->id == $type->id ? 'selected' : '' }}>
+                <option value="{{ $type->id }}" {{ $item->activity_type_id == $type->id ? 'selected' : '' }}>
                   {{ $type->name }}
                 </option>
               @endforeach

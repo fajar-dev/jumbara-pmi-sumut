@@ -57,6 +57,9 @@ Route::prefix('/app')->middleware(['auth'])->group(function () {
     });
     Route::get('/service', [ServiceController::class, 'handle'])->name('service');
     Route::get('/member-type/{id}/participant-types', [ServiceController::class, 'participantType'])->name('participant-type');
+    Route::get('/member/{id?}', [ServiceController::class, 'member']);
+    Route::get('/participant/{id?}', [ServiceController::class, 'participant']);
+    Route::get('/activity/{id?}', [ServiceController::class, 'activity']);
 });
 
 Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
@@ -208,5 +211,6 @@ Route::prefix('/coordinator')->middleware(['auth', 'isCoordinator'])->group(func
 
     Route::prefix('/activity')->group(function () {
         Route::get('/', [CoordinatorController::class, 'activity'])->name('coordinator.activity');
+        Route::post('/{id}/assigned', [CoordinatorController::class, 'activityAssign'])->name('coordinator.assign');
     });
 });

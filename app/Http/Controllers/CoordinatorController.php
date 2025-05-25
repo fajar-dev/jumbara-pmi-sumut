@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ActivityType;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Gender;
 use App\Models\General;
+use App\Models\Activity;
 use App\Models\Religion;
 use App\Models\BloodType;
 use App\Models\MemberType;
 use App\Models\Coordinator;
 use App\Models\Participant;
 use App\Models\Secretariat;
+use App\Models\ActivityType;
 use Illuminate\Http\Request;
 use App\Models\ParticipantType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use App\Models\ParticipantAssignment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -330,38 +333,73 @@ class CoordinatorController extends Controller
 
     public function activity(){
         $coordinator = Coordinator::where('user_id', Auth::user()->id)->first();
+        $contingentId = $coordinator->contingent->id;
+
         $activity = ActivityType::with([
-            'activities' => function($q) use ($coordinator) {
+            'activities' => function ($q) use ($contingentId) {
                 $q->orderBy('start')
+                    ->withCount([
+                        'participantAssignment as total_participant_count' => function ($q2) use ($contingentId) {
+                            $q2->whereHas('participant', function ($q3) use ($contingentId) {
+                                $q3->where('contingent_id', $contingentId);
+                            });
+                        }
+                    ])
                     ->with([
-                        'participantAssignment' => function($q2) use ($coordinator) {
-                            $q2->orderBy('created_at')
-                                ->whereHas('participant', function($q3) use ($coordinator) {
-                                    $q3->where('contingent_id', $coordinator->contingent->id);
+                        'participantAssignment' => function ($q2) use ($contingentId) {
+                            $q2->orderBy('created_at')->limit(4)
+                                ->whereHas('participant', function ($q3) use ($contingentId) {
+                                    $q3->where('contingent_id', $contingentId);
                                 })
-                                ->withCount([
-                                    'participant as total_participant_count' => function($q4) use ($coordinator) {
-                                        $q4->where('contingent_id', $coordinator->contingent->id);
-                                    }
-                                ])
                                 ->with([
-                                    'participant' => function($q3) use ($coordinator) {
-                                        $q3->where('contingent_id', $coordinator->contingent->id)
-                                            ->limit(5);
+                                    'participant' => function ($q3) use ($contingentId) {
+                                        $q3->where('contingent_id', $contingentId);
                                     }
                                 ]);
                         }
                     ]);
             }
         ])->get();
-
         $data = [
             'title' => 'Activity',
             'subTitle' => null,
             'coordinator' => $coordinator,
             'activities' => $activity
         ];
+        // return $activity;
         return view('app.coordinator.activity.activity', $data);
     }
 
+    public function activityAssign($id, Request $request){
+        $acivity= Activity::findOrFail($id);
+
+        $coordinator = Coordinator::where('user_id', Auth::user()->id)->first();
+        if (now()->lessThan(Carbon::parse($acivity->start)->subMinutes(15))){
+
+            ParticipantAssignment::where('activity_id', $id)->whereHas('participant', function ($query) use ($coordinator) {
+                $query->where('contingent_id', $coordinator->contingent_id);
+            })->delete();
+
+            if ($request->participant) {
+                foreach ($request->participant as  $participant) {
+                    ParticipantAssignment::updateOrInsert([
+                        'activity_id' => $id,
+                        'participant_id' => $participant
+                    ]);
+                }
+            }
+
+            if ($request->member) {
+                foreach ($request->member as  $member) {
+                    ParticipantAssignment::updateOrInsert([
+                        'activity_id' => $id,
+                        'participant_id' => $member
+                    ]);
+                }
+            }
+
+            return redirect()->route('coordinator.activity')->with('success', 'Assignment has been updated successfully');
+        }
+        return redirect()->route('coordinator.activity')->with('error', 'Activity has started, you cannot update the assignment anymore');
+    }
 }

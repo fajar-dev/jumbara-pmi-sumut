@@ -19,6 +19,7 @@ class ActicityParticipation extends Model
     protected $fillable = [
         'activity_id',
         'participant_type_id',
+        'member_type_id',
         'max_participant'
     ];
 
