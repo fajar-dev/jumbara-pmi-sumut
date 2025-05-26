@@ -25,7 +25,7 @@
               <span class="text-muted fw-semibold fs-7">{{ $activity->name }}</span>
             </h3>
           </div>
-          <div class="card-toolbar">
+          {{-- <div class="card-toolbar">
             <a href="{{ route('coordinator.participant.add') }}" class="btn btn-primary d-flex align-items-center">
               <i class="ki-duotone ki-file-down fs-2">
               <span class="path1"></span>
@@ -33,7 +33,7 @@
               </i>    
                Export
             </a>
-          </div>
+          </div> --}}
         </div>
         <div class="card-body pt-0">
           <form method="GET" class="card-title">

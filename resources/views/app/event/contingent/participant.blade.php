@@ -8,13 +8,13 @@
             <a class="nav-link  border-hover-danger text-danger border-danger" href="{{ route('admin.event.contingent.participant', $contingent->id) }}">Participant</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link border-hover-danger" data-bs-toggle="tab" href="{{ route('admin.event.contingent.activity', $contingent->id) }}">Activiity</a>
+            <a class="nav-link border-hover-danger" href="{{ route('admin.event.contingent.activity', $contingent->id) }}">Activiity</a>
         </li>
     </ul>
       <div class="card card-flush">
         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
           <div class="card-title d-flex align-items-center gap-5">
-            <a href="{{ route('admin.event.activity') }}" class="btn btn-light btn-icon">
+            <a href="{{ route('admin.event.contingent') }}" class="btn btn-light btn-icon">
               <i class="ki-duotone ki-arrow-left fs-2">
               <span class="path1"></span>
               <span class="path2"></span>
@@ -25,7 +25,7 @@
               <span class="text-muted fw-semibold fs-7">{{ $contingent->name }}</span>
             </h3>
           </div>
-          <div class="card-toolbar">
+          {{-- <div class="card-toolbar">
             <a href="{{ route('coordinator.participant.add') }}" class="btn btn-primary d-flex align-items-center">
               <i class="ki-duotone ki-file-down fs-2">
               <span class="path1"></span>
@@ -33,7 +33,7 @@
               </i>    
                Export
             </a>
-          </div>
+          </div> --}}
         </div>
         <div class="card-body pt-0">
           <form method="GET" class="card-title">

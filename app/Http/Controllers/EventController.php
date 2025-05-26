@@ -294,6 +294,41 @@ class EventController extends Controller
         ]);
     }
 
+    public function contingentActivity($id, Request $request)
+    {
+        $activity = ActivityType::with([
+            'activities' => function ($q) use ($id) {
+                $q->orderBy('start')
+                    ->withCount([
+                        'participantAssignment as total_participant_count' => function ($q2) use ($id) {
+                            $q2->whereHas('participant', function ($q3) use ($id) {
+                                $q3->where('contingent_id', $id);
+                            });
+                        }
+                    ])
+                    ->with([
+                        'participantAssignment' => function ($q2) use ($id) {
+                            $q2->orderBy('created_at')->limit(4)
+                                ->whereHas('participant', function ($q3) use ($id) {
+                                    $q3->where('contingent_id', $id);
+                                })
+                                ->with([
+                                    'participant' => function ($q3) use ($id) {
+                                        $q3->where('contingent_id', $id);
+                                    }
+                                ]);
+                        }
+                    ]);
+            }
+        ])->get();
+        return view('app.event.contingent.activity', [
+            'title' => 'Event',
+            'subTitle' => 'Contingent',
+            'contingent' => Contingent::find($id),
+            'activities' => $activity
+        ]);
+    }
+
     public function activityParticipant($id, Request $request)
     {
         $search = $request->input('q');
