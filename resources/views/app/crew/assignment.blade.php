@@ -5,6 +5,7 @@
     @foreach ($assignment as $index => $item)
       @php
         $startTime = \Carbon\Carbon::parse($item->activity->start)->format('Y-m-d\TH:i:s');
+        $endTime = \Carbon\Carbon::parse($item->activity->end)->format('Y-m-d\TH:i:s');
       @endphp
       <div class="col">
         <div class="card h-100">
@@ -29,22 +30,35 @@
         </div>
       </div>
 
-       <script>
+      <script>
         document.addEventListener('DOMContentLoaded', function () {
           const startBtn = document.getElementById('startBtn-{{ $index }}');
-          const startTime = new Date('{{ $startTime }}').getTime();
+          const startTimeOriginal = new Date('{{ $startTime }}').getTime();
+          const endTime = new Date('{{ $endTime }}').getTime();
+          // 15 minutes before start
+          const startTime = startTimeOriginal - 15 * 60 * 1000;
 
           const timer = setInterval(() => {
             const now = new Date().getTime();
-            const distance = startTime - now;
 
-            if (distance <= 0) {
+            if (now > endTime) {
+              // Activity ended, disable button and show expired
+              clearInterval(timer);
+              startBtn.innerHTML = 'Expired';
+              startBtn.classList.add('disabled');
+              return;
+            }
+
+            if (now >= startTime) {
+              // Within active time, enable start button
               clearInterval(timer);
               startBtn.innerHTML = 'Start';
               startBtn.classList.remove('disabled');
               return;
             }
 
+            // Before start time, show countdown
+            const distance = startTime - now;
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));

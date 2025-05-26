@@ -216,10 +216,11 @@ Route::prefix('/coordinator')->middleware(['auth', 'isCoordinator'])->group(func
     });
 });
 
-Route::prefix('/coordinator')->middleware(['auth', 'isCrew'])->group(function () {
+Route::prefix('/crew')->middleware(['auth', 'isCrew'])->group(function () {
     Route::prefix('/assignment')->group(function () {
         Route::get('/', [CrewController::class, 'assignment'])->name('crew.assignment');
-        Route::get('/{$id}', [CrewController::class, 'assignmentAttendance'])->name('crew.assignment.attendance');
+        Route::get('/{id}', [CrewController::class, 'assignmentAttendance'])->name('crew.assignment.attendance');
+        Route::post('/{id}', [CrewController::class, 'assignmentAttendancePresent'])->name('crew.assignment.attendance.present');
     });
 
 });

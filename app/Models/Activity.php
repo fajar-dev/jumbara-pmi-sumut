@@ -18,6 +18,11 @@ class Activity extends Model
     protected $table = 'activities';
     protected $primaryKey = 'id';
 
+    protected $casts = [
+        'start' => 'datetime',
+        'end' => 'datetime',
+    ];
+    
     protected $fillable = [
         'name',
         'description',

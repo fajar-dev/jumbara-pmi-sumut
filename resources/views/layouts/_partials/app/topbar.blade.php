@@ -10,7 +10,7 @@
     </div>
     <div class="app-navbar flex-lg-grow-1" id="kt_app_header_navbar">
       <div class="app-navbar-item d-flex align-items-stretch flex-lg-grow-1">
-        <div id="kt_header_search" class="header-search d-flex align-items-center w-lg-300px" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-search-responsive="true" data-kt-menu-trigger="auto" data-kt-menu-permanent="true" data-kt-menu-placement="bottom-start">
+        <div id="kt_header_search" class="header-search d-flex align-items-center w-lg-500px" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-search-responsive="true" data-kt-menu-trigger="auto" data-kt-menu-permanent="true" data-kt-menu-placement="bottom-start">
           <div class="page-title d-flex flex-column justify-content-center gap-1 me-3">
             <h1 class="d-flex flex-column justify-content-center fw-bold fs-3 m-0">{{ $title }}</h1>
             <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0">

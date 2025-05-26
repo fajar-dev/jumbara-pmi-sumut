@@ -160,10 +160,6 @@
                         </div>
                       </td>
                       <td class="text-end">
-                        <button class="btn btn-light-danger btn-sm">
-                          <i class="ki-outline ki-document"></i>
-                          Certificate
-                        </button>
                         <button class="btn btn-danger btn-sm">
                           <i class="ki-outline ki-scan-barcode"></i>
                           ID Card

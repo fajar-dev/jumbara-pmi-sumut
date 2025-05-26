@@ -249,6 +249,10 @@ class MasterDataSeeder extends Seeder
                 'participant_type_id' => 4,
             ],
             [
+                'member_type_id' => 1,
+                'participant_type_id' => 8,
+            ],
+            [
                 'member_type_id' => 2,
                 'participant_type_id' => 5,
             ],

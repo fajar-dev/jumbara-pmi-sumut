@@ -296,7 +296,7 @@
               <span class="menu-icon">
                 <i class="ki-outline ki-flag fs-2"></i> 
               </span>
-              <span class="menu-title">Activity</span>
+              <span class="menu-title">My Activity</span>
             </a>
           </div>
         @endif
