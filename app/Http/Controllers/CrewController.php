@@ -40,9 +40,9 @@ class CrewController extends Controller
 
         $allowedAccessTime = $activity->start->subMinutes(15);
 
-        // if ($now->lt($allowedAccessTime) || $now->gt($activity->end)) {
-        //     return redirect()->route('crew.assignment')->with('error', 'Forbidden');
-        // }
+        if ($now->lt($allowedAccessTime) || $now->gt($activity->end)) {
+            return redirect()->route('crew.assignment')->with('error', 'Forbidden');
+        }
 
         $assignment = CrewAssignment::where('crew_id', $userCrewId)
             ->where('activity_id', $id)

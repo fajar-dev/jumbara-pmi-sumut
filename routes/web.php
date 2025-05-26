@@ -222,5 +222,8 @@ Route::prefix('/crew')->middleware(['auth', 'isCrew'])->group(function () {
         Route::get('/{id}', [CrewController::class, 'assignmentAttendance'])->name('crew.assignment.attendance');
         Route::post('/{id}', [CrewController::class, 'assignmentAttendancePresent'])->name('crew.assignment.attendance.present');
     });
+});
 
+Route::prefix('/participant')->middleware(['auth', 'isParticipant'])->group(function () {
+    Route::get('/', [CrewController::class, 'assignment'])->name('crew.assignment');
 });

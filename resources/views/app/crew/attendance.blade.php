@@ -110,12 +110,13 @@
       }
 
       Swal.fire({
-        text: 'Scan sukses & data berhasil dikirim!',
+        text: data.message,
         icon: "success",
-        buttonsStyling: false,
-        confirmButtonText: "Ok",
-        customClass: {
-          confirmButton: "btn btn-success"
+        showConfirmButton: false,
+        timer: 1500, 
+        timerProgressBar: true,
+        willClose: () => {
+          // bisa buat aksi kalau perlu pas alert tutup
         }
       });
     } catch (err) {
