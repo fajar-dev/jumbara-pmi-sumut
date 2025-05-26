@@ -95,7 +95,7 @@
                                     <div class="d-flex flex-stack flex-wrap">    
                                         <div class="d-flex align-items-center pe-2">
                                             <div class="symbol symbol-35px symbol-circle me-3">
-                                                <img alt="" src="{{ optional($item->user)->photo_path ? Storage::url($item->user->photo_path) : 'https://ui-avatars.com/api/?background=DFFFEA&color=04B440&bold=true&name='. (optional($item->user)->name ?? 'admin') }}" />
+                                                <img alt="" src="{{ optional($item->user)->photo_path ? Storage::url($item->user->photo_path) : 'https://ui-avatars.com/api/?background=FFEEF3&color=F8285A&bold=true&name='. (optional($item->user)->name ?? 'admin') }}" />
                                             </div>           
                                             <div class="fs-5 fw-bold">
                                                 <span class="text-gray-700">{{ optional($item->user)->name ?? 'admin' }}</span>

@@ -4,6 +4,7 @@ use App\Http\Controllers\AnnouncementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CoordinatorController;
+use App\Http\Controllers\CrewController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
@@ -213,4 +214,12 @@ Route::prefix('/coordinator')->middleware(['auth', 'isCoordinator'])->group(func
         Route::get('/', [CoordinatorController::class, 'activity'])->name('coordinator.activity');
         Route::post('/{id}/assigned', [CoordinatorController::class, 'activityAssign'])->name('coordinator.assign');
     });
+});
+
+Route::prefix('/coordinator')->middleware(['auth', 'isCrew'])->group(function () {
+    Route::prefix('/assignment')->group(function () {
+        Route::get('/', [CrewController::class, 'assignment'])->name('crew.assignment');
+        Route::get('/{$id}', [CrewController::class, 'assignmentAttendance'])->name('crew.assignment.attendance');
+    });
+
 });

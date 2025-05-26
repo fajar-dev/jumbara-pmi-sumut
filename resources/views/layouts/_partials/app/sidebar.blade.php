@@ -264,13 +264,13 @@
             </a>
           </div>
         @endif
-        @if (Auth::user()->crew->count() > 0)
+        @if (Auth::user()->crew)
           <div class="menu-item mt-5">
             <div class="menu-heading text-uppercase fs-7 fw-bold">Crew</div>
             <div class="app-sidebar-separator separator separator-dashed"></div>
           </div>
           <div class="menu-item">
-            <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+            <a class="menu-link @if($title == 'Assignment') active bg-danger @endif menu-accordion" href="{{ route('crew.assignment') }}">
               <span class="menu-icon">
                 <i class="ki-outline ki-scan-barcode fs-2"></i>
               </span>

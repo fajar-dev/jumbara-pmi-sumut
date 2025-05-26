@@ -112,8 +112,8 @@ class User extends Authenticatable
         return $this->hasOne(Admin::class);
     }
 
-    public function crew(): HasMany
+    public function crew(): HasOne
     {
-        return $this->hasMany(Crew::class);
+        return $this->hasOne(Crew::class);
     }
 }

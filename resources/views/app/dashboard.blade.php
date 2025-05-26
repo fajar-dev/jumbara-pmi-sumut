@@ -26,7 +26,7 @@
       </div>
     </div>
   </div>
-
+{{-- 
   <div class="row">
     <div class="col-lg-3 col-md-6 mt-5">
       <div class="card card-flush h-xl-100" style="background-color: #F1416C;background-image:url('{{ asset('app/media/svg/shapes/wave-bg-red.svg') }}')">
@@ -68,5 +68,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
   @endsection
