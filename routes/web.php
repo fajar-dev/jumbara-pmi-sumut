@@ -7,7 +7,6 @@ use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\CrewController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
@@ -15,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingController;
 
@@ -61,6 +61,7 @@ Route::prefix('/app')->middleware(['auth'])->group(function () {
     Route::get('/member/{id?}', [ServiceController::class, 'member']);
     Route::get('/participant/{id?}', [ServiceController::class, 'participant']);
     Route::get('/activity/{id?}', [ServiceController::class, 'activity']);
+    Route::get('/id-card/{id}', [ServiceController::class, 'idCard'])->name('id-card');
 });
 
 Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->group(function () {
@@ -225,5 +226,5 @@ Route::prefix('/crew')->middleware(['auth', 'isCrew'])->group(function () {
 });
 
 Route::prefix('/participant')->middleware(['auth', 'isParticipant'])->group(function () {
-    Route::get('/', [CrewController::class, 'assignment'])->name('crew.assignment');
+    Route::get('/my-activity', [ParticipantController::class, 'activity'])->name('participant.activity');
 });

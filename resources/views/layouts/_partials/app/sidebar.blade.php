@@ -284,15 +284,7 @@
             <div class="app-sidebar-separator separator separator-dashed"></div>
           </div>
           <div class="menu-item">
-            <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
-              <span class="menu-icon">
-                <i class="ki-outline ki-medal-star fs-2"></i>
-              </span>
-              <span class="menu-title">Certificate</span>
-            </a>
-          </div>
-          <div class="menu-item">
-            <a class="menu-link @if($title == '') active bg-danger @endif menu-accordion"" href="">
+            <a class="menu-link @if($title == 'My Activities') active bg-danger @endif menu-accordion"" href="{{ route('participant.activity') }}">
               <span class="menu-icon">
                 <i class="ki-outline ki-flag fs-2"></i> 
               </span>
