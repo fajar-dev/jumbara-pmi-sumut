@@ -160,7 +160,7 @@
                         </div>
                       </td>
                       <td class="text-end">
-                        <button class="btn btn-danger btn-sm">
+                        <button data-bs-toggle="modal" data-bs-target="#idCard{{$item->id}}" class="btn btn-danger btn-sm">
                           <i class="ki-outline ki-scan-barcode"></i>
                           ID Card
                         </button>
@@ -363,6 +363,31 @@
   </div>
 </div>
 @endforeach
+
+@foreach ($participant as $item)
+<div class="modal fade" tabindex="-1" id="idCard{{$item->id}}" aria-labelledby="idCardLabel{{$item->id}}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" id="formUpdate{{$item->id}}">
+      <div class="modal-header">
+        <h3 class="modal-title" id="idCardLabel{{$item->id}}">ID Card</h3>
+        <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
+                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+        </div>
+      </div>
+      <div class="modal-body min-h-100 min-w-100">
+        <div id="pdfViewer{{$item->id}}" class="pdf-viewer" data-member-id="{{ $item->user->member_id }}" style="border:1px solid #ccc; overflow:auto; height: 600px;">
+          <canvas id="pdf-canvas-{{$item->id}}" style="width: 100%; height: 100%;"></canvas>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button data-pdf-id="{{ $item->id }}" class="btn btn-danger download-pdf-btn">Download ID Card</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+@endforeach
+
 @endsection
 
 @section('script')
@@ -384,6 +409,77 @@
     submitButton.setAttribute('disabled', 'disabled');
   });
 </script>
+<!-- PDF.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+  // Fungsi untuk render PDF halaman pertama ke canvas berdasarkan id modal dan memberId
+  function renderPdfModal(id, memberId) {
+    const url = `/app/id-card/${memberId}`; // sesuaikan route kamu
+
+    const canvas = document.getElementById(`pdf-canvas-${id}`);
+    if (!canvas) {
+      console.error("Canvas not found:", `pdf-canvas-${id}`);
+      return;
+    }
+    const ctx = canvas.getContext('2d');
+
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc) {
+      pdfDoc.getPage(1).then(function(page) {
+        const viewport = page.getViewport({ scale: 1.5 });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        page.render(renderContext);
+      });
+    }).catch(function(err){
+      console.error('Error loading PDF:', err);
+    });
+  }
+
+  // Ketika modal bootstrap dibuka, render PDF
+  document.addEventListener('shown.bs.modal', function (event) {
+    const modal = event.target;
+    if (modal.classList.contains('modal')) {
+      const id = modal.id.replace('idCard', '');
+      const pdfViewer = document.getElementById(`pdfViewer${id}`);
+      if (!pdfViewer) return;
+      const memberId = pdfViewer.getAttribute('data-member-id');
+      renderPdfModal(id, memberId);
+    }
+  });
+
+  // Event tombol download PDF per modal
+  document.querySelectorAll('.download-pdf-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const id = this.getAttribute('data-pdf-id');
+      const pdfViewer = document.getElementById(`pdfViewer${id}`);
+      if (!pdfViewer) return;
+      const memberId = pdfViewer.getAttribute('data-member-id');
+      const pdfUrl = `/app/id-card/${memberId}`; // pastikan route ini benar
+
+      // Trigger download file PDF
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = `id-card-${memberId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+});
+</script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const memberTypeSelect = document.getElementById('memberType');
