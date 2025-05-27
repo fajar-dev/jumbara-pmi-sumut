@@ -40,10 +40,105 @@
                 </div>
               </div>
               <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Nama</label>
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Name</label>
                 <div class="col-lg-8 fv-row">
-                  <input type="text" name="name" class="form-control form-control-lg form-control-solid @error('name') is-invalid @enderror" value="{{ old('name') ?? Auth::user()->name }}" />
+                  <input type="text" name="name" class="form-control form-control-lg form-control-solid @error('name') is-invalid @enderror" value="{{ old('name') ?? Auth::user()->name }}" required/>
                   @error('name')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Birth Place</label>
+                <div class="col-lg-8 fv-row">
+                  <input type="text" name="birthPlace" class="form-control form-control-lg form-control-solid @error('birthPlace') is-invalid @enderror" value="{{ old('birthPlace') ?? Auth::user()->birth_place }}" required/>
+                  @error('birthPlace')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Birth Date</label>
+                <div class="col-lg-8 fv-row">
+                  <input type="date" name="birthDate" class="form-control form-control-lg form-control-solid @error('birthDate') is-invalid @enderror" value="{{ old('birthDate') ?? Auth::user()->birth_date }}" required/>
+                  @error('birthDate')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Phone Number</label>
+                <div class="col-lg-8 fv-row">
+                  <input type="number" name="phone" class="form-control form-control-lg form-control-solid @error('phone') is-invalid @enderror" value="{{ old('phone') ?? Auth::user()->phone_number }}" required/>
+                  @error('phone')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Gender</label>
+                <div class="col-lg-8 fv-row">
+                  <select class="form-select form-select-solid @error('gender') is-invalid @enderror" name="gender" required>
+                    @foreach ($gender as $item)       
+                      <option value="{{ $item->id }}" {{ Auth::user()->gender_id == $item->id ? 'selected' : '' }}>
+                        {{ $item->name }}
+                      </option>
+                    @endforeach
+                  </select>
+                  @error('gender')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Religion</label>
+                <div class="col-lg-8 fv-row">
+                  <select class="form-select form-select-solid @error('religion') is-invalid @enderror" name="religion" required>
+                    @foreach ($religion as $item)       
+                      <option value="{{ $item->id }}" {{ Auth::user()->religion_id == $item->id ? 'selected' : '' }}>
+                        {{ $item->name }}
+                      </option>
+                    @endforeach
+                  </select>
+                  @error('religion')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Blood Type</label>
+                <div class="col-lg-8 fv-row">
+                  <select class="form-select form-select-solid @error('bloodType') is-invalid @enderror" name="bloodType" required>
+                    @foreach ($bloodType as $item)       
+                      <option value="{{ $item->id }}" {{ Auth::user()->blood_type_id == $item->id ? 'selected' : '' }}>
+                        {{ $item->name }}
+                      </option>
+                    @endforeach
+                  </select>
+                  @error('bloodType')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Address</label>
+                <div class="col-lg-8 fv-row">
+                  <textarea class="form-control form-control form-control-solid @error('address') is-invalid @enderror" data-kt-autosize="true" placeholder="Full Addrress" name="address" required>{{ old('address') ?? Auth::user()->address }}</textarea>
+                  @error('address')
                   <div class="text-sm text-danger">
                     {{ $message }}
                   </div>

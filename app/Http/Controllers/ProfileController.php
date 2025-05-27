@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Gender;
+use App\Models\Religion;
+use App\Models\BloodType;
+use App\Models\MemberType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +19,10 @@ class ProfileController extends Controller
         $data = [
             'title' => 'Profile',
             'subTitle' => null,
-            'page_id' => null
+            'page_id' => null,
+            'gender' => Gender::all(),
+            'religion' => Religion::all(),
+            'bloodType' => BloodType::all(),
         ];
         return view('app.profile.profile',  $data);
     }
@@ -24,6 +31,13 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'photo' => 'nullable|sometimes|mimes:jpeg,bsmp,png,jpg,svg,png|max:2000',
             'name' => 'required|string|max:255',
+            'birthPlace' => 'required',
+            'birthDate' => 'required|date',
+            'phone' => 'required',
+            'gender' => 'required',
+            'religion' => 'required',
+            'bloodType' => 'required',
+            'address' => 'required',
         ]);
         if ($validator->fails()) {
             return redirect()->route('admin.profile')->with('error', 'Validation Error')->withInput()->withErrors($validator);
@@ -34,6 +48,13 @@ class ProfileController extends Controller
         if($request->photo){
             $profile->photo_path =  $request->file('photo')->store('user', 'public');
         }
+        $profile->birth_place = $request->birthPlace;
+        $profile->birth_date = $request->birthDate;
+        $profile->phone_number = $request->phone;
+        $profile->gender_id = $request->gender;
+        $profile->religion_id = $request->religion;
+        $profile->blood_type_id = $request->bloodType;
+        $profile->address = $request->address;
         $profile->save();
 
         return redirect()->route('app.profile')->with('success', 'Profile has been saved successfully');
