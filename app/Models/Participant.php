@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Models\ParticipantType;
+use App\Models\ContingentLeader;
 use App\Models\ParticipantAssignment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,5 +44,10 @@ class Participant extends Model
      public function participantAssignment(): HasMany
     {
         return $this->hasMany(ParticipantAssignment::class);
+    }
+
+    public function leader(): HasOne
+    {
+        return $this->hasOne(ContingentLeader::class);
     }
 }
