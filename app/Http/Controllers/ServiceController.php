@@ -247,30 +247,28 @@ class ServiceController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-        if ($user->participant->participant_type_id == 2) {
+        if ($user->participant->leader) {
+            $background = public_path('id-card/pimkon.jpg');
+        } elseif ($user->participant->participant_type_id == 2) {
             $background = public_path('id-card/mula.jpg');
-        }
-        elseif ($user->participant->participant_type_id == 3) {
+        } elseif ($user->participant->participant_type_id == 3) {
             $background = public_path('id-card/madya.jpg');
-        }
-        elseif ($user->participant->participant_type_id == 4) {
+        } elseif ($user->participant->participant_type_id == 4) {
             $background = public_path('id-card/wira.jpg');
-        }
-        elseif ($user->participant->participant_type_id == 5) {
+        } elseif ($user->participant->participant_type_id == 5) {
             if ($user->gender_id == 1) {
                 $background = public_path('id-card/pem-putra.jpg');
             } else {
                 $background = public_path('id-card/pem-putri.jpg');
             }
-        }
-        elseif ($user->participant->participant_type_id == 7) {
+        } elseif ($user->participant->participant_type_id == 7) {
             $background = public_path('id-card/fasil.jpg');
-        }
-        elseif ($user->participant->participant_type_id == 8) {
+        } elseif ($user->participant->participant_type_id == 8) {
             $background = public_path('id-card/peninjau.jpg');
         } else {
             return response()->json(['message' => 'Invalid participant type'], 400);
         }
+
         
         $png = QrCode::size(150)->generate($id);
         $qrCodeSvg = base64_encode($png);

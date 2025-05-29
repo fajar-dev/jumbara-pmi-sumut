@@ -43,7 +43,7 @@
 @section('content')
   <div id="kt_app_content" class="app-content flex-column-fluid">
     <div id="kt_app_content_container" class="app-container container-fluid">
-      <div class="px-lg-20 mx-lg-20">
+      <div class="px-xxl-20 mx-xxl-20">
         <div class="row g-5 mb-20">
           <div class="col-xl-12">
             <div class="card bg-danger bg-opacity-15 h-md-100" dir="ltr">
@@ -53,7 +53,7 @@
                     <img src="{{ asset('icon/logo-jumbara.png') }}" class="w-lg-600px w-100 w-md-300px" alt="" />
                   </div>
                   <div class="ps-lg-10 text-center text-md-start">
-                    <h1 class=" fs-lg-3hx fs-1hx fw-bolder text-danger">JUMPA BAKTI GEMBIRA V 
+                    <h1 class="fs-lg-3hx fs-1hx fw-bolder text-danger">JUMPA BAKTI GEMBIRA V 
                     </h1>
                     <span class="fw-semibold fs-lg-1hx fs-md-2 fs-5">PMR-PMI PROVINSI SUMATERA UTARA <br>Tahun 2025 </span>
                     <div class="mb-1 mt-5">

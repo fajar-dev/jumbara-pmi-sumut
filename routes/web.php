@@ -209,6 +209,7 @@ Route::prefix('/coordinator')->middleware(['auth', 'isCoordinator'])->group(func
         Route::get('/register', [CoordinatorController::class, 'participantRegister'])->name('coordinator.participant.register');
         Route::post('/register', [CoordinatorController::class, 'participantRegisterStore'])->name('coordinator.participant.register.store');
         Route::get('/{id}/destroy', [CoordinatorController::class, 'participantDestroy'])->name('coordinator.participant.destroy');
+        Route::post('/add-leader', [CoordinatorController::class, 'participantLeader'])->name('coordinator.participant.leader');
     });
 
     Route::prefix('/activity')->group(function () {

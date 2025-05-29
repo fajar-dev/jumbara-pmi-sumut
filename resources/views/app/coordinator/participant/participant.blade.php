@@ -85,8 +85,8 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-12 d-flex justify-content-end gap-5">
+            <div class="row">     
+                <div class=" col-12 d-flex justify-content-end gap-5">
                   <a href="{{ route('coordinator.participant') }}" class="btn btn-light-danger btn-md">
                         <span class="svg-icon svg-icon-3">
                             <i class="ki-duotone ki-arrows-circle fs-4">
@@ -107,6 +107,62 @@
                 </div>
             </div>
           </form>
+
+          @if (!$hasLeader)
+              <!--begin::Alert-->
+            <div class="alert alert-dismissible bg-danger d-flex flex-column flex-sm-row p-5 my-10">
+                <i class="ki-duotone ki-search-list fs-2hx text-light me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                <div class="d-flex flex-column text-light pe-0 pe-sm-10">
+                    <h4 class="mb-2 text-light">You have not selected the contingent leader</h4>
+                    <span>Please select the contingent leader first to proceed.</span>
+                </div>
+                <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-sm ms-sm-auto btn-light" data-bs-toggle="modal" data-bs-target="#leader">
+                    <i class="ki-duotone ki-plus fs-2 text-danger">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                    <span class="text-danger">Add Leader</span>
+                </button>
+            </div>
+            <!--end::Alert-->
+            <div class="modal fade" tabindex="-1" id="leader">
+              <div class="modal-dialog">
+                  <form method="POST" action="{{ route('coordinator.participant.leader') }}" class="modal-content" id="form">
+                    @csrf
+                      <div class="modal-header">
+                          <h3 class="modal-title">Select a leader</h3>
+                          <div class="btn btn-icon btn-sm btn-active-light-danger ms-2" data-bs-dismiss="modal" aria-label="Close">
+                              <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                          </div>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-5">
+                          <label for="exampleFormControlInput1" class="required form-label">Participant</label>
+                          <select class="form-select form-select-solid @error('name') is-invalid @enderror" data-control="select2" data-placeholder="Choose a leader" name="participant_id" id="participant_id" required>
+                              <option></option>
+                              @foreach ($selectLeader as $data)
+                                <option value="{{ $data->id }}">{{ $data->user->name }}</option>
+                              @endforeach
+                          </select>
+                          @error('participant_id')
+                            <div class="invalid-feedback">
+                              {{ $message }}
+                            </div>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" id="submit" class="btn btn-danger">
+                            <span class="indicator-label">Save</span>
+                            <span class="indicator-progress" style="display: none;">Loading... 
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                          </button>
+                      </div>
+                  </form>
+              </div>
+            </div>
+          @endif
 
           <div class="table-responsive">
             <table class="table table-row-dashed fs-6 gy-5">
@@ -135,7 +191,11 @@
                           </div>
                         </div>
                         <div class="d-flex flex-column">
-                          <span class="text-gray-800 fw-bold mb-1">{{ $item->user->name }}</span>
+                          <span class="text-gray-800 fw-bold mb-1">{{ $item->user->name }}
+                            @if ($item->leader)
+                              <span class="badge badge-danger">Leader</span> 
+                            @endif
+                          </span>
                           <span class="text-gray-600 fs-7">{{ $item->user->member_id }}</span>
                         </div>
                         @if ($item->user->secretariat_id)

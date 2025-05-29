@@ -16,6 +16,7 @@ use App\Models\Secretariat;
 use App\Models\ActivityType;
 use Illuminate\Http\Request;
 use App\Models\ParticipantType;
+use App\Models\ContingentLeader;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +73,22 @@ class CoordinatorController extends Controller
             }
         }
 
+        $hasLeader = Participant::where('contingent_id', $coordinator->contingent->id)
+        ->whereHas('leader')
+        ->exists();
+        if (!$hasLeader) {
+            $selectLeader = Participant::where(function($query) {
+                            $query->where('participant_type_id', 2)
+                                ->orWhere('participant_type_id', 3)
+                                ->orWhere('participant_type_id', 4);
+                        })
+                        ->where('contingent_id', $coordinator->contingent->id)
+                        ->get();
+        } else {
+            $selectLeader = collect(); // kosong misalnya
+        }
+                
+
         // return $participantTypeList;
         return view('app.coordinator.participant.participant', [
             'title' => 'Participant',
@@ -81,7 +98,9 @@ class CoordinatorController extends Controller
             'gender' => Gender::all(),
             'memberType' => MemberType::all(),
             'participantTypeList' => $participantTypeList,
-            'setting' => General::find(1)
+            'setting' => General::find(1),
+            'selectLeader' => $selectLeader,
+            'hasLeader' => $hasLeader,
         ]);
     }
 
@@ -401,5 +420,23 @@ class CoordinatorController extends Controller
             return redirect()->route('coordinator.activity')->with('success', 'Assignment has been updated successfully');
         }
         return redirect()->route('coordinator.activity')->with('error', 'Activity has started, you cannot update the assignment anymore');
+    }
+
+    public function participantLeader(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'participant_id' => 'required|exists:participants,id',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', 'Validation Error')->withInput()->withErrors($validator);
+        }
+
+        $leader = new ContingentLeader();
+        $leader->participant_id = $request->input('participant_id');
+        $leader->save();
+
+        return redirect()->route('coordinator.participant')->with('success', 'Leader has been assigned successfully');
+
     }
 }

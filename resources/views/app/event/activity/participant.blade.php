@@ -161,7 +161,11 @@
                           </div>
                         </div>
                         <div class="d-flex flex-column">
-                          <span class="text-gray-800 fw-bold mb-1">{{ $item->user->name }}</span>
+                          <span class="text-gray-800 fw-bold mb-1">{{ $item->user->name }}
+                            @if ($item->leader)
+                              <span class="badge badge-danger">Leader</span> 
+                            @endif
+                          </span>
                           <span class="text-gray-600 fs-7">{{ $item->user->member_id }}</span>
                         </div>
                         @if ($item->user->secretariat_id)
