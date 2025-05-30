@@ -24,15 +24,21 @@
               <span class="menu-arrow d-lg-none"></span>
             </span>
           </a>
-          <a href="{{ route('survey') }}" class="menu-item @if($title == 'Survey') here show menu-here-bg  @endif me-0 me-lg-2">
+          <a href="#kegiatan" data-kt-scroll-toggle="true" data-kt-drawer-dismiss="true" class="menu-item me-0 me-lg-2">
             <span class="menu-link">
-              <span class="menu-title">Survey</span>
+              <span class="menu-title">Kegiatan</span>
+              <span class="menu-arrow d-lg-none"></span>
+            </span>
+          </a>
+          <a href="#faq" data-kt-scroll-toggle="true" data-kt-drawer-dismiss="true" class="menu-item me-0 me-lg-2">
+            <span class="menu-link">
+              <span class="menu-title">Faq</span>
               <span class="menu-arrow d-lg-none"></span>
             </span>
           </a>
           <a href="{{ route('news') }}" class="menu-item @if($title == 'News') here show menu-here-bg  @endif me-0 me-lg-2">
             <span class="menu-link">
-              <span class="menu-title">News</span>
+              <span class="menu-title">Berita</span>
               <span class="menu-arrow d-lg-none"></span>
             </span>
           </a>

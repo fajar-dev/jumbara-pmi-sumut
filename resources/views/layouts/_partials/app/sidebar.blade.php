@@ -163,14 +163,14 @@
               </div>
             </div>
           </div>
-          <div class="menu-item">
+          {{-- <div class="menu-item">
             <a class="menu-link @if($title == 'Announcement') active bg-danger @endif menu-accordion"" href="{{ route('admin.announcement') }}">
               <span class="menu-icon">
                 <i class="ki-outline ki-tablet-book fs-2"></i>
               </span>
               <span class="menu-title">Announcement</span>
             </a>
-          </div>
+          </div> --}}
           <div class="menu-item">
             <a class="menu-link @if($title == 'Message') active bg-danger @endif menu-accordion"" href="{{ route('admin.message') }}">
               <span class="menu-icon">

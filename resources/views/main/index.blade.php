@@ -3,28 +3,27 @@
 @section('seo')
   <meta
   name="keywords"
-  content="tracer, study, university, malikussaleh, unimal, universitas, bkk, upt, alumni, mahasiswa, dosen, survey, kuisioner"
-  />
-  <meta name="author" content="Universitas Malikussaleh" />
-  <meta name="description" content="Selamat Datang Di Website Tracer Study Universitas Malikussaleh" />
+  content="pmi, palang merah indonesia, palang merah, pmr, pmr sumut, pmi sumut, jumpa bakti gembira, jumbara, jumbara v, jumbara v pmi sumut, ifrc, icrc" />
+  <meta name="author" content="PMI Provinsi Sumatera Utara" />
+  <meta name="description" content="JUMPA BAKTI GEMBIRA V PMR-PMI PROVINSI SUMATERA UTARA Tahun 2025" />
 
   <!-- Open Graph Meta Tags -->
   <meta property="og:url" content="{{ route('home') }}" />
-  <meta property="og:title" content="Tracer Study | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
+  <meta property="og:title" content="JUMBARA V PMI SUMUT | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
   <meta property="og:type" content="article" />
   <meta property="og:image" content="{{ asset('icon/selamat-datang.png') }}" />
   <meta
     property="og:description"
-    content="Selamat Datang Di Website Tracer Study Universitas Malikussaleh"
+    content="JUMPA BAKTI GEMBIRA V PMR-PMI PROVINSI SUMATERA UTARA Tahun 2025"
   />
   <meta property="og:locale" content="id_ID" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tracer Study | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
+  <meta name="twitter:title" content="JUMBARA V PMI SUMUT | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
   <meta
     name="twitter:description"
-    content="Selamat Datang Di Website Tracer Study Universitas Malikussaleh"
+    content="JUMPA BAKTI GEMBIRA V PMR-PMI PROVINSI SUMATERA UTARA Tahun 2025"
   />
   <meta name="twitter:image" content="{{ asset('icon/selamat-datang.png') }}" />
 
@@ -34,7 +33,7 @@
   <meta name="rating" content="general" />
   <meta name="language" content="Indonesian" />
   <meta name="geo.region" content="ID" />
-  <meta name="geo.placename" content="Lhokseumawe" />
+  <meta name="geo.placename" content="Langkat" />
 
   <!-- Canonical Tag -->
   <link rel="canonical" href="{{ route('home') }}" />
@@ -46,18 +45,18 @@
       <div class="px-xxl-20 mx-xxl-20">
         <div class="row g-5 mb-20">
           <div class="col-xl-12">
-            <div class="card bg-danger bg-opacity-15 h-md-100" dir="ltr">
+            <div class="h-md-100 card bg-light-danger" dir="ltr">
               <div class="card-body d-flex justify-content-center">
-                <div class="d-md-flex align-items-center pe-lg-5">
-                   <div class="pe-lg-10 pt-10 pt-md-0">
+                <div class="d-md-flex align-items-center">
+                  <div class="pe-xl-10 pt-10 pt-md-0">
                     <img src="{{ asset('icon/logo-jumbara.png') }}" class="w-lg-600px w-100 w-md-300px" alt="" />
                   </div>
-                  <div class="ps-lg-10 text-center text-md-start">
-                    <h1 class="fs-lg-3hx fs-1hx fw-bolder text-danger">JUMPA BAKTI GEMBIRA V 
+                  <div class=" text-center text-md-start">
+                    <h1 class="fs-lg-4hx fs-1hx fw-bolder text-danger">JUMPA BAKTI GEMBIRA V 
                     </h1>
-                    <span class="fw-semibold fs-lg-1hx fs-md-2 fs-5">PMR-PMI PROVINSI SUMATERA UTARA <br>Tahun 2025 </span>
+                    <span class="fw-semibold fs-lg-2hx fs-md-2 fs-5">PMR-PMI PROVINSI SUMATERA UTARA <br>Tahun 2025 </span>
                     <div class="mb-1 mt-5">
-                      <a class="btn btn-lg btn-light-danger me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal">
+                      <a class="btn btn-xl btn-danger me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal">
                         <i class="ki-duotone ki-exit-down fs-1">
                         <span class="path1"></span>
                         <span class="path2"></span>
@@ -66,12 +65,128 @@
                       </a>
                     </div>
                   </div>
-                 
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="row mb-20">
+            <div class="col-lg-4 col-md-4 mt-5">
+              <div class="card card-flush h-xl-100" style="background-color: #7239EA;background-image:url('{{ asset('app/media/svg/shapes/wave-bg-purple.svg') }}')">
+                <div class="card-body">
+                    <div class="fw-bold text-white text-end py-2">
+                        <span class="fs-3hx d-block">{{ number_format($participantCount) }}</span>
+                        <span>Total Peserta</span>
+                    </div>          
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 mt-5">
+              <div class="card card-flush h-xl-100" style="background-color: #F6C000;background-image:url('{{ asset('app/media/svg/shapes/wave-bg-yellow.svg') }}')">
+                <div class="card-body">
+                    <div class="fw-bold text-white text-end py-2">
+                        <span class="fs-3hx d-block">{{ number_format( $contingentCount) }}</span>
+                        <span>Total Kontingent</span>
+                    </div>          
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 mt-5">
+              <div class="card card-flush h-xl-100" style="background-color: #17C653;background-image:url('{{ asset('app/media/svg/shapes/wave-bg-green.svg') }}')">
+                <div class="card-body">
+                    <div class="fw-bold text-white text-end py-2">
+                        <span class="fs-3hx d-block">{{ number_format($activityCount) }}</span>
+                <span>Total Kegiatan</span>
+            </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <div class="row" id="kegiatan" data-kt-scroll-offset="{default: 100, lg: 150}">
+          <div class="col-12">
+            <div class="mb-17">
+              <div class="text-center mb-17">
+                <h3 class="fs-2hx text-gray-900 mb-2">
+                  Kegiatan
+                </h3>
+                <div class="fs-5 text-muted fw-bold">Temukan tipe kepribadian yang kamu miliki</div>
+              </div>
+              {{-- <div class="separator separator-dashed mb-9"></div> --}}
+              <div class="row scroll h-600px">
+                @foreach ($activity as $item)
+                    <div class="col-md-12 col-lg-6 mb-10 d-flex">
+                        <div class="d-flex flex-grow-1 align-items-lg-center rounded w-100
+                            @if($item->activity_type_id == 1)
+                                bg-light-success
+                            @elseif($item->activity_type_id == 2)
+                                bg-light-warning
+                            @elseif($item->activity_type_id == 3)
+                                bg-light-info
+                            @endif
+                        " style="min-height: 200px;">
+                            <span data-kt-element="bullet" class="bullet bullet-vertical d-md-flex align-items-center min-h-200px mh-100 me-4 bg-danger"></span>
+                            <div class="flex-grow-1 me-5 py-5">
+                                <div class="text-gray-600 fw-semibold fs-5">
+                                    {{ \Carbon\Carbon::parse($item->start)->format('F d, Y h.iA') }}
+                                    –
+                                    {{ \Carbon\Carbon::parse($item->end)->format('F d, Y h.iA') }}
+                                </div>
+                                <div class="text-gray-700 fw-bold fs-2">
+                                    {{ $item->name }}
+                                </div>
+                                <div class="text-gray-500 fs-7">
+                                    {!! $item->description !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-20"  id="faq" data-kt-scroll-offset="{default: 100, lg: 150}">
+          <div class="col-lg-6">
+            <div class="mb-17">
+              <div class="text-center mb-17">
+                <h3 class="fs-2hx text-gray-900 mb-2">
+                  F.A.Q
+                </h3>
+                <div class="fs-5 text-muted fw-bold">Frequently Asked Questions</div>
+              </div>
+              {{-- <div class="separator separator-dashed mb-9"></div> --}}
+              <!--begin::Accordion-->
+              <div class="accordion" id="kt_accordion_1">
+                @foreach ($faq as $item)                 
+                  <div class="accordion-item">
+                      <h2 class="accordion-header" id="kt_accordion_1_header_{{ $item->id }}">
+                          <button class="accordion-button fs-4 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_{{ $item->id }}" aria-expanded="true" aria-controls="kt_accordion_1_body_{{ $item->id }}">
+                              {{ $item->title }}
+                          </button>
+                      </h2>
+                      <div id="kt_accordion_1_body_{{ $item->id }}" class="accordion-collapse collapse show" aria-labelledby="kt_accordion_1_header_{{ $item->id }}" data-bs-parent="#kt_accordion_{{ $item->id }}  ">
+                          <div class="accordion-body">
+                            {{ $item->content }}
+                          </div>
+                      </div>
+                  </div>
+                @endforeach
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{-- <div class="d-flex flex-stack flex-wrap flex-md-nowrap card-rounded shadow p-8 p-lg-12 mb-10 bg-danger mb-17">
+          <div class="my-2 me-5">
+            <div class="fs-1 fs-lg-2qx fw-bold text-white mb-2">Mari sukseskan pelaksanaan JUMBARA V PMI SUMUT <br> Universitas Malikussaleh</div>
+          </div>
+          <a href="{{ route('survey') }}" class="btn btn-lg btn-outline border-2 btn-outline-white text-white flex-shrink-0 my-2">Isi Survey</a>
+        </div> --}}
+
         <div class="row">
           <div class="col-xl-12">
             <div class="mb-17">
@@ -143,12 +258,7 @@
             </div>
           </div>
         </div>
-        <div class="d-flex flex-stack flex-wrap flex-md-nowrap card-rounded shadow p-8 p-lg-12 mb-10 bg-danger mb-17">
-          <div class="my-2 me-5">
-            <div class="fs-1 fs-lg-2qx fw-bold text-white mb-2">Mari sukseskan pelaksanaan Tracer Study <br> Universitas Malikussaleh</div>
-          </div>
-          <a href="{{ route('survey') }}" class="btn btn-lg btn-outline border-2 btn-outline-white text-white flex-shrink-0 my-2">Isi Survey</a>
-        </div>
+
         <div class="row">
           <div class="col-xl-12">
             <div class="mb-17">
@@ -195,33 +305,8 @@
                     </div>
                     <div class="col-md-6 ps-lg-10">
                       <div id="kt_contact_map" class="w-100 rounded mb-2 mb-lg-0 mt-2" style="height: 486px">
-                        <iframe class="rounded w-100 h-100" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470.97490614644727!2d97.14745739462784!3d5.181807610174127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304783320edfc2af%3A0xc2aa2701354d56cc!2sCareer%20Development%20Center%20(CDC)%20Universitas%20Malikussaleh!5e0!3m2!1sid!2sid!4v1734506639893!5m2!1sid!2sid" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe class="rounded w-100 h-100" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.9495187685106!2d98.68354939999999!3d3.5990408!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131bf9573b8b5%3A0xae94317183e1f307!2sPMI%20Provinsi%20Sumatera%20Utara!5e0!3m2!1sen!2sid!4v1748594995267!5m2!1sen!2sid" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                       </div>
-                    </div>
-                  </div>
-                  <div class="row g-5 mb-5 ">     
-                    <div class="col-sm-6 pe-lg-10">
-                        <div class="bg-light card-rounded d-flex flex-column flex-center flex-center p-10 h-100">     
-                            <i class="ki-outline ki-briefcase fs-3tx text-danger"></i> 
-                            <h1 class="text-gray-900 fw-bold my-5">
-                                Narahubung
-                            </h1>
-                            <div class="text-gray-700 fw-semibold fs-2">
-                                1 (833) 597-7538
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="col-sm-6 ps-lg-10">
-                        <div class="text-center bg-light card-rounded d-flex flex-column flex-center p-10 h-100">     
-                            <i class="ki-outline ki-geolocation fs-3tx text-danger"></i>                
-                            <h1 class="text-gray-900 fw-bold my-5">
-                                Sekretriat
-                            </h1>
-                            <div class="text-gray-700 fs-3 fw-semibold">
-                                Churchill-laan 16 II, 1052 CD, Amsterdam
-                            </div>
-                        </div>
                     </div>
                   </div>
                 </div>

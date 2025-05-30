@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
+use App\Models\Faq;
 use App\Models\News;
-use App\Models\Report;
-use App\Models\Survey;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Activity;
+use App\Models\Contingent;
+use App\Models\Participant;
 
 class MainController extends Controller
 {
@@ -17,7 +16,11 @@ class MainController extends Controller
             'subTitle' => null,
             'page_id' => null,
             'news' => News::orderby('created_at', 'desc')->limit(5)->get(),
-            'survey' => Survey::where('is_private', false)->where('is_active', true)->whereNotNull('question')->orderby('created_at', 'desc')->limit(4)->get(),
+            'activity' => Activity::orderby('activity_type_id', 'asc')->get(),
+            'faq' => Faq::orderby('created_at', 'desc')->get(),
+            'participantCount' => Participant::where('is_draft', false)->count(),
+            'contingentCount' => Contingent::count(),
+            'activityCount' => Activity::count(),
         ];
 
         return view('main.index',  $data);
