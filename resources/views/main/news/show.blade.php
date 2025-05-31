@@ -1,15 +1,14 @@
 @extends('layouts.main')
 @section('seo')
-  <meta
+ <meta
   name="keywords"
-  content="tracer, study, university, malikussaleh, unimal, universitas, bkk, upt, alumni, mahasiswa, dosen, survey, kuisioner"
-  />
-  <meta name="author" content="{{ optional($news->user)->name ?? 'admin' }}" />
-  <meta name="description" content="{!! Str::limit(strip_tags($news->content), 100) !!}" />
+  content="pmi, palang merah indonesia, palang merah, pmr, pmr sumut, pmi sumut, jumpa bakti gembira, jumbara, jumbara v, jumbara v pmi sumut, ifrc, icrc" />
+  <meta name="author" content="PMI Provinsi Sumatera Utara" />
+  <meta name="description" content="JUMPA BAKTI GEMBIRA V PMR-PMI PROVINSI SUMATERA UTARA Tahun 2025" />
 
   <!-- Open Graph Meta Tags -->
   <meta property="og:url" content="{{ route('news.show', $news->slug) }}" />
-  <meta property="og:title" content="Tracer Study | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
+  <meta property="og:title" content="JUMBARA V PMI SUMUT | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
   <meta property="og:type" content="article" />
   <meta property="og:image" content="{{ Storage::url($news->thumbnail_path) }}" />
   <meta
@@ -20,7 +19,7 @@
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tracer Study | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
+  <meta name="twitter:title" content="JUMBARA V PMI SUMUT | {{ $title }} @if($subTitle) - {{ $subTitle }} @endif" />
   <meta
     name="twitter:description"
     content="{!! Str::limit(strip_tags($news->content), 100) !!}"
@@ -33,7 +32,7 @@
   <meta name="rating" content="general" />
   <meta name="language" content="Indonesian" />
   <meta name="geo.region" content="ID" />
-  <meta name="geo.placename" content="Lhokseumawe" />
+  <meta name="geo.placename" content="Langkat" />
 
   <!-- Canonical Tag -->
   <link rel="canonical" href="{{ route('news.show', $news->slug) }}" />

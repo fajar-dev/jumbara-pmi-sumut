@@ -135,7 +135,10 @@ class SettingController extends Controller
 
         public function generalUpdate(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'logo' => 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg,svg|max:2000',
+            'guidebook' => 'nullable|sometimes|file|mimes:pdf|max:2000',
+            'title' => 'required',
+            'subtitle' => 'required',
             'location' => 'required',
             'eventStart' => 'required',
             'eventEnd' =>'required',
@@ -154,7 +157,14 @@ class SettingController extends Controller
         }
 
         $general = General::findOrFail(1);
-        $general->name = $request->input('name');
+        $general->title = $request->input('title');
+        $general->subtitle = $request->input('subtitle');
+        if($request->has('logo')){
+            $general->logo = $request->file('logo')->store('setting', 'public');
+        }
+        if($request->has('guidebook')){
+            $general->guidebook = $request->file('guidebook')->store('setting', 'public');
+        }
         $general->location = $request->input('location');
         $general->event_start = $request->input('eventStart');
         $general->event_end = $request->input('eventEnd');

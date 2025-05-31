@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('generals', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('logo');
+            $table->string('guidebook');
+            $table->string('title');
+            $table->string('subtitle');
             $table->string('location');
             $table->date('event_start');
             $table->date('event_end');

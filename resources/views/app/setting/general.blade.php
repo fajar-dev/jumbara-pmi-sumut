@@ -14,10 +14,47 @@
             @csrf
             <div class="card-body border-top p-9">
               <div class="row mb-6">
-                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Event Name</label>
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Logo</label>
                 <div class="col-lg-8 fv-row">
-                  <input type="text" name="name" class="form-control form-control-lg form-control-solid @error('name') is-invalid @enderror" value="{{ old('name') ?? $general->name }}" />
-                  @error('name')
+                  <style>.image-input-placeholder { background-image: url("{{ Storage::url($general->logo) }}"); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('{{ Storage::url($general->logo) }}'); }</style>
+                  <div class="image-input image-input-empty image-input-outline image-input-placeholder" data-kt-image-input="true">
+                    <div class="image-input-wrapper w-125px h-125px"></div>
+                    <label class="btn btn-icon btn-circle btn-active-color-danger w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                      <i class="ki-outline ki-pencil fs-7"></i>
+                      <input type="file" name="logo" accept=".png, .jpg, .jpeg" />
+                      <input type="hidden" name="avatar_remove" />
+                    </label>
+                    <span class="btn btn-icon btn-circle btn-active-color-danger w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                      <i class="ki-outline ki-cross fs-2"></i>
+                    </span>
+                    <span class="btn btn-icon btn-circle btn-active-color-danger w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                      <i class="ki-outline ki-cross fs-2"></i>
+                    </span>
+                  </div>
+                  <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                  @error('logo')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Title</label>
+                <div class="col-lg-8 fv-row">
+                  <input type="text" name="title" class="form-control form-control-lg form-control-solid @error('title') is-invalid @enderror" value="{{ old('title') ?? $general->title }}" />
+                  @error('title')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Sub Title</label>
+                <div class="col-lg-8 fv-row">
+                  <input type="text" name="subtitle" class="form-control form-control-lg form-control-solid @error('subtitle') is-invalid @enderror" value="{{ old('subtitle') ?? $general->subtitle }}" />
+                  @error('subtitle')
                   <div class="text-sm text-danger">
                     {{ $message }}
                   </div>
@@ -63,6 +100,18 @@
                 <div class="col-lg-8 fv-row">
                   <input type="datetime-local" name="lastRegistration" class="form-control form-control-lg form-control-solid @error('lastRegistration') is-invalid @enderror" value="{{ old('lastRegistration') ?? $general->last_registration }}" />
                   @error('lastRegistration')
+                  <div class="text-sm text-danger">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Guide Book</label>
+                <div class="col-lg-8 fv-row">
+                  <input type="file" name="guidebook" class="form-control form-control-lg form-control-solid @error('guidebook') is-invalid @enderror" value="{{ old('guidebook') ?? $general->guidebook }}" />
+                  <span>file: <a href="{{ Storage::url($general->guidebook) }}" target="_blank" class="text-danger">{{ $general->guidebook }}</a></span>
+                  @error('guidebook')
                   <div class="text-sm text-danger">
                     {{ $message }}
                   </div>

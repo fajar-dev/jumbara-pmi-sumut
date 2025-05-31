@@ -13,7 +13,10 @@ class General extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name',
+        'logo',
+        'guidebook',
+        'title',
+        'subtitle',
         'location',
         'event_start',
         'event_end',

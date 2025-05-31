@@ -7,8 +7,8 @@
           <img src="{{ asset('icon/logo.png') }}" class="h-90px theme-dark-show bg-white my-2 p-3" alt="">
 
           <div>
-            <div class="fs-3 fw-semibold text-gray-700 pt-10">Jl. Perintis Kemerdekaan No.37<br>Kec. Medan Tim., Kota Medan, Sumatera Utara</div>
-            <div class="text-gray-500 fw-semibold pt-5 fs-5">061 - 5430 198<br>sumatera_utara@pmi.or.id</div>
+            <div class="fs-3 fw-semibold text-gray-700 pt-10">{!! $setting->address !!}</div>
+            <div class="text-gray-500 fw-semibold pt-5 fs-5">{{ $setting->phone }}<br>{{ $setting->email }}</div>
           </div>
         </div>
       </div>

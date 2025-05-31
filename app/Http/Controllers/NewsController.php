@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\General;
 use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -32,6 +33,7 @@ class NewsController extends Controller
             'page_id' => null,
             'news' => $query,
             'category' => NewsCategory::all(),
+            'setting' => General::find(1),
             'recentPost' => News::orderBy('created_at', 'desc')->limit(5)->get()
         ];
         return view('main.news.index',  $data);
@@ -45,7 +47,8 @@ class NewsController extends Controller
             'page_id' => null,
             'news' => $news,
             'category' => NewsCategory::all(),
-            'recentPost' => News::orderBy('created_at', 'desc')->limit(5)->get()
+            'recentPost' => News::orderBy('created_at', 'desc')->limit(5)->get(),
+            'setting' => General::find(1),
         ];
         return view('main.news.show',  $data);
     }

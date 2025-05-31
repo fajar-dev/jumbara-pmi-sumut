@@ -6,6 +6,7 @@ use App\Models\Crew;
 use App\Models\User;
 use App\Models\Admin;
 use Ramsey\Uuid\Uuid;
+use App\Models\General;
 use App\Models\Coordinator;
 use App\Models\Participant;
 use Illuminate\Http\Request;
@@ -21,7 +22,8 @@ class AuthController extends Controller
         $data = [
             'title' => 'Login',
             'subTitle' => null,
-            'page_id' => null
+            'page_id' => null,
+            'setting' => General::find(1),
         ];
         return view('auth.login',  $data);
     }
@@ -68,7 +70,8 @@ class AuthController extends Controller
         $data = [
             'title' => 'Change Password',
             'subTitle' => null,
-            'page_id' => null
+            'page_id' => null,
+            'setting' => General::find(1),
         ];
         return view('auth.change-password',  $data);
     }
@@ -90,7 +93,8 @@ class AuthController extends Controller
         $data = [
             'title' => 'Forget Password',
             'subTitle' => null,
-            'page_id' => null
+            'page_id' => null,
+            'setting' => General::find(1),
         ];
         return view('auth.forgot',  $data);
     }
@@ -124,7 +128,8 @@ class AuthController extends Controller
             'token' => $token,
             'title' => 'Reset Password',
             'subTitle' => null,
-            'page_id' => null
+            'page_id' => null,
+            'setting' => General::find(1),
         ];
         return view('auth.reset',  $data);
     }

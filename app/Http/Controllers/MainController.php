@@ -6,6 +6,7 @@ use App\Models\Faq;
 use App\Models\News;
 use App\Models\Activity;
 use App\Models\Contingent;
+use App\Models\General;
 use App\Models\Participant;
 
 class MainController extends Controller
@@ -21,6 +22,7 @@ class MainController extends Controller
             'participantCount' => Participant::where('is_draft', false)->count(),
             'contingentCount' => Contingent::count(),
             'activityCount' => Activity::count(),
+            'setting' => General::find(1),
         ];
 
         return view('main.index',  $data);

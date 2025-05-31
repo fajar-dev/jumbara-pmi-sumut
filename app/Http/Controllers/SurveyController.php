@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Survey;
-use App\Models\SurveyResponse;
+use App\Models\General;
 use Illuminate\Http\Request;
+use App\Models\SurveyResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +18,8 @@ class SurveyController extends Controller
         $data = [
             'title' => 'Survey',
             'subTitle' => null,
-            'survey' => $data
+            'survey' => $data,
+            'setting' => General::find(1),
         ];
         return view('main.survey.index',  $data);
     }
@@ -31,6 +33,7 @@ class SurveyController extends Controller
             'subTitle' => $survey->title,
             'survey' => $survey,
             'questions' => $questions,
+            'setting' => General::find(1),
         ];
         return view('main.survey.show', $data);
     }

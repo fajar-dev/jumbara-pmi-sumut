@@ -12,7 +12,7 @@
       </button>
       <!--end::Aside toggle-->
       <a href="{{ route('home') }}">
-        <img alt="Logo" src="{{ asset('icon/logo-jumbara.png') }}" class="h-70px d-lg-none" />
+        <img alt="Logo" src="{{ Storage::url($setting->logo) }}" class="h-70px d-lg-none" />
       </a>
     </div>
     <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1 px-lg-20 mx-lg-20" id="kt_app_header_wrapper">
@@ -46,7 +46,7 @@
       </div>
       <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
         <a href="{{ route('home') }}">
-          <img alt="Logo" src="{{ asset('icon/logo-jumbara.png') }}" class="h-80px d-none d-lg-inline app-header-logo-default" />
+          <img alt="Logo" src="{{ Storage::url($setting->logo) }}" class="h-80px d-none d-lg-inline app-header-logo-default" />
         </a>
       </div>
       <div class="app-navbar flex-shrink-0">

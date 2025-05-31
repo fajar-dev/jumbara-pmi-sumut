@@ -49,14 +49,24 @@
               <div class="card-body d-flex justify-content-center">
                 <div class="d-md-flex align-items-center">
                   <div class="pe-xl-10 pt-10 pt-md-0">
-                    <img src="{{ asset('icon/logo-jumbara.png') }}" class="w-lg-600px w-100 w-md-300px" alt="" />
+                    <img src="{{ Storage::url($setting->logo) }}" class="w-lg-600px w-100 w-md-300px" alt="" />
                   </div>
                   <div class=" text-center text-md-start">
-                    <h1 class="fs-lg-4hx fs-1hx fw-bolder text-danger">JUMPA BAKTI GEMBIRA V 
+                    <h1 class="fs-lg-4hx fs-1hx fw-bolder text-danger">{{ $setting->title }}
                     </h1>
-                    <span class="fw-semibold fs-lg-2hx fs-md-2 fs-5">PMR-PMI PROVINSI SUMATERA UTARA <br>Tahun 2025 </span>
+                    <span class="fw-semibold fs-lg-2hx fs-md-2 fs-5 fw-bold">{!! $setting->subtitle !!}</span> <br>
+                    {{-- @php
+                        use Illuminate\Support\Carbon;
+
+                        $start = Carbon::parse($setting->event_start);
+                        $end = Carbon::parse($setting->event_end);
+                    @endphp
+
+                    <span class="fw-semibold fs-2 text-gray-700">
+                        {{ ucfirst(strtolower($setting->location)) }}, {{ $start->day }} - {{ $end->day }} {{ $end->translatedFormat('F Y') }}
+                    </span> --}}
                     <div class="mb-1 mt-5">
-                      <a class="btn btn-xl btn-danger me-2" data-bs-target="#kt_modal_create_app" data-bs-toggle="modal">
+                      <a href="{{ Storage::url($setting->guidebook) }}" target="_blank" class="btn btn-xl btn-danger me-2">
                         <i class="ki-duotone ki-exit-down fs-1">
                         <span class="path1"></span>
                         <span class="path2"></span>
