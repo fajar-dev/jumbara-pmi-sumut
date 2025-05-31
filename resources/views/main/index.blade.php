@@ -121,7 +121,7 @@
                 <h3 class="fs-2hx text-gray-900 mb-2">
                   Kegiatan
                 </h3>
-                <div class="fs-5 text-muted fw-bold">Temukan tipe kepribadian yang kamu miliki</div>
+                {{-- <div class="fs-5 text-muted fw-bold"></div> --}}
               </div>
               {{-- <div class="separator separator-dashed mb-9"></div> --}}
               <div class="row scroll h-600px">
